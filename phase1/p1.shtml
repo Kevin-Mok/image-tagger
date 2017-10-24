@@ -56,7 +56,7 @@
             Phase 1: an alternative approach
         </h2>
         <p>
-            Here's a description of an alternative local approach that you will design and implement, without the face recognition. Your group with design and write a JavaFX program that lets users rename image files based on a set of tags the user chose. In the filename, tags are separated by spaces and are marked with the the letter <code>'@'</code>.
+            Here's a description of an alternative local approach that you will design and implement, without the face recognition. Your group will design and write a JavaFX program that lets users rename image files based on a set of tags the user chooses. In the filename, tags are separated by spaces and are marked with the letter <code>'@'</code>.
         </p>
         <p>
             The user wants to be able to choose a directory and view a list of all image files anywhere under that directory, and also show a list of images in that directory. When viewing an image, the user can select tags from the currently-existing tags, and the user can also add new tags and delete existing ones from the currently-existing ones. The application will rename the image file to include the tags, each prefixed with the "@" character. For example, if the user has tagged an image with "Aunt June" and "Samantha", then the file will be renamed to include "@Aunt June @Samantha". This allows the user to use their operating system to search for image files. The user should also be able to open (directly in their OS's file viewer) the directory containing the current image file.
@@ -65,7 +65,7 @@
             The user should be able to move a file to another directory.
         </p>
         <p>
-            The user wants to be able to go back to older sets of tags for a particular file. Provided that an image has not been manually moved orå renamed using the OS, the user can view all the names that a file has had. For example, if the user views the image with Aunt June and Samantha, they can choose to view both the original name and the name that includes "@Aunt June @Samantha". The user can choose to go back to an older name.
+            The user wants to be able to go back to older sets of tags for a particular file. Provided that an image has not been manually moved or renamed using the OS, the user can view all the names that a file has had. For example, if the user views the image with Aunt June and Samantha, they can choose to view both the original name and the name that includes "@Aunt June @Samantha". The user can choose to go back to an older name.
         </p>
         <p>
             The list of available tags persists when the application is quit and reopened.
@@ -98,7 +98,7 @@
             A few tips
         </h2>
         <p>
-            Keep your graphical user interface code separate from the "back end" of the system that manipulates and manages the files. To help with this, imagine that your program with work with either a GUI program or a command-line shell written in Java: they are completely different kinds of user interfaces, but the classes that manage the data should not have to change for that to work.
+            Keep your graphical user interface code separate from the "back end" of the system that manipulates and manages the files. To help with this, imagine that your program will work with either a GUI program or a command-line shell written in Java: they are completely different kinds of user interfaces, but the classes that manage the data should not have to change for that to work.
         </p>
         <p>
             The user is likely to add further requirements over the next month or so. The requests might involve expanding your software to include better tag manipulation. Be sure to design your code with this in mind.
