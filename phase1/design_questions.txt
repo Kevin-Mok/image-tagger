@@ -7,3 +7,14 @@ What happens when a new tag is created?
 
 Which class is keeping track of the association between tags and files?
 
+Which class is responsible for retrieving a list of all image files under a directory?
+
+What happens when a user moves a file using the program?
+
+What does the Tag class need to store?
+
+What classes does the Tag class work with?
+
+What tasks is the Tag class responsible for and what tasks is the TagManager class responsible for?
+
+ 
