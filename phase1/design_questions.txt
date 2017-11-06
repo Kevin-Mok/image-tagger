@@ -7,8 +7,6 @@ What happens when a new tag is created?
 
 Which class is keeping track of the association between tags and files?
 
-Which class takes care of choosing directories and listing files within them?
-
 What happens when a tag is deleted?
 
 Which class opens the current directory using the OS file viewer?
@@ -22,3 +20,12 @@ Which class takes care of reverting to an older set of tags?
 Which class displays the entire history of all the names a file has had?
 
 Where is persistent information (information that is not lost on closing) stored?
+
+Which class is responsible for retrieving a list of all image files under a directory?
+
+What does the Tag class need to store?
+
+What classes does the Tag class work with?
+
+What tasks is the Tag class responsible for and what tasks is the TagManager class responsible for?
+
