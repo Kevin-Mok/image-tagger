@@ -1,3 +1,5 @@
+package main;
+
 import java.awt.*;
 import java.io.*;
 import java.nio.file.DirectoryStream;
@@ -126,7 +128,7 @@ public class DirectoryManager {
     // main() for testing purposes only
 //    public static void main(String[] args) {
 //        File rootFolder = new File("/h/u7/c7/05/shyichin");
-//        DirectoryManager manager = new DirectoryManager(rootFolder, null);
+//        main.DirectoryManager manager = new main.DirectoryManager(rootFolder, null);
 //        manager.openRootFolder();
 //    }
 }

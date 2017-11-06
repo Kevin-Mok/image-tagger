@@ -1,6 +1,6 @@
 TODO List 
 
--create DirectoryManager class [Chris]
+-create main.DirectoryManager class [Chris]
 
 -create Image class
 
