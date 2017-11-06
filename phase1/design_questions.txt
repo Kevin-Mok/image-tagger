@@ -19,7 +19,7 @@ Which class takes care of reverting to an older set of tags?
 
 Which class displays the entire history of all the names a file has had?
 
-Where is persistent information (information that is not lost on closing) stored?
+Where and how is persistent information (information that is not lost on closing) stored?
 
 Which class is responsible for retrieving a list of all image files under a directory?
 
@@ -29,3 +29,4 @@ What classes does the Tag class work with?
 
 What tasks is the Tag class responsible for and what tasks is the TagManager class responsible for?
 
+Which classes need persistent storage?

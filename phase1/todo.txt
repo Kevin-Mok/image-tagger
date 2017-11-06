@@ -1,0 +1,11 @@
+-create DirectoryManager class
+
+-create Image class
+
+-create History class
+
+-create Tag class
+
+-create TagManager class
+
+-figure out design for GUI
