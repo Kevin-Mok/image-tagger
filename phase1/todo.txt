@@ -1,4 +1,6 @@
--create DirectoryManager class
+TODO List 
+
+-create DirectoryManager class [Chris]
 
 -create Image class
 
