@@ -2,7 +2,7 @@
 
 -create Image class
 
--create History class
+-create TagManager class
 
 -create Tag class
 
