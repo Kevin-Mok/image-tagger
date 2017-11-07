@@ -3,7 +3,8 @@ package main;
 import java.io.File;
 
 /**
- * Picture class that stores its path and a TagManager object to work with its tags.
+ * Picture class that stores its path and a TagManager object to work with
+ * its tags.
  */
 public class Picture {
     private File imageFile;
@@ -11,8 +12,9 @@ public class Picture {
 
     /**
      * Constructor.
+     *
      * @param imageFile File object of the image.
-     * @param fileName The name of the file (without its extension).
+     * @param fileName  The name of the file (without its extension).
      */
     Picture(File imageFile, String fileName) {
         this.imageFile = imageFile;
@@ -35,6 +37,7 @@ public class Picture {
 
     /**
      * Adds a tag to the currently existing ones.
+     *
      * @param tagName The name of the tag to be added.
      */
     public void addTag(String tagName) {
@@ -43,6 +46,7 @@ public class Picture {
 
     /**
      * Removes a tag from the currently existing ones.
+     *
      * @param tagName The name of the tag to be removed.
      */
     public void deleteTag(String tagName) {
@@ -51,6 +55,7 @@ public class Picture {
 
     /**
      * Reverts the name of the file to a previous one in time.
+     *
      * @param name Name to be reverted to.
      */
     public void revertName(String name) {

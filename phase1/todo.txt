@@ -1,15 +1,11 @@
 TODO List 
 
--create main.DirectoryManager class [Chris]
-
 -create tests for main.DirectoryManager
 
--create Image class
-
--create TagManager class
-
--create Tag class
-
--create TagManager class
-
 -figure out design for GUI
+
+-storing persistent information in certain classes
+
+-creating Image objects on launch
+
+-move file
