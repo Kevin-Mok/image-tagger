@@ -4,25 +4,25 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Tag {
-    private static HashMap<String, ArrayList<Image>> allTags;
-    private Image image;
+    private static HashMap<String, ArrayList<Picture>> allTags;
+    private Picture picture;
     private String name;
 
-    public Tag (Image image, String name){
-        this.Image = Image;
+    public Tag (Picture picture, String name){
+        this.picture = picture;
         this.name = name;
         update(this);
     }
 
     private static void update(Tag tag){
-        ArrayList<Image> list;
+        ArrayList<Picture> list;
         if (allTags.containsKey(tag.getName())){
             list = allTags.get(tag.getName());
-            list.add(tag.getImage());
+            list.add(tag.getPicture());
         }
         else{
-            list = new ArrayList<Image>();
-            list.add(tag.getImage());
+            list = new ArrayList<Picture>();
+            list.add(tag.getPicture());
             allTags.put(tag.getName(), list);
         }
     }
@@ -31,8 +31,8 @@ public class Tag {
         return name;
     }
 
-    public Image getImage(){
-        return image;
+    public Picture getPicture(){
+        return picture;
     }
 
     public boolean equals(Object obj){
