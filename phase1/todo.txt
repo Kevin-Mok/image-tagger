@@ -1,6 +1,6 @@
 TODO List 
 
--create tests for main.DirectoryManager
+-create tests for main.DirectoryManager [Chris]
 
 -figure out design for GUI
 
@@ -8,4 +8,4 @@ TODO List
 
 -creating Image objects on launch
 
--move file
+-move file [Chris]
