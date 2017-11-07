@@ -42,7 +42,8 @@ public class DirectoryManager {
     }
 
     /**
-     * Returns a list of all images directly under the root folder
+     * Returns a list of all images directly under the root folder, not including those in sub-folders
+     *
      * @return List of image paths directly under the root folder
      */
     public List<String> getImagesUnderRoot() {
@@ -51,6 +52,7 @@ public class DirectoryManager {
 
     /**
      * Returns a list of all the images under the root directory(including sub-folders)
+     *
      * @return List of image paths including those in subdirectories
      */
     public List<String> getAllImagesUnderRoot() {
@@ -59,8 +61,9 @@ public class DirectoryManager {
 
     /**
      * Takes in a directory path and returns a list of the path strings of all the images in that directory
+     *
      * @param directory the directory to search in
-     * @param recursive whether or not the search recursively in the subfolders
+     * @param recursive whether or not to search recursively in the subfolders
      * @return list of the paths of image files
      */
     private List<String> getImages(Path directory, boolean recursive) {
@@ -105,9 +108,7 @@ public class DirectoryManager {
         StringBuilder sb = new StringBuilder();
         sb.append("*.{");
         try (BufferedReader br = new BufferedReader(new FileReader(imageFormatConfig))) {
-            /**
-             * Appending the first line outside the while loop so the pattern wouldn't end with a comma
-             */
+//          Appending the first line outside the while loop so the pattern wouldn't end with a comma
             String line;
             line = br.readLine();
             if (line != null) {
