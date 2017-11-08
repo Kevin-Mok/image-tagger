@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="930.0" prefWidth="1112.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="FX.Controller">
+   <children>
+      <Label layoutX="63.0" layoutY="89.0" prefHeight="16.0" prefWidth="124.0" text="Current Folder" AnchorPane.topAnchor="89.0" />
+      <ImageView fitHeight="832.0" fitWidth="834.0" layoutX="266.0" layoutY="63.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="28.0" AnchorPane.topAnchor="63.0" />
+      <Label layoutX="477.0" layoutY="40.0" prefHeight="16.0" prefWidth="276.0" text="Image Name" AnchorPane.rightAnchor="354.0" AnchorPane.topAnchor="40.0" />
+      <ListView layoutX="28.0" layoutY="698.0" prefHeight="200.0" prefWidth="200.0" />
+      <ListView layoutX="25.0" layoutY="399.0" prefHeight="236.0" prefWidth="200.0" />
+      <Label layoutX="69.0" layoutY="674.0" prefHeight="16.0" prefWidth="124.0" text="Name History" />
+      <Label layoutX="69.0" layoutY="382.0" prefHeight="16.0" prefWidth="124.0" text="Current Tags" />
+      <TreeView layoutX="26.0" layoutY="110.0" prefHeight="270.0" prefWidth="200.0" />
+      <Button layoutX="32.0" layoutY="29.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="50.0" text="Button" />
+      <Button layoutX="103.0" layoutY="29.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="50.0" text="Button" />
+      <Button layoutX="167.0" layoutY="29.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="50.0" text="Button" />
+      <TextField layoutX="25.0" layoutY="638.0" prefHeight="26.0" prefWidth="124.0" />
+      <Button layoutX="162.0" layoutY="640.0" mnemonicParsing="false" text="Button" />
+   </children>
+</AnchorPane>

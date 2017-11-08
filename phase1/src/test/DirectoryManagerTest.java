@@ -23,7 +23,7 @@ class DirectoryManagerTest {
 
         File imgInSubDir = new File(subDir.toString() + "/test2.jpg");
         imgInSubDir.createNewFile();
-        manager = new DirectoryManager()
+        // manager = new DirectoryManager();
     }
 
     @org.junit.jupiter.api.Test

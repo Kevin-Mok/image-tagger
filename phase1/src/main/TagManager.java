@@ -7,9 +7,9 @@ public class TagManager {
     TreeMap<Timestamp, String> nameStore;
     ArrayList<Tag> tagList;
     Set<Tag> currentTag;
-    private Image img;
+    private Picture img;
 
-    public TagManager(String name, Image img){
+    public TagManager(String name, Picture img){
         nameStore = new TreeMap<>();
         nameStore.put(new Timestamp(System.currentTimeMillis()), name);
         tagList = new ArrayList<>();
@@ -28,7 +28,8 @@ public class TagManager {
         return nameStore.lastEntry().getValue();
     }
 
-    public String deleteTag(Tag tag){
+    public String deleteTag(String tagName){
+        Tag tag = new Tag(img, tagName);
         if(currentTag.contains(tag)){
             currentTag.remove(tag);
             nameStore.put(new Timestamp(System.currentTimeMillis()), getCurrentName());

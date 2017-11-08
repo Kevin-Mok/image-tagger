@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 
 public class DirectoryManager {
     /**
-     * The top level directory for the current instance of the Image Viewer program
+     * The top level directory for the current instance of the Picture Viewer program
      */
     private File rootFolder;
     /**
