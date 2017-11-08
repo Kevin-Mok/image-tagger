@@ -18,9 +18,9 @@
       <Label layoutX="69.0" layoutY="674.0" prefHeight="16.0" prefWidth="124.0" text="Name History" />
       <Label layoutX="69.0" layoutY="382.0" prefHeight="16.0" prefWidth="124.0" text="Current Tags" />
       <TreeView layoutX="26.0" layoutY="110.0" prefHeight="270.0" prefWidth="200.0" />
-      <Button layoutX="32.0" layoutY="29.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="50.0" text="Button" />
-      <Button layoutX="103.0" layoutY="29.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="50.0" text="Button" />
-      <Button layoutX="167.0" layoutY="29.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="50.0" text="Button" />
+      <Button id="chooseDirButton" layoutX="32.0" layoutY="29.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="50.0" text="Button" />
+      <Button id="moveFileButton" layoutX="103.0" layoutY="29.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="50.0" text="Button" />
+      <Button id="openCurDirButton" layoutX="167.0" layoutY="29.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="50.0" text="Button" />
       <TextField layoutX="25.0" layoutY="638.0" prefHeight="26.0" prefWidth="124.0" />
       <Button layoutX="162.0" layoutY="640.0" mnemonicParsing="false" text="Button" />
    </children>

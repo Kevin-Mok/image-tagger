@@ -8,4 +8,4 @@ TODO List
 
 -creating Image objects on launch
 
--move file [Chris]
+-Add move file functionality to the DirectoryManager class [Chris]
