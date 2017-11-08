@@ -20,11 +20,5 @@ public class Controller {
 
     public Controller() {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("layout.fxml"));
-        loader.setController(this);
-        try {
-            loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }
