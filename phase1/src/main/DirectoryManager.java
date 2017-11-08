@@ -53,7 +53,7 @@ public class DirectoryManager {
     /**
      * Returns a list of all the images under the root directory(including sub-folders)
      *
-     * @return List of image paths including those in subdirectories
+     * @return List of image paths under the root directory, including those in subdirectories
      */
     public List<String> getAllImagesUnderRoot() {
         return getImages(rootFolder.toPath(), true);
