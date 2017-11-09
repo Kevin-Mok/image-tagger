@@ -9,3 +9,5 @@ TODO List
 -creating Image objects on launch
 
 -Add move file functionality to the DirectoryManager class [Chris]
+
+-Bind buttons in the UI to DirectoryManager methods [Chris]
