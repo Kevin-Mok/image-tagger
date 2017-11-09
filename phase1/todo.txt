@@ -11,3 +11,5 @@ TODO List
 -Add move file functionality to the DirectoryManager class [Chris]
 
 -Bind buttons in the UI to DirectoryManager methods [Chris]
+
+-Inject an instance of DirectoryManager into the FX controller [Chris]

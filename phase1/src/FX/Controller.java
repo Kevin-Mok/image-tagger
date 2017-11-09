@@ -3,22 +3,54 @@ package FX;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import main.DirectoryManager;
 
+import java.io.File;
 import java.io.IOException;
 
 public class Controller {
 
     // Use the UI element id specified in the FXML file as the variable name to get a hook on those elements
     @FXML
-    Button chooseDirButton;
+    private Button chooseDirButton;
 
     @FXML
-    Button moveFileButton;
+    private Button moveFileButton;
 
     @FXML
-    Button openCurDirButton;
+    private Button openCurDirButton;
 
-    public Controller() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("layout.fxml"));
+    //null placeholder for now, replace the second argument with the actual image format config file later
+    private DirectoryManager directoryManager = new DirectoryManager(null, null);
+    /**
+     * The stage this controller is associated with
+     */
+    private Stage stage;
+
+    public Controller() {}
+
+    /**
+     * This method is automatically called after the FXML file is loaded
+     */
+    @FXML
+    public void initialize() {
+        chooseDirButton.setOnAction(event -> {
+            DirectoryChooser directoryChooser = new DirectoryChooser();
+            directoryChooser.setTitle("Choose a directory to open");
+            File rootDirectory = directoryChooser.showDialog(stage);
+            if (rootDirectory != null) {
+                directoryManager.setRootFolder(rootDirectory);
+            }
+            //TODO: println for debugging, delete later on
+            System.out.println(directoryManager.getRootFolder());
+        });
     }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
 }
