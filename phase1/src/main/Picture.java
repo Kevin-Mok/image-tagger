@@ -1,6 +1,7 @@
 package main;
 
 import java.io.File;
+import java.net.MalformedURLException;
 
 /**
  * Picture class that stores its path and a TagManager object to work with
@@ -62,4 +63,7 @@ public class Picture {
         rename(tagManager.revertName(name));
     }
 
+    public String getPath() throws MalformedURLException {
+        return imageFile.toPath().toString();
+    }
 }
