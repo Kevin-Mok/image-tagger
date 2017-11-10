@@ -74,8 +74,8 @@ public class DirectoryManager {
      * @param recursive whether or not to search recursively in the subfolders
      * @return list of the paths of image files
      */
-    private List<String> getImages(Path directory, boolean recursive) {
-        List<String> images = new ArrayList<>();
+    public List getImages(Path directory, boolean recursive) {
+        List images = new ArrayList<>();
         Pattern imgFilePattern = Pattern.compile(generateImageMatchingPattern
                 ());
         try (DirectoryStream<Path> stream = Files.newDirectoryStream
@@ -84,7 +84,7 @@ public class DirectoryManager {
                 if (recursive) {
                     if (Files.isDirectory(file)) {
                         // System.out.println(file);
-                        getImages(file, true);
+                        images.add(getImages(file, true));
                     }
                 }
                 Matcher matcher = imgFilePattern.matcher(file.toString());
@@ -136,6 +136,6 @@ public class DirectoryManager {
         main.DirectoryManager m = new main.DirectoryManager(rootFolder);
         // manager.openRootFolder();
         System.out.println(m.generateImageMatchingPattern());
-        System.out.println(m.getImages(rootFolder.toPath(),true));
+        System.out.println(m.getImages(rootFolder.toPath(), true));
     }
 }

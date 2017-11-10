@@ -12,14 +12,14 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="891.0" prefWidth="1112.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fx.Controller">
    <children>
-      <Label layoutX="58.0" layoutY="81.0" prefHeight="16.0" prefWidth="124.0" text="Current Folder" AnchorPane.topAnchor="81.0" />
+      <Label fx:id="currentFolderLabel" alignment="CENTER" contentDisplay="RIGHT" layoutX="20.0" layoutY="79.0" prefHeight="16.0" prefWidth="200.0" text="Current Folder" AnchorPane.topAnchor="79.0" />
       <ImageView fitHeight="832.0" fitWidth="834.0" layoutX="266.0" layoutY="63.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="28.0" AnchorPane.topAnchor="63.0" />
       <Label layoutX="569.0" layoutY="39.0" prefHeight="16.0" prefWidth="276.0" text="Image Name" AnchorPane.rightAnchor="267.0" AnchorPane.topAnchor="39.0" />
       <ListView layoutX="21.0" layoutY="679.0" prefHeight="200.0" prefWidth="200.0" />
       <ListView layoutX="20.0" layoutY="384.0" prefHeight="236.0" prefWidth="200.0" />
       <Label layoutX="64.0" layoutY="653.0" prefHeight="16.0" prefWidth="124.0" text="Name History" />
       <Label layoutX="57.0" layoutY="368.0" prefHeight="16.0" prefWidth="124.0" text="Current Tags" />
-      <TreeView layoutX="20.0" layoutY="95.0" prefHeight="270.0" prefWidth="200.0" />
+      <TreeView fx:id="imagesTreeView" editable="true" layoutX="20.0" layoutY="95.0" prefHeight="270.0" prefWidth="314.0" />
       <Button fx:id="chooseDirButton" layoutX="20.0" layoutY="23.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="50.0">
          <graphic>
             <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
