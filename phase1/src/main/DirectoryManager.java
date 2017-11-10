@@ -52,7 +52,7 @@ public class DirectoryManager {
      *
      * @return List of image paths directly under the root folder
      */
-    public List<String> getImagesUnderRoot() {
+    public List getImagesUnderRoot() {
         return getImages(rootFolder.toPath(), false);
     }
 
@@ -63,19 +63,19 @@ public class DirectoryManager {
      * @return List of image paths under the root directory, including those
      * in subdirectories
      */
-    public List<String> getAllImagesUnderRoot() {
+    public List getAllImagesUnderRoot() {
         return getImages(rootFolder.toPath(), true);
     }
 
     /**
-     * Takes in a directory path and returns a list of the path strings of
-     * all the icons in that directory
+     * Returns nested list of all images in a directory (including
+     * sub-directories).
      *
      * @param directory the directory to search in
      * @param recursive whether or not to search recursively in the subfolders
      * @return list of the paths of image files
      */
-    public List getImages(Path directory, boolean recursive) {
+    private List getImages(Path directory, boolean recursive) {
         List images = new ArrayList<>();
         images.add((directory.toString()));
         Pattern imgFilePattern = Pattern.compile(generateImageMatchingPattern
@@ -85,9 +85,10 @@ public class DirectoryManager {
             for (Path file : stream) {
                 if (recursive) {
                     if (Files.isDirectory(file)) {
-                        List stuff = getImages(file, true);
-                        if(stuff.size() >= 1){
-                        images.add(stuff);}
+                        List subImages = getImages(file, true);
+                        if (subImages.size() > 1) {
+                            images.add(subImages);
+                        }
                     }
                 }
                 Matcher matcher = imgFilePattern.matcher(file.toString());
@@ -135,7 +136,7 @@ public class DirectoryManager {
     // main() for testing purposes only
     public static void main(String[] args) {
         // File rootFolder = new File("/h/u7/c7/05/shyichin");
-        File rootFolder = new File("/home/kevin/Pictures");
+        File rootFolder = new File("/home/kevin/Documents");
         main.DirectoryManager m = new main.DirectoryManager(rootFolder);
         // manager.openRootFolder();
         System.out.println(m.generateImageMatchingPattern());

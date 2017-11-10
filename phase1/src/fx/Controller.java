@@ -2,6 +2,7 @@ package fx;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -36,9 +37,7 @@ public class Controller {
     @FXML
     private TreeView<String> imagesTreeView;
 
-    private File rootFolder = new File("/home/kevin/Pictures");
-    //null placeholder for now, replace the second argument with the actual
-    // image format config file later
+    // private File rootFolder = new File("/home/kevin/Documents");
     private DirectoryManager rootDirectoryManager = new DirectoryManager
             (null);
     /**
@@ -47,6 +46,10 @@ public class Controller {
     private Stage stage;
 
     public Controller() {
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
     }
 
     /**
@@ -70,19 +73,23 @@ public class Controller {
             }
         });
         moveFileButton.setOnAction(event -> {
-            System.out.print(imagesTreeView.getSelectionModel().getSelectedItems());
+            System.out.print(imagesTreeView.getSelectionModel()
+                    .getSelectedItems());
 
         });
     }
 
+    // Updates all the needed elements when a new directory is selected.
     private void refreshGUIElements() {
         currentFolderLabel.setText(rootDirectoryManager.getRootFolder()
                 .toString());
         populateImageList();
     }
 
+    // Populates the TreeView with list of all images under current dir.
     private void populateImageList() {
-        TreeItem<String> rootFolderNode = new TreeItem<>(rootDirectoryManager.getRootFolder().toString());
+        TreeItem<String> rootFolderNode = new TreeItem<>(rootDirectoryManager
+                .getRootFolder().toString());
         List rootImagesList = rootDirectoryManager.getAllImagesUnderRoot();
         populateParentNode(rootFolderNode, rootImagesList);
         rootFolderNode.setExpanded(true);
@@ -90,68 +97,38 @@ public class Controller {
         imagesTreeView.refresh();
     }
 
+    // Populates parent node with all images under it.
     private void populateParentNode(TreeItem<String> parentNode, List
             imagesList) {
         for (Object o : imagesList) {
-            if (o instanceof String ) {
-                Pattern imgFilePattern = Pattern.compile(rootDirectoryManager.generateImageMatchingPattern
-                    ());
-                Matcher matcher = imgFilePattern.matcher((String)o);
-                if(matcher.matches()) {
+            if (o instanceof String) {
+                Pattern imgFilePattern = Pattern.compile(rootDirectoryManager
+                        .generateImageMatchingPattern());
+                Matcher matcher = imgFilePattern.matcher((String) o);
+                if (matcher.matches()) {
                     String imageName = getImageName((String) o);
                     parentNode.getChildren().add(new TreeItem<>(imageName));
                 }
             } else if (o instanceof List) {
-                if (((List) o).size() == 1){
-                    String firstImagePath =  (String) ((List) o).get(0);
-                    TreeItem<String> childNode = new TreeItem<>(getSubdirectoryName
+                String firstImagePath = (String) ((List) o).get(0);
+                TreeItem<String> childNode = new TreeItem<>(getSubdirectoryName
                         (firstImagePath));
-                    childNode.getChildren().add(new TreeItem<>("No Pics"));
-                    parentNode.getChildren().addAll(childNode);
-                }
-                else {
-                    String firstImagePath = (String) ((List) o).get(0);
-                    TreeItem<String> childNode = new TreeItem<>(getSubdirectoryName
-                        (firstImagePath));
-                    populateParentNode(childNode, (List) o);
-                    parentNode.getChildren().add(childNode);
-                }
+                populateParentNode(childNode, (List) o);
+                parentNode.getChildren().add(childNode);
             }
         }
     }
 
-
-
+    // Extracts the last directory from the path name.
     private String getSubdirectoryName(String imagePath) {
         int indexOfLastSlash = imagePath.lastIndexOf('/');
         return imagePath.substring(indexOfLastSlash + 1,
                 imagePath.length());
     }
 
+    // Extracts image name from path.
     private String getImageName(String imagePath) {
         return imagePath.substring(imagePath.lastIndexOf('/') + 1);
-    }
-
-/*    private void populateParentNode(TreeItem<String> parentNode,
-                                   DirectoryManager
-            dir) {
-        List dirImagesList = dir.getImages(dir.getRootFolder().toPath(),true);
-        for(Object o : dirImagesList) {
-            if(o instanceof String) {
-                parentNode.getChildren().add(new TreeItem<>((String) o));
-            } else if (o instanceof List){
-                TreeItem<String> childNode = new TreeItem<>();
-                String subdirPathString = (String) ((List) o).get(0);
-                DirectoryManager subdir = new DirectoryManager(new File
-                (subdirPathString));
-                populateParentNode(childNode, subdir);
-                parentNode.getChildren().add(childNode);
-            }
-        }
-    }*/
-
-    public void setStage(Stage stage) {
-        this.stage = stage;
     }
 
 }
