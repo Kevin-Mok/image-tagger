@@ -75,7 +75,6 @@ public class Controller {
         moveFileButton.setOnAction(event -> {
             System.out.print(imagesTreeView.getSelectionModel()
                     .getSelectedItems());
-
         });
     }
 
