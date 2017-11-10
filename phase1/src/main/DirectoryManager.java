@@ -75,7 +75,7 @@ public class DirectoryManager {
      * @param recursive whether or not to search recursively in the subfolders
      * @return list of the paths of image files
      */
-    private List getImages(Path directory, boolean recursive) {
+    private List<Object> getImages(Path directory, boolean recursive) {
         List images = new ArrayList<>();
         images.add((directory.toString()));
         Pattern imgFilePattern = Pattern.compile(generateImageMatchingPattern
@@ -94,7 +94,8 @@ public class DirectoryManager {
                 Matcher matcher = imgFilePattern.matcher(file.toString());
                 // System.out.println(file);
                 if (matcher.matches()) {
-                    images.add(file.toString());
+
+                    images.add(new Picture(file.toFile(), getImageName(file.toString())));
                 }
             }
         } catch (IOException e) {
@@ -131,6 +132,10 @@ public class DirectoryManager {
         sb.deleteCharAt(sb.length() - 1);
         sb.append(")$");
         return sb.toString();
+    }
+
+    private String getImageName(String imagePath) {
+        return imagePath.substring(imagePath.lastIndexOf('/') + 1);
     }
 
     // main() for testing purposes only

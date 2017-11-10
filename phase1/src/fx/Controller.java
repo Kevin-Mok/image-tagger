@@ -1,5 +1,6 @@
 package fx;
 
+import com.sun.corba.se.impl.interceptors.PICurrent;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,6 +18,7 @@ import main.DirectoryManager;
 
 import java.io.File;
 import java.util.List;
+import main.Picture;
 
 public class Controller {
 
@@ -100,20 +102,17 @@ public class Controller {
     private void populateParentNode(TreeItem<String> parentNode, List
             imagesList) {
         for (Object o : imagesList) {
-            if (o instanceof String) {
-                Pattern imgFilePattern = Pattern.compile(rootDirectoryManager
-                        .generateImageMatchingPattern());
-                Matcher matcher = imgFilePattern.matcher((String) o);
-                if (matcher.matches()) {
-                    String imageName = getImageName((String) o);
-                    parentNode.getChildren().add(new TreeItem<>(imageName));
-                }
-            } else if (o instanceof List) {
+           if (o instanceof List) {
                 String firstImagePath = (String) ((List) o).get(0);
                 TreeItem<String> childNode = new TreeItem<>(getSubdirectoryName
                         (firstImagePath));
                 populateParentNode(childNode, (List) o);
                 parentNode.getChildren().add(childNode);
+            }
+
+            else if (o instanceof Picture){
+                TreeItem<String> current = new TreeItem<>(o.toString());
+                parentNode.getChildren().add(current);
             }
         }
     }
@@ -125,9 +124,6 @@ public class Controller {
                 imagePath.length());
     }
 
-    // Extracts image name from path.
-    private String getImageName(String imagePath) {
-        return imagePath.substring(imagePath.lastIndexOf('/') + 1);
-    }
+
 
 }
