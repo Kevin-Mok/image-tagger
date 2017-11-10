@@ -21,7 +21,7 @@ public class Controller {
     private Button openCurDirButton;
 
     //null placeholder for now, replace the second argument with the actual image format config file later
-    private DirectoryManager directoryManager = new DirectoryManager(null, null);
+    private DirectoryManager directoryManager = new DirectoryManager(null);
     /**
      * The stage this controller is associated with
      */

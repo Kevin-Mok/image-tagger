@@ -15,7 +15,7 @@ public class Main extends Application {
         Controller controller = loader.getController();
         controller.setStage(primaryStage);
         primaryStage.setTitle("Image Renamer");
-        primaryStage.setScene(new Scene(root, 1112, 900));
+        primaryStage.setScene(new Scene(root));
         primaryStage.show();
     }
 

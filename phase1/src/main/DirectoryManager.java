@@ -2,7 +2,6 @@ package main;
 
 import java.awt.*;
 import java.io.*;
-import java.net.URISyntaxException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -13,37 +12,42 @@ import java.util.regex.Pattern;
 
 public class DirectoryManager {
     /**
-     * The top level directory for the current instance of the Picture Viewer program
+     * The top level directory for the current instance of the Picture Viewer
+     * program
      */
     private File rootFolder;
     /**
      * Path to text configuration file that contains the image formats to list
      */
-    private File imageFormatConfig;
+    private ArrayList<String> imageFormats;
 
-    public DirectoryManager(File rootFolder, File imageFormatConfig) {
+    public DirectoryManager(File rootFolder) {
         this.rootFolder = rootFolder;
-        this.imageFormatConfig = imageFormatConfig;
+        this.imageFormats = new ArrayList<>();
+        // temporarily adding in desired formats
+        imageFormats.add("jpg");
+        imageFormats.add("png");
     }
 
     public File getRootFolder() {
         return rootFolder;
     }
 
-    public File getImageFormatConfig() {
-        return imageFormatConfig;
-    }
-
-    public void setImageFormatConfig(File imageFormatConfig) {
-        this.imageFormatConfig = imageFormatConfig;
-    }
-
     public void setRootFolder(File rootFolder) {
         this.rootFolder = rootFolder;
     }
 
+    public ArrayList<String> getImageFormats() {
+        return imageFormats;
+    }
+
+    public void setImageFormats(ArrayList<String> imageFormats) {
+        this.imageFormats = imageFormats;
+    }
+
     /**
-     * Returns a list of all icons directly under the root folder, not including those in sub-folders
+     * Returns a list of all icons directly under the root folder, not
+     * including those in sub-folders
      *
      * @return List of image paths directly under the root folder
      */
@@ -52,16 +56,19 @@ public class DirectoryManager {
     }
 
     /**
-     * Returns a list of all the icons under the root directory(including sub-folders)
+     * Returns a list of all the icons under the root directory(including
+     * sub-folders)
      *
-     * @return List of image paths under the root directory, including those in subdirectories
+     * @return List of image paths under the root directory, including those
+     * in subdirectories
      */
     public List<String> getAllImagesUnderRoot() {
         return getImages(rootFolder.toPath(), true);
     }
 
     /**
-     * Takes in a directory path and returns a list of the path strings of all the icons in that directory
+     * Takes in a directory path and returns a list of the path strings of
+     * all the icons in that directory
      *
      * @param directory the directory to search in
      * @param recursive whether or not to search recursively in the subfolders
@@ -69,15 +76,19 @@ public class DirectoryManager {
      */
     private List<String> getImages(Path directory, boolean recursive) {
         List<String> images = new ArrayList<>();
-        Pattern imgFilePattern = Pattern.compile(generateImageMatchingPattern());
-        try (DirectoryStream<Path> stream = Files.newDirectoryStream(rootFolder.toPath())) {
+        Pattern imgFilePattern = Pattern.compile(generateImageMatchingPattern
+                ());
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream
+                (directory)) {
             for (Path file : stream) {
                 if (recursive) {
                     if (Files.isDirectory(file)) {
+                        // System.out.println(file);
                         getImages(file, true);
                     }
                 }
                 Matcher matcher = imgFilePattern.matcher(file.toString());
+                // System.out.println(file);
                 if (matcher.matches()) {
                     images.add(file.toString());
                 }
@@ -102,36 +113,29 @@ public class DirectoryManager {
                 }
             }).start();
         } else {
-            System.out.println("The Java awt Desktop API is not supported on this machine");
+            System.out.println("The Java awt Desktop API is not supported on " +
+                    "this machine");
         }
     }
 
     private String generateImageMatchingPattern() {
         StringBuilder sb = new StringBuilder();
-        sb.append("*.{");
-        try (BufferedReader br = new BufferedReader(new FileReader(imageFormatConfig))) {
-//          Appending the first line outside the while loop so the pattern wouldn't end with a comma
-            String line;
-            line = br.readLine();
-            if (line != null) {
-                sb.append(line);
-            }
-            while ((line = br.readLine()) != null) {
-                sb.append(",");
-                sb.append(line);
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        sb.append(".+(");
+        for (String format : imageFormats) {
+            sb.append(format + "|");
         }
-        sb.append("}");
+        sb.deleteCharAt(sb.length() - 1);
+        sb.append(")$");
         return sb.toString();
     }
+
     // main() for testing purposes only
-//    public static void main(String[] args) {
-//        File rootFolder = new File("/h/u7/c7/05/shyichin");
-//        main.DirectoryManager manager = new main.DirectoryManager(rootFolder, null);
-//        manager.openRootFolder();
-//    }
+    public static void main(String[] args) {
+        // File rootFolder = new File("/h/u7/c7/05/shyichin");
+        File rootFolder = new File("/home/kevin/Pictures");
+        main.DirectoryManager m = new main.DirectoryManager(rootFolder);
+        // manager.openRootFolder();
+        System.out.println(m.generateImageMatchingPattern());
+        System.out.println(m.getImages(rootFolder.toPath(),true));
+    }
 }

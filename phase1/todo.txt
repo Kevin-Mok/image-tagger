@@ -2,8 +2,6 @@ TODO List
 
 -create tests for main.DirectoryManager [Chris]
 
--figure out design for GUI
-
 -storing persistent information in certain classes
 
 -creating Image objects on launch
