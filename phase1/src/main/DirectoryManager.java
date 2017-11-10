@@ -2,6 +2,7 @@ package main;
 
 import java.awt.*;
 import java.io.*;
+import java.net.URISyntaxException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -42,7 +43,7 @@ public class DirectoryManager {
     }
 
     /**
-     * Returns a list of all images directly under the root folder, not including those in sub-folders
+     * Returns a list of all icons directly under the root folder, not including those in sub-folders
      *
      * @return List of image paths directly under the root folder
      */
@@ -51,7 +52,7 @@ public class DirectoryManager {
     }
 
     /**
-     * Returns a list of all the images under the root directory(including sub-folders)
+     * Returns a list of all the icons under the root directory(including sub-folders)
      *
      * @return List of image paths under the root directory, including those in subdirectories
      */
@@ -60,7 +61,7 @@ public class DirectoryManager {
     }
 
     /**
-     * Takes in a directory path and returns a list of the path strings of all the images in that directory
+     * Takes in a directory path and returns a list of the path strings of all the icons in that directory
      *
      * @param directory the directory to search in
      * @param recursive whether or not to search recursively in the subfolders
@@ -93,12 +94,13 @@ public class DirectoryManager {
     public void openRootFolder() {
         Desktop desktop;
         if (Desktop.isDesktopSupported()) {
-            desktop = Desktop.getDesktop();
-            try {
-                desktop.open(rootFolder);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            new Thread(() -> {
+                try {
+                    Desktop.getDesktop().open(this.rootFolder);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }).start();
         } else {
             System.out.println("The Java awt Desktop API is not supported on this machine");
         }

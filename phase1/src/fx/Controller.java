@@ -44,6 +44,11 @@ public class Controller {
             //TODO: println for debugging, delete later on
             System.out.println(directoryManager.getRootFolder());
         });
+        openCurDirButton.setOnAction(event -> {
+            if (directoryManager.getRootFolder() != null) {
+                directoryManager.openRootFolder();
+            }
+        });
     }
 
     public void setStage(Stage stage) {
