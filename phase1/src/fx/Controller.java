@@ -1,8 +1,13 @@
 package fx;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.MultipleSelectionModel;
+import javafx.scene.control.SelectionMode;
+import javafx.scene.control.SelectionModel;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.stage.DirectoryChooser;
@@ -64,6 +69,10 @@ public class Controller {
                 rootDirectoryManager.openRootFolder();
             }
         });
+        moveFileButton.setOnAction(event -> {
+            System.out.print(imagesTreeView.getSelectionModel().getSelectedItems());
+
+        });
     }
 
     private void refreshGUIElements() {
@@ -84,25 +93,39 @@ public class Controller {
     private void populateParentNode(TreeItem<String> parentNode, List
             imagesList) {
         for (Object o : imagesList) {
-            if (o instanceof String) {
-                String imageName = getImageName((String) o);
-                parentNode.getChildren().add(new TreeItem<>(imageName));
+            if (o instanceof String ) {
+                Pattern imgFilePattern = Pattern.compile(rootDirectoryManager.generateImageMatchingPattern
+                    ());
+                Matcher matcher = imgFilePattern.matcher((String)o);
+                if(matcher.matches()) {
+                    String imageName = getImageName((String) o);
+                    parentNode.getChildren().add(new TreeItem<>(imageName));
+                }
             } else if (o instanceof List) {
-                String firstImagePath = (String) ((List) o).get(0);
-                TreeItem<String> childNode = new TreeItem<>(getSubdirectoryName
+                if (((List) o).size() == 1){
+                    String firstImagePath =  (String) ((List) o).get(0);
+                    TreeItem<String> childNode = new TreeItem<>(getSubdirectoryName
                         (firstImagePath));
-                populateParentNode(childNode, (List) o);
-                parentNode.getChildren().add(childNode);
+                    childNode.getChildren().add(new TreeItem<>("No Pics"));
+                    parentNode.getChildren().addAll(childNode);
+                }
+                else {
+                    String firstImagePath = (String) ((List) o).get(0);
+                    TreeItem<String> childNode = new TreeItem<>(getSubdirectoryName
+                        (firstImagePath));
+                    populateParentNode(childNode, (List) o);
+                    parentNode.getChildren().add(childNode);
+                }
             }
         }
     }
 
+
+
     private String getSubdirectoryName(String imagePath) {
         int indexOfLastSlash = imagePath.lastIndexOf('/');
-        int indexOfSecondLastSlash = imagePath.lastIndexOf('/',
-                indexOfLastSlash - 1);
-        return imagePath.substring(indexOfSecondLastSlash + 1,
-                indexOfLastSlash);
+        return imagePath.substring(indexOfLastSlash + 1,
+                imagePath.length());
     }
 
     private String getImageName(String imagePath) {

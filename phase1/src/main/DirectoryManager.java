@@ -27,6 +27,7 @@ public class DirectoryManager {
         // temporarily adding in desired formats
         imageFormats.add("jpg");
         imageFormats.add("png");
+        imageFormats.add("jpeg");
     }
 
     public File getRootFolder() {
@@ -76,6 +77,7 @@ public class DirectoryManager {
      */
     public List getImages(Path directory, boolean recursive) {
         List images = new ArrayList<>();
+        images.add((directory.toString()));
         Pattern imgFilePattern = Pattern.compile(generateImageMatchingPattern
                 ());
         try (DirectoryStream<Path> stream = Files.newDirectoryStream
@@ -83,8 +85,9 @@ public class DirectoryManager {
             for (Path file : stream) {
                 if (recursive) {
                     if (Files.isDirectory(file)) {
-                        // System.out.println(file);
-                        images.add(getImages(file, true));
+                        List stuff = getImages(file, true);
+                        if(stuff.size() >= 1){
+                        images.add(stuff);}
                     }
                 }
                 Matcher matcher = imgFilePattern.matcher(file.toString());
@@ -118,7 +121,7 @@ public class DirectoryManager {
         }
     }
 
-    private String generateImageMatchingPattern() {
+    public String generateImageMatchingPattern() {
         StringBuilder sb = new StringBuilder();
         sb.append(".+(");
         for (String format : imageFormats) {
