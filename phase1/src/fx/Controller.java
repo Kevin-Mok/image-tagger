@@ -1,15 +1,12 @@
-package FX;
+package fx;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.stage.DirectoryChooser;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import main.DirectoryManager;
 
 import java.io.File;
-import java.io.IOException;
 
 public class Controller {
 

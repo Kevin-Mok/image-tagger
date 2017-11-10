@@ -1,12 +1,10 @@
-package FX;
+package fx;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
-import main.DirectoryManager;
 
 public class Main extends Application {
 

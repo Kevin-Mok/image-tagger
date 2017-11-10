@@ -12,4 +12,4 @@ TODO List
 
 -Bind buttons in the UI to DirectoryManager methods [Chris]
 
--Inject an instance of DirectoryManager into the FX controller [Chris]
+-Inject an instance of DirectoryManager into the fx controller [Chris]
