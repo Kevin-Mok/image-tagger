@@ -81,15 +81,8 @@ public class Controller {
             }
         });
         moveFileButton.setOnAction(event -> {
-            String filePath = null;
-            try {
-                filePath = ((Picture)imagesTreeView.getSelectionModel().getSelectedItems().get(0).getValue()).getPath();
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
-            System.out.println(filePath);
+            String filePath = ((Picture)imagesTreeView.getSelectionModel().getSelectedItems().get(0).getValue()).getPath();
             imageViewPort.setImage(new Image("file:" + filePath));
-
 
         });
     }

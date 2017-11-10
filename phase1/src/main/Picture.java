@@ -2,6 +2,8 @@ package main;
 
 import java.io.File;
 import java.net.MalformedURLException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Picture class that stores its path and a TagManager object to work with
@@ -10,6 +12,8 @@ import java.net.MalformedURLException;
 public class Picture {
     private File imageFile;
     private TagManager tagManager;
+
+    private static Map<String, Picture> pathToPictureObjects = new HashMap<>();
 
     /**
      * Constructor.
@@ -20,6 +24,14 @@ public class Picture {
     Picture(File imageFile, String fileName) {
         this.imageFile = imageFile;
         tagManager = new TagManager(fileName, this);
+    }
+
+    public static Picture pictureLookup(String path) {
+        return pathToPictureObjects.get(path);
+    }
+
+    public static void addPictureObject(String path, Picture picture) {
+        pathToPictureObjects.put(path, picture);
     }
 
     // Renames the file to the given String.
@@ -63,7 +75,7 @@ public class Picture {
         rename(tagManager.revertName(name));
     }
 
-    public String getPath() throws MalformedURLException {
+    public String getPath() {
         return imageFile.toPath().toString();
     }
 }
