@@ -35,7 +35,7 @@ public class Controller {
     //null placeholder for now, replace the second argument with the actual
     // image format config file later
     private DirectoryManager rootDirectoryManager = new DirectoryManager
-            (rootFolder);
+            (null);
     /**
      * The stage this controller is associated with
      */
@@ -49,7 +49,6 @@ public class Controller {
      */
     @FXML
     public void initialize() {
-        refreshGUIElements();
 
         chooseDirButton.setOnAction(event -> {
             DirectoryChooser directoryChooser = new DirectoryChooser();
@@ -74,9 +73,8 @@ public class Controller {
     }
 
     private void populateImageList() {
-        TreeItem<String> rootFolderNode = new TreeItem<>(rootFolder.toString());
-        List rootImagesList = rootDirectoryManager.getImages
-                (rootDirectoryManager.getRootFolder().toPath(), true);
+        TreeItem<String> rootFolderNode = new TreeItem<>(rootDirectoryManager.getRootFolder().toString());
+        List rootImagesList = rootDirectoryManager.getAllImagesUnderRoot();
         populateParentNode(rootFolderNode, rootImagesList);
         rootFolderNode.setExpanded(true);
         imagesTreeView.setRoot(rootFolderNode);
