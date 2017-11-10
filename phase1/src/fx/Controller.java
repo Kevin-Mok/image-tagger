@@ -1,6 +1,7 @@
 package fx;
 
 import com.sun.corba.se.impl.interceptors.PICurrent;
+import java.net.MalformedURLException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,6 +20,8 @@ import main.DirectoryManager;
 import java.io.File;
 import java.util.List;
 import main.Picture;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class Controller {
 
@@ -37,7 +40,10 @@ public class Controller {
     private Label currentFolderLabel;
 
     @FXML
-    private TreeView<String> imagesTreeView;
+    private TreeView<Object> imagesTreeView;
+
+    @FXML
+    private ImageView imageViewPort;
 
     // private File rootFolder = new File("/home/kevin/Documents");
     private DirectoryManager rootDirectoryManager = new DirectoryManager
@@ -75,8 +81,15 @@ public class Controller {
             }
         });
         moveFileButton.setOnAction(event -> {
-            System.out.print(imagesTreeView.getSelectionModel()
-                    .getSelectedItems());
+            String filePath = null;
+            try {
+                filePath = ((Picture)imagesTreeView.getSelectionModel().getSelectedItems().get(0).getValue()).getPath();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+            System.out.println(filePath);
+            imageViewPort.setImage(new Image("file:" + filePath));
+
 
         });
     }
@@ -90,30 +103,29 @@ public class Controller {
 
     // Populates the TreeView with list of all images under current dir.
     private void populateImageList() {
-        TreeItem<String> rootFolderNode = new TreeItem<>(rootDirectoryManager
+        TreeItem<Object> rootFolderNode = new TreeItem<>(rootDirectoryManager
                 .getRootFolder().toString());
         List rootImagesList = rootDirectoryManager.getAllImagesUnderRoot();
         populateParentNode(rootFolderNode, rootImagesList);
         rootFolderNode.setExpanded(true);
-        imagesTreeView.setRoot(rootFolderNode);
+        imagesTreeView.setRoot((rootFolderNode));
         imagesTreeView.refresh();
     }
 
     // Populates parent node with all images under it.
-    private void populateParentNode(TreeItem<String> parentNode, List
+    private void populateParentNode(TreeItem<Object> parentNode, List
             imagesList) {
         for (Object o : imagesList) {
            if (o instanceof List) {
                 String firstImagePath = (String) ((List) o).get(0);
-                TreeItem<String> childNode = new TreeItem<>(getSubdirectoryName
+                TreeItem<Object> childNode = new TreeItem<>(getSubdirectoryName
                         (firstImagePath));
                 populateParentNode(childNode, (List) o);
                 parentNode.getChildren().add(childNode);
             }
 
             else if (o instanceof Picture){
-                TreeItem<String> current = new TreeItem<>(o.toString());
-                parentNode.getChildren().add(current);
+                parentNode.getChildren().add(new TreeItem<>(o));
             }
         }
     }
