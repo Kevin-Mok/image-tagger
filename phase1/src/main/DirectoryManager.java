@@ -2,6 +2,7 @@ package main;
 
 import java.awt.*;
 import java.io.*;
+import java.net.URISyntaxException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -93,12 +94,13 @@ public class DirectoryManager {
     public void openRootFolder() {
         Desktop desktop;
         if (Desktop.isDesktopSupported()) {
-            desktop = Desktop.getDesktop();
-            try {
-                desktop.open(rootFolder);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            new Thread(() -> {
+                try {
+                    Desktop.getDesktop().open(this.rootFolder);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }).start();
         } else {
             System.out.println("The Java awt Desktop API is not supported on this machine");
         }
