@@ -84,13 +84,8 @@ public class DirectoryManager {
                 if (recursive) {
                     if (Files.isDirectory(file)) {
                         ItemWrapper subImages = getImages(file, true);
-                        /*
-                         * Only add directories that are not empty
-                         */
-                        if (subImages instanceof DirectoryWrapper) {
-                            if (!((DirectoryWrapper) subImages).isEmptyDirectory()) {
-                                images.addToDirectory(subImages);
-                            }
+                        if (((DirectoryWrapper)subImages).getChildObjects().size() != 0) {
+                            images.addToDirectory(subImages);
                         }
                     }
                 }

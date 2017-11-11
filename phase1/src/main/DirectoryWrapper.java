@@ -11,7 +11,7 @@ import java.util.List;
 public class DirectoryWrapper extends ItemWrapper {
 
     /**
-     * null of this object is not a directory
+     * List of ItemWrappers representing the contents of this directory, only includes subdirectories or images
      */
     private List<ItemWrapper> childObjects;
 
