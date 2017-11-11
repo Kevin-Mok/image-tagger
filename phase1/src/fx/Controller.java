@@ -16,6 +16,7 @@ import main.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class Controller {
 
@@ -92,16 +93,26 @@ public class Controller {
             //If something is selected
             if (selectedItems.size() != 0) {
                 ItemWrapper selectedObject = selectedItems.get(0).getValue();
-                DirectoryChooser chooser = new DirectoryChooser();
-                chooser.setTitle("Move Selected Item");
-                File newLocation = chooser.showDialog(stage);
-                try {
-                    Files.move(selectedObject.getPath(), newLocation.toPath());
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if (selectedObject instanceof PictureWrapper) {
+//                    System.out.println(selectedObject);
+//                    System.out.printf("Path of selected object: %s\n", selectedObject.getPath());
+                    DirectoryChooser chooser = new DirectoryChooser();
+                    chooser.setTitle("Move Selected Item");
+                    String newDirectory = chooser.showDialog(stage).toString();
+                    String imageFileName = PathExtractor.getImageName(selectedObject.getPath().toString());
+//                    System.out.printf("new directory: %s\n", newDirectory);
+//                    System.out.printf("image file name: %s\n", imageFileName);
+                    String newPathOfImage = newDirectory + "/" + imageFileName;
+//                    System.out.printf("New path of image: %s\n", newPathOfImage);
+                    try {
+                        Files.move(selectedObject.getPath(), Paths.get(newPathOfImage));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    refreshGUIElements();
+                    //TODO: need to update the PictureWrapper's new location in PictureManager
+                    //Maybe delete the old object from the HashMap first using the old path, and then reinsert
                 }
-                //TODO: need to update the PictureWrapper's new location in PictureManager
-                //Maybe delete the old object from the HashMap first using the old path, and then reinsert
             }
         });
     }
