@@ -14,14 +14,14 @@ class DirectoryManagerTest {
     DirectoryManager manager;
     @org.junit.jupiter.api.BeforeEach
     void setUp() throws IOException {
-        String testDir = "/h/u7/c7/05/shyichin/csc207/groupProject/group_0485/phase1/src/test";
-        Path subDir = Paths.get(testDir + "/sub");
-        Files.createDirectory(subDir);
+        String projectDirectory = System.getProperty("user.dir");
+        String testDirectory = projectDirectory + File.separator + "src" + File.separator + "test";
+        Path testDirPath = Paths.get(testDirectory);
 
-        File imgInTestDir = new File(testDir + "/test1.jpg");
+        File imgInTestDir = new File(testDirectory + File.separator + "test1.jpg");
         imgInTestDir.createNewFile();
 
-        File imgInSubDir = new File(subDir.toString() + "/test2.jpg");
+        File imgInSubDir = new File(testDirectory + File.separator + "test2.jpg");
         imgInSubDir.createNewFile();
         // manager = new DirectoryManager();
     }
