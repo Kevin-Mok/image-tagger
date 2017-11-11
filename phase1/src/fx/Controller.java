@@ -81,7 +81,7 @@ public class Controller {
         mouseEvent = (javafx.scene.input.MouseEvent event) -> {
             Object clickedObject = imagesTreeView.getSelectionModel()
                     .getSelectedItems().get(0).getValue();
-            System.out.println(clickedObject.getClass());
+            // System.out.println(clickedObject.getClass());
             if (clickedObject instanceof Picture) {
                 String filePath = ((Picture) clickedObject).getPath();
                 imageViewPort.setImage(new Image("file:" + filePath));

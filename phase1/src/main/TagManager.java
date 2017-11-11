@@ -6,20 +6,21 @@ import java.util.*;
 public class TagManager {
     TreeMap<Timestamp, String> nameStore;
     ArrayList<Tag> tagList;
-    Set<Tag> currentTag;
+    // Current tags in picture.
+    Set<Tag> currentTags;
     private Picture img;
 
     public TagManager(String name, Picture img){
         nameStore = new TreeMap<>();
         nameStore.put(new Timestamp(System.currentTimeMillis()), name);
         tagList = new ArrayList<>();
-        currentTag = new LinkedHashSet<>();
+        currentTags = new LinkedHashSet<>();
         this.img = img;
     }
 
     public String addTag(Tag tag) {
-        if (!currentTag.contains(tag)) {
-            currentTag.add(tag);
+        if (!currentTags.contains(tag)) {
+            currentTags.add(tag);
             tagList.add(tag);
             String currentName = nameStore.lastEntry().getValue();
             nameStore.put(new Timestamp(System.currentTimeMillis()), currentName + " " + tag.getName());
@@ -30,8 +31,8 @@ public class TagManager {
 
     public String deleteTag(String tagName){
         Tag tag = new Tag(img, tagName);
-        if(currentTag.contains(tag)){
-            currentTag.remove(tag);
+        if(currentTags.contains(tag)){
+            currentTags.remove(tag);
             nameStore.put(new Timestamp(System.currentTimeMillis()), getCurrentName());
             return nameStore.lastEntry().getValue();
         }
@@ -40,7 +41,7 @@ public class TagManager {
 
     private String getCurrentName(){
         String result= "";
-        Iterator<Tag> itr =  currentTag.iterator();
+        Iterator<Tag> itr =  currentTags.iterator();
         while (itr.hasNext()){
             result += itr.next().getName();
         }
@@ -63,7 +64,7 @@ public class TagManager {
         }
         tags.remove(0);
 
-        currentTag = new LinkedHashSet<Tag>(returnTagsNeeded(tags));
+        currentTags = new LinkedHashSet<Tag>(returnTagsNeeded(tags));
     }
 
     public ArrayList<Tag> returnTagsNeeded(ArrayList<String> names) {
