@@ -4,7 +4,9 @@ TODO List
 
 -storing persistent information in SQLite database/serialized objects?
 
--creating Image objects on launch
+-create and store Picture objects in PictureManager class
+
+-add listener to clicking TreeView?
 
 -Add move file functionality to the DirectoryManager class [Chris]
 

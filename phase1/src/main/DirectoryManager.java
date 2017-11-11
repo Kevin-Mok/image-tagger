@@ -1,7 +1,8 @@
 package main;
 
 import java.awt.*;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -94,8 +95,8 @@ public class DirectoryManager {
                 Matcher matcher = imgFilePattern.matcher(file.toString());
                 // System.out.println(file);
                 if (matcher.matches()) {
-
-                    images.add(new Picture(file.toFile(), getImageName(file.toString())));
+                    images.add(new Picture(file.toFile(), PathExtractor
+                            .getImageName(file.toString())));
                 }
             }
         } catch (IOException e) {
@@ -134,14 +135,11 @@ public class DirectoryManager {
         return sb.toString();
     }
 
-    private String getImageName(String imagePath) {
-        return imagePath.substring(imagePath.lastIndexOf('/') + 1);
-    }
-
     // main() for testing purposes only
     public static void main(String[] args) {
         // File rootFolder = new File("/h/u7/c7/05/shyichin");
-        File rootFolder = new File("/home/kevin/Documents");
+        // File rootFolder = new File("/home/kevin/Documents");
+        File rootFolder = new File("/h/u3/c7/05/mokkar/Downloads");
         main.DirectoryManager m = new main.DirectoryManager(rootFolder);
         // manager.openRootFolder();
         System.out.println(m.generateImageMatchingPattern());

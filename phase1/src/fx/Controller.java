@@ -1,27 +1,20 @@
 package fx;
 
-import com.sun.corba.se.impl.interceptors.PICurrent;
-import java.net.MalformedURLException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.MultipleSelectionModel;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.SelectionModel;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import main.DirectoryManager;
+import main.PathExtractor;
+import main.Picture;
 
 import java.io.File;
 import java.util.List;
-import main.Picture;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
 public class Controller {
 
@@ -81,7 +74,8 @@ public class Controller {
             }
         });
         moveFileButton.setOnAction(event -> {
-            String filePath = ((Picture)imagesTreeView.getSelectionModel().getSelectedItems().get(0).getValue()).getPath();
+            String filePath = ((Picture) imagesTreeView.getSelectionModel()
+                    .getSelectedItems().get(0).getValue()).getPath();
             imageViewPort.setImage(new Image("file:" + filePath));
 
         });
@@ -109,27 +103,15 @@ public class Controller {
     private void populateParentNode(TreeItem<Object> parentNode, List
             imagesList) {
         for (Object o : imagesList) {
-           if (o instanceof List) {
-                String firstImagePath = (String) ((List) o).get(0);
-                TreeItem<Object> childNode = new TreeItem<>(getSubdirectoryName
-                        (firstImagePath));
+            if (o instanceof List) {
+                String parentPath = (String) ((List) o).get(0);
+                TreeItem<Object> childNode = new TreeItem<>(PathExtractor
+                        .getImageName(parentPath));
                 populateParentNode(childNode, (List) o);
                 parentNode.getChildren().add(childNode);
-            }
-
-            else if (o instanceof Picture){
+            } else if (o instanceof Picture) {
                 parentNode.getChildren().add(new TreeItem<>(o));
             }
         }
     }
-
-    // Extracts the last directory from the path name.
-    private String getSubdirectoryName(String imagePath) {
-        int indexOfLastSlash = imagePath.lastIndexOf('/');
-        return imagePath.substring(indexOfLastSlash + 1,
-                imagePath.length());
-    }
-
-
-
 }

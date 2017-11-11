@@ -1,7 +1,6 @@
 package main;
 
 import java.io.File;
-import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,6 +11,7 @@ import java.util.Map;
 public class Picture {
     private File imageFile;
     private TagManager tagManager;
+    private String imageName;
 
     private static Map<String, Picture> pathToPictureObjects = new HashMap<>();
 
@@ -23,7 +23,12 @@ public class Picture {
      */
     Picture(File imageFile, String fileName) {
         this.imageFile = imageFile;
+        this.imageName = fileName;
         tagManager = new TagManager(fileName, this);
+    }
+
+    public String getPath() {
+        return imageFile.toString();
     }
 
     public static Picture pictureLookup(String path) {
@@ -34,15 +39,16 @@ public class Picture {
         pathToPictureObjects.put(path, picture);
     }
 
+    @Override
+    public String toString() {
+        return imageName;
+    }
+
     // Renames the file to the given String.
     void rename(String tags) {
         String curPath = imageFile.getPath();
-        int indexOfLastSlash = curPath.lastIndexOf('/');
-        String curDir = curPath.substring(0, indexOfLastSlash + 1);
-        int indexOfLastPeriod = curPath.lastIndexOf('.');
-        String extension = curPath.substring(indexOfLastPeriod);
-        // String name = curPath.substring(indexOfLastSlash + 1,
-        // indexOfLastPeriod);
+        String curDir = PathExtractor.getDirectory(curPath);
+        String extension = PathExtractor.getExtension(curPath);
         if (!imageFile.renameTo(new File(curDir + tags + extension))) {
             System.out.println("File renaming failed.");
         }
@@ -75,7 +81,4 @@ public class Picture {
         rename(tagManager.revertName(name));
     }
 
-    public String getPath() {
-        return imageFile.toPath().toString();
-    }
 }
