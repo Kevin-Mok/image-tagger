@@ -1,10 +1,14 @@
 package fx;
 
 import com.sun.corba.se.impl.interceptors.PICurrent;
+import java.awt.event.MouseEvent;
 import java.net.MalformedURLException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -42,9 +46,11 @@ public class Controller {
     @FXML
     private TreeView<Object> imagesTreeView;
 
+
     @FXML
     private ImageView imageViewPort;
 
+    private EventHandler <javafx.scene.input.MouseEvent>mouseEvent;
     // private File rootFolder = new File("/home/kevin/Documents");
     private DirectoryManager rootDirectoryManager = new DirectoryManager
             (null);
@@ -80,11 +86,14 @@ public class Controller {
                 rootDirectoryManager.openRootFolder();
             }
         });
-        moveFileButton.setOnAction(event -> {
-            String filePath = ((Picture)imagesTreeView.getSelectionModel().getSelectedItems().get(0).getValue()).getPath();
-            imageViewPort.setImage(new Image("file:" + filePath));
-
-        });
+        //For displaying the picture with a mouse click
+        mouseEvent = (javafx.scene.input.MouseEvent event) ->{
+            if (imagesTreeView.getSelectionModel().getSelectedItems().get(0).getValue() instanceof Picture) {
+                String filePath = ((Picture) imagesTreeView.getSelectionModel().getSelectedItems()
+                    .get(0).getValue()).getPath();
+                imageViewPort.setImage(new Image("file:" + filePath));
+            }
+        };
     }
 
     // Updates all the needed elements when a new directory is selected.
@@ -103,6 +112,9 @@ public class Controller {
         rootFolderNode.setExpanded(true);
         imagesTreeView.setRoot((rootFolderNode));
         imagesTreeView.refresh();
+        imagesTreeView.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, mouseEvent);
+
+
     }
 
     // Populates parent node with all images under it.
