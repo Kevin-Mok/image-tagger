@@ -83,7 +83,6 @@ public class Controller {
         moveFileButton.setOnAction(event -> {
             String filePath = ((Picture)imagesTreeView.getSelectionModel().getSelectedItems().get(0).getValue()).getPath();
             imageViewPort.setImage(new Image("file:" + filePath));
-
         });
     }
 

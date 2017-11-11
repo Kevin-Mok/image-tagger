@@ -8,10 +8,6 @@ TODO List
 
 -Add move file functionality to the DirectoryManager class [Chris]
 
--Bind buttons in the UI to DirectoryManager methods [Chris]
-
--Inject an instance of DirectoryManager into the fx controller [Chris]
-
--Create custom class for TreeView (for type safety), representing directories and images
+-Create custom class for TreeView (for type safety), representing directories and images [Chris]
 
 -Implement serializing logic, override Stage.stop() to store images prior to program closing
