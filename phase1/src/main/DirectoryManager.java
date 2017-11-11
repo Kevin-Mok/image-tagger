@@ -7,7 +7,6 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,14 +15,14 @@ public class DirectoryManager {
      * The top level directory for the current instance of the Picture Viewer
      * program
      */
-    private File rootFolder;
+    private DirectoryWrapper rootFolder;
     /**
      * Path to text configuration file that contains the image formats to list
      */
     private ArrayList<String> imageFormats;
 
     public DirectoryManager(File rootFolder) {
-        this.rootFolder = rootFolder;
+        this.rootFolder = new DirectoryWrapper(rootFolder);
         this.imageFormats = new ArrayList<>();
         // temporarily adding in desired formats
         imageFormats.add("jpg");
@@ -31,11 +30,11 @@ public class DirectoryManager {
         imageFormats.add("jpeg");
     }
 
-    public File getRootFolder() {
+    public DirectoryWrapper getRootFolder() {
         return rootFolder;
     }
 
-    public void setRootFolder(File rootFolder) {
+    public void setRootFolder(DirectoryWrapper rootFolder) {
         this.rootFolder = rootFolder;
     }
 
@@ -48,37 +47,35 @@ public class DirectoryManager {
     }
 
     /**
-     * Returns a list of all icons directly under the root folder, not
-     * including those in sub-folders
+     * Returns ItemWrapper representing only images directly under the root folder
      *
      * @return List of image paths directly under the root folder
      */
-    public List getImagesUnderRoot() {
-        return getImages(rootFolder.toPath(), false);
+    public ItemWrapper getImagesUnderRoot() {
+        return getImages(rootFolder.getPath(), false);
     }
 
     /**
-     * Returns a list of all the icons under the root directory(including
-     * sub-folders)
+     * Returns ItemWrapper representing all images under the root folder, including those in subdirectories
+     *
      *
      * @return List of image paths under the root directory, including those
      * in subdirectories
      */
-    public List getAllImagesUnderRoot() {
-        return getImages(rootFolder.toPath(), true);
+    public ItemWrapper getAllImagesUnderRoot() {
+        return getImages(rootFolder.getPath(), true);
     }
 
     /**
-     * Returns nested list of all images in a directory (including
-     * sub-directories).
+     * Returns a ItemWrapper representing a directory with the images inside and
+     * subdirectories
      *
      * @param directory the directory to search in
      * @param recursive whether or not to search recursively in the subfolders
-     * @return list of the paths of image files
+     * @return ItemWrapper representing the subdirectories and pictures in a directory
      */
-    private List<Object> getImages(Path directory, boolean recursive) {
-        List images = new ArrayList<>();
-        images.add((directory.toString()));
+    private ItemWrapper getImages(Path directory, boolean recursive) {
+        DirectoryWrapper images = new DirectoryWrapper(directory.toFile());
         Pattern imgFilePattern = Pattern.compile(generateImageMatchingPattern
                 ());
         try (DirectoryStream<Path> stream = Files.newDirectoryStream
@@ -86,17 +83,22 @@ public class DirectoryManager {
             for (Path file : stream) {
                 if (recursive) {
                     if (Files.isDirectory(file)) {
-                        List subImages = getImages(file, true);
-                        if (subImages.size() > 1) {
-                            images.add(subImages);
+                        ItemWrapper subImages = getImages(file, true);
+                        /*
+                         * Only add directories that are not empty
+                         */
+                        if (subImages instanceof DirectoryWrapper) {
+                            if (!((DirectoryWrapper) subImages).isEmptyDirectory()) {
+                                images.addToDirectory(subImages);
+                            }
                         }
                     }
                 }
                 Matcher matcher = imgFilePattern.matcher(file.toString());
                 // System.out.println(file);
                 if (matcher.matches()) {
-                    images.add(new Picture(file.toFile(), PathExtractor
-                            .getImageName(file.toString())));
+                    images.addToDirectory(new PictureWrapper(new Picture(file.toFile(), PathExtractor
+                            .getImageName(file.toString()))));
                 }
             }
         } catch (IOException e) {
@@ -113,7 +115,7 @@ public class DirectoryManager {
         if (Desktop.isDesktopSupported()) {
             new Thread(() -> {
                 try {
-                    Desktop.getDesktop().open(this.rootFolder);
+                    Desktop.getDesktop().open(this.rootFolder.getPath().toFile());
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }

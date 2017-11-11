@@ -1,6 +1,7 @@
 package main;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,8 +28,8 @@ public class Picture {
         tagManager = new TagManager(fileName, this);
     }
 
-    public String getPath() {
-        return imageFile.toString();
+    public Path getPath() {
+        return imageFile.toPath();
     }
 
     public static Picture pictureLookup(String path) {
