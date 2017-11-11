@@ -72,8 +72,14 @@ public class DirectoryWrapper extends ItemWrapper {
                 return false;
             } else {
                 for (ItemWrapper wrapper : this.childObjects) {
-                    if (!that.getChildObjects().contains(wrapper)) {
-                        return false;
+                    if (wrapper instanceof DirectoryWrapper) {
+                        if (!that.getChildObjects().contains((DirectoryWrapper)wrapper)) {
+                            return false;
+                        }
+                    } else {
+                        if (!that.getChildObjects().contains((PictureWrapper) wrapper)) {
+                            return false;
+                        }
                     }
                 }
             }

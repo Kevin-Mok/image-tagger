@@ -90,7 +90,6 @@ public class Picture {
         Picture picture = (Picture) o;
 
         if (imageFile != null ? !imageFile.equals(picture.imageFile) : picture.imageFile != null) return false;
-        if (tagManager != null ? !tagManager.equals(picture.tagManager) : picture.tagManager != null) return false;
         return imageName != null ? imageName.equals(picture.imageName) : picture.imageName == null;
     }
 
