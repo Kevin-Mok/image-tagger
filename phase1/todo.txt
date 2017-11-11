@@ -2,14 +2,15 @@ TODO List
 
 -create tests for main.DirectoryManager [Chris]
 
--storing persistent information in SQLite database/serialized objects?
+-storing persistent information in SQLite database/serialized objects? (Saad)
 
--create and store Picture objects in PictureManager class
-
--add listener to clicking TreeView?
+-create and store Picture objects in PictureManager class (Saad)
 
 -Add move file functionality to the DirectoryManager class [Chris]
 
 -Create custom class for TreeView (for type safety), representing directories and images [Chris]
 
 -Implement serializing logic, override Stage.stop() to store images prior to program closing
+
+-add functionality to GUI (Kevin)
+	-display available tags in ListView

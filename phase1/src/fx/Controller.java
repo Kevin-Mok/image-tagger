@@ -79,7 +79,7 @@ public class Controller {
                     .getSelectedItems().get(0).getValue();
             System.out.println(clickedObject.getClass());
             if (clickedObject instanceof PictureWrapper) {
-                String filePath = ((PictureWrapper) clickedObject).getPath().toString();
+                String filePath = clickedObject.getPath().toString();
                 imageViewPort.setImage(new Image("file:" + filePath));
             }
         };
