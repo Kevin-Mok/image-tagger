@@ -1,5 +1,6 @@
 package fx;
 
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -13,6 +14,8 @@ import javafx.stage.Stage;
 import main.*;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 
 public class Controller {
 
@@ -83,6 +86,24 @@ public class Controller {
                 imageViewPort.setImage(new Image("file:" + filePath));
             }
         };
+
+        moveFileButton.setOnAction(event -> {
+            ObservableList<TreeItem<ItemWrapper>> selectedItems = imagesTreeView.getSelectionModel().getSelectedItems();
+            //If something is selected
+            if (selectedItems.size() != 0) {
+                ItemWrapper selectedObject = selectedItems.get(0).getValue();
+                DirectoryChooser chooser = new DirectoryChooser();
+                chooser.setTitle("Move Selected Item");
+                File newLocation = chooser.showDialog(stage);
+                try {
+                    Files.move(selectedObject.getPath(), newLocation.toPath());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                //TODO: need to update the PictureWrapper's new location in PictureManager
+                //Maybe delete the old object from the HashMap first using the old path, and then reinsert
+            }
+        });
     }
 
     // Updates all the needed elements when a new directory is selected.
