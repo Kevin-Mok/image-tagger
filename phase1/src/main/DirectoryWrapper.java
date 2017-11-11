@@ -56,4 +56,24 @@ public class DirectoryWrapper extends ItemWrapper {
     public String toString() {
         return this.path.getPath();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        DirectoryWrapper that = (DirectoryWrapper) o;
+
+        if (isEmpty != that.isEmpty) return false;
+        if (childObjects != null ? !childObjects.equals(that.childObjects) : that.childObjects != null) return false;
+        return path != null ? path.equals(that.path) : that.path == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = childObjects != null ? childObjects.hashCode() : 0;
+        result = 31 * result + (path != null ? path.hashCode() : 0);
+        result = 31 * result + (isEmpty ? 1 : 0);
+        return result;
+    }
 }

@@ -22,7 +22,7 @@ public class Picture {
      * @param imageFile File object of the image.
      * @param fileName  The name of the file (without its extension).
      */
-    Picture(File imageFile, String fileName) {
+    public Picture(File imageFile, String fileName) {
         this.imageFile = imageFile;
         this.imageName = fileName;
         tagManager = new TagManager(fileName, this);
@@ -82,4 +82,23 @@ public class Picture {
         rename(tagManager.revertName(name));
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Picture picture = (Picture) o;
+
+        if (imageFile != null ? !imageFile.equals(picture.imageFile) : picture.imageFile != null) return false;
+        if (tagManager != null ? !tagManager.equals(picture.tagManager) : picture.tagManager != null) return false;
+        return imageName != null ? imageName.equals(picture.imageName) : picture.imageName == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = imageFile != null ? imageFile.hashCode() : 0;
+        result = 31 * result + (tagManager != null ? tagManager.hashCode() : 0);
+        result = 31 * result + (imageName != null ? imageName.hashCode() : 0);
+        return result;
+    }
 }

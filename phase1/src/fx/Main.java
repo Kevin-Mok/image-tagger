@@ -18,7 +18,6 @@ public class Main extends Application {
         primaryStage.setTitle("Image Renamer");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
-        System.out.println(System.getProperty("user.dir"));
     }
 
 
