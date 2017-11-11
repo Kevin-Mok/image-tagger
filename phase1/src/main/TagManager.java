@@ -78,6 +78,28 @@ public class TagManager {
         }
         return tags;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        TagManager that = (TagManager) o;
+
+        if (nameStore != null ? !nameStore.equals(that.nameStore) : that.nameStore != null) return false;
+        if (tagList != null ? !tagList.equals(that.tagList) : that.tagList != null) return false;
+        if (currentTags != null ? !currentTags.equals(that.currentTags) : that.currentTags != null) return false;
+        return img != null ? img.equals(that.img) : that.img == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = nameStore != null ? nameStore.hashCode() : 0;
+        result = 31 * result + (tagList != null ? tagList.hashCode() : 0);
+        result = 31 * result + (currentTags != null ? currentTags.hashCode() : 0);
+        result = 31 * result + (img != null ? img.hashCode() : 0);
+        return result;
+    }
 }
 
 

@@ -26,4 +26,21 @@ public abstract class ItemWrapper {
 
     public abstract Path getPath();
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ItemWrapper that = (ItemWrapper) o;
+
+        if (isDirectory != that.isDirectory) return false;
+        return isEmptyDirectory == that.isEmptyDirectory;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (isDirectory ? 1 : 0);
+        result = 31 * result + (isEmptyDirectory ? 1 : 0);
+        return result;
+    }
 }

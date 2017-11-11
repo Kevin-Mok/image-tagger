@@ -35,7 +35,7 @@ class DirectoryManagerTest {
         File testImageTwo = new File(testDirectory + File.separator + "test2.jpg");
         testImageTwo.createNewFile();
         PictureWrapper imageTwo = new PictureWrapper(
-                new Picture(testImageTwo, PathExtractor.getImageName((testImageOne).toString())));
+                new Picture(testImageTwo, PathExtractor.getImageName((testImageTwo).toString())));
 
         ItemWrapper rootDirectory = manager.getAllImagesUnderRoot();
         assertTrue(rootDirectory instanceof DirectoryWrapper);
@@ -44,6 +44,7 @@ class DirectoryManagerTest {
         testwrapper.getChildObjects().add(imageTwo);
 
         assertEquals(testwrapper, (DirectoryWrapper)rootDirectory);
+        //assertion fails, suspect it's because of the way Lists are checked for equality
     }
 
 }

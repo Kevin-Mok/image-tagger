@@ -3,6 +3,7 @@ package main;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -65,7 +66,20 @@ public class DirectoryWrapper extends ItemWrapper {
         DirectoryWrapper that = (DirectoryWrapper) o;
 
         if (isEmpty != that.isEmpty) return false;
-        if (childObjects != null ? !childObjects.equals(that.childObjects) : that.childObjects != null) return false;
+
+        if (childObjects != null) {
+            if (that.childObjects == null) {
+                return false;
+            } else {
+                for (ItemWrapper wrapper : this.childObjects) {
+                    if (!that.getChildObjects().contains(wrapper)) {
+                        return false;
+                    }
+                }
+            }
+        } else {
+            return false;
+        }
         return path != null ? path.equals(that.path) : that.path == null;
     }
 
