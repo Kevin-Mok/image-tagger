@@ -86,6 +86,7 @@ public class Controller {
                 rootDirectoryManager.openRootFolder();
             }
         });
+
         //For displaying the picture with a mouse click
         mouseEvent = (javafx.scene.input.MouseEvent event) ->{
             if (imagesTreeView.getSelectionModel().getSelectedItems().get(0).getValue() instanceof Picture) {
@@ -94,6 +95,7 @@ public class Controller {
                 imageViewPort.setImage(new Image("file:" + filePath));
             }
         };
+
     }
 
     // Updates all the needed elements when a new directory is selected.

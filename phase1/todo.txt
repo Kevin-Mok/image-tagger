@@ -2,12 +2,12 @@ TODO List
 
 -create tests for main.DirectoryManager [Chris]
 
--storing persistent information in certain classes
+-storing persistent information in SQLite database/serialized objects?
 
 -creating Image objects on launch
 
 -Add move file functionality to the DirectoryManager class [Chris]
 
--Bind buttons in the UI to DirectoryManager methods [Chris]
+-Create custom class for TreeView (for type safety), representing directories and images [Chris]
 
--Inject an instance of DirectoryManager into the fx controller [Chris]
+-Implement serializing logic, override Stage.stop() to store images prior to program closing
