@@ -79,17 +79,20 @@ public class Controller {
 
         //For displaying the picture with a mouse click
         mouseEvent = (javafx.scene.input.MouseEvent event) -> {
-            ItemWrapper clickedObject = imagesTreeView.getSelectionModel()
-                    .getSelectedItems().get(0).getValue();
-            System.out.println(clickedObject.getClass());
-            if (clickedObject instanceof PictureWrapper) {
-                String filePath = clickedObject.getPath().toString();
-                imageViewPort.setImage(new Image("file:" + filePath));
+            ObservableList<TreeItem<ItemWrapper>> selectedItems
+                    = imagesTreeView.getSelectionModel().getSelectedItems();
+            if (selectedItems.size() != 0) {
+                ItemWrapper clickedObject = selectedItems.get(0).getValue();
+                if (clickedObject instanceof PictureWrapper) {
+                    String filePath = clickedObject.getPath().toString();
+                    imageViewPort.setImage(new Image("file:" + filePath));
+                }
             }
         };
 
         moveFileButton.setOnAction(event -> {
-            ObservableList<TreeItem<ItemWrapper>> selectedItems = imagesTreeView.getSelectionModel().getSelectedItems();
+            ObservableList<TreeItem<ItemWrapper>> selectedItems
+                    = imagesTreeView.getSelectionModel().getSelectedItems();
             //If something is selected
             if (selectedItems.size() != 0) {
                 ItemWrapper selectedObject = selectedItems.get(0).getValue();
@@ -140,7 +143,7 @@ public class Controller {
     // Populates parent node with all images under it.
     private void populateParentNode(TreeItem<ItemWrapper> parentNode, ItemWrapper parentNodeList) {
         if (parentNodeList.isDirectory()) {
-            for (ItemWrapper wrappedItem : ((DirectoryWrapper)parentNodeList).getChildObjects()) {
+            for (ItemWrapper wrappedItem : ((DirectoryWrapper) parentNodeList).getChildObjects()) {
                 if (wrappedItem.isDirectory()) {
                     String parentPath = ((DirectoryWrapper) wrappedItem).getPath().toString();
                     TreeItem<ItemWrapper> childNode = new TreeItem<>
