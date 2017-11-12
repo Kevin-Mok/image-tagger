@@ -1,4 +1,6 @@
-package main;
+package main.wrapper;
+
+import main.Picture;
 
 import java.nio.file.Path;
 

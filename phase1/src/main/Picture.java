@@ -6,12 +6,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Picture class that stores its path and a TagManager object to work with
+ * Picture class that stores its path and a PicTagManager object to work with
  * its tags.
  */
 public class Picture {
     private File imageFile;
-    private TagManager tagManager;
+    private PicTagManager tagManager;
     private String imageName;
 
     private static Map<String, Picture> pathToPictureObjects = new HashMap<>();
@@ -25,7 +25,7 @@ public class Picture {
     public Picture(File imageFile, String fileName) {
         this.imageFile = imageFile;
         this.imageName = fileName;
-        tagManager = new TagManager(fileName, this);
+        tagManager = new PicTagManager(fileName, this);
     }
 
     public Path getPath() {

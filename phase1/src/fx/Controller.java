@@ -12,6 +12,9 @@ import javafx.scene.image.ImageView;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import main.*;
+import main.wrapper.DirectoryWrapper;
+import main.wrapper.ItemWrapper;
+import main.wrapper.PictureWrapper;
 
 import java.io.File;
 import java.io.IOException;
@@ -67,7 +70,8 @@ public class Controller {
             directoryChooser.setTitle("Choose a directory to open");
             File rootDirectory = directoryChooser.showDialog(stage);
             if (rootDirectory != null) {
-                rootDirectoryManager.setRootFolder(new DirectoryWrapper(rootDirectory));
+                rootDirectoryManager.setRootFolder(new DirectoryWrapper
+                        (rootDirectory));
                 refreshGUIElements();
             }
         });
@@ -131,7 +135,8 @@ public class Controller {
     private void populateImageList() {
         TreeItem<ItemWrapper> rootFolderNode = new TreeItem<>(
                 rootDirectoryManager.getRootFolder());
-        ItemWrapper rootImagesList = rootDirectoryManager.getAllImagesUnderRoot();
+        ItemWrapper rootImagesList = rootDirectoryManager
+                .getAllImagesUnderRoot();
         populateParentNode(rootFolderNode, rootImagesList);
         rootFolderNode.setExpanded(true);
         imagesTreeView.setRoot(rootFolderNode);
@@ -141,13 +146,16 @@ public class Controller {
     }
 
     // Populates parent node with all images under it.
-    private void populateParentNode(TreeItem<ItemWrapper> parentNode, ItemWrapper parentNodeList) {
+    private void populateParentNode(TreeItem<ItemWrapper> parentNode,
+                                    ItemWrapper parentNodeList) {
         if (parentNodeList.isDirectory()) {
-            for (ItemWrapper wrappedItem : ((DirectoryWrapper) parentNodeList).getChildObjects()) {
+            for (ItemWrapper wrappedItem : ((DirectoryWrapper)
+                    parentNodeList).getChildObjects()) {
                 if (wrappedItem.isDirectory()) {
-                    String parentPath = ((DirectoryWrapper) wrappedItem).getPath().toString();
+                    String parentPath = wrappedItem.getPath().toString();
                     TreeItem<ItemWrapper> childNode = new TreeItem<>
-                            (new DirectoryWrapper(new File(PathExtractor.getImageName(parentPath))));
+                            (new DirectoryWrapper(new File(PathExtractor
+                                    .getImageName(parentPath))));
                     populateParentNode(childNode, wrappedItem);
                     parentNode.getChildren().add(childNode);
                 } else {

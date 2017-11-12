@@ -1,5 +1,9 @@
 package main;
 
+import main.wrapper.DirectoryWrapper;
+import main.wrapper.ItemWrapper;
+import main.wrapper.PictureWrapper;
+
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;

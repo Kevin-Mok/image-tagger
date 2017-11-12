@@ -1,4 +1,4 @@
-package main;
+package main.wrapper;
 
 import java.io.File;
 import java.nio.file.Path;
