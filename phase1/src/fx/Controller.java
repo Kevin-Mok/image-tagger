@@ -162,10 +162,10 @@ public class Controller {
     // Populates parent node with all images under it.
     private void populateParentNode(TreeItem<ItemWrapper> parentNode,
                                     ItemWrapper parentNodeList) {
-        if (parentNodeList.isDirectory()) {
+        if (parentNodeList instanceof DirectoryWrapper) {
             for (ItemWrapper wrappedItem : ((DirectoryWrapper)
                     parentNodeList).getChildObjects()) {
-                if (wrappedItem.isDirectory()) {
+                if (wrappedItem instanceof DirectoryWrapper) {
                     String parentPath = wrappedItem.getPath().toString();
                     TreeItem<ItemWrapper> childNode = new TreeItem<>
                             (new DirectoryWrapper(new File(PathExtractor

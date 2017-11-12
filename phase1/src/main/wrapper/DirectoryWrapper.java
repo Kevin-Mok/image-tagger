@@ -27,7 +27,6 @@ public class DirectoryWrapper extends ItemWrapper {
     private boolean isEmpty;
 
     public DirectoryWrapper(File path) {
-        super(true);
         this.path = path;
         this.childObjects = new ArrayList<>();
     }

@@ -15,7 +15,6 @@ public class PictureWrapper extends ItemWrapper {
     private Picture picture;
 
     public PictureWrapper(Picture picture) {
-        super(false);
         this.picture = picture;
     }
 
