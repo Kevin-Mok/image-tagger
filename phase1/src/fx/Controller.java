@@ -3,10 +3,7 @@ package fx;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.DirectoryChooser;
@@ -40,9 +37,13 @@ public class Controller {
     @FXML
     private TreeView<ItemWrapper> imagesTreeView;
 
-
     @FXML
     private ImageView imageViewPort;
+
+    @FXML
+    private TextField addNewTagField;
+
+    private Picture curSelectedPic;
 
     private EventHandler<javafx.scene.input.MouseEvent> mouseEvent;
     // private File rootFolder = new File("/home/kevin/Documents");
@@ -75,10 +76,15 @@ public class Controller {
                 refreshGUIElements();
             }
         });
+
         openCurDirButton.setOnAction(event -> {
             if (rootDirectoryManager.getRootFolder() != null) {
                 rootDirectoryManager.openRootFolder();
             }
+        });
+
+        addNewTagField.setOnAction(event -> {
+            curSelectedPic.addTag(addNewTagField.getText());
         });
 
         //For displaying the picture with a mouse click
@@ -90,6 +96,8 @@ public class Controller {
                 if (clickedObject instanceof PictureWrapper) {
                     String filePath = clickedObject.getPath().toString();
                     imageViewPort.setImage(new Image("file:" + filePath));
+                    curSelectedPic = ((PictureWrapper) clickedObject)
+                            .getPicture();
                 }
             }
         };
@@ -102,23 +110,29 @@ public class Controller {
                 ItemWrapper selectedObject = selectedItems.get(0).getValue();
                 if (selectedObject instanceof PictureWrapper) {
 //                    System.out.println(selectedObject);
-//                    System.out.printf("Path of selected object: %s\n", selectedObject.getPath());
+//                    System.out.printf("Path of selected object: %s\n",
+// selectedObject.getPath());
                     DirectoryChooser chooser = new DirectoryChooser();
                     chooser.setTitle("Move Selected Item");
                     String newDirectory = chooser.showDialog(stage).toString();
-                    String imageFileName = PathExtractor.getImageName(selectedObject.getPath().toString());
+                    String imageFileName = PathExtractor.getImageName
+                            (selectedObject.getPath().toString());
 //                    System.out.printf("new directory: %s\n", newDirectory);
 //                    System.out.printf("image file name: %s\n", imageFileName);
                     String newPathOfImage = newDirectory + "/" + imageFileName;
-//                    System.out.printf("New path of image: %s\n", newPathOfImage);
+//                    System.out.printf("New path of image: %s\n",
+// newPathOfImage);
                     try {
-                        Files.move(selectedObject.getPath(), Paths.get(newPathOfImage));
+                        Files.move(selectedObject.getPath(), Paths.get
+                                (newPathOfImage));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                     refreshGUIElements();
-                    //TODO: need to update the PictureWrapper's new location in PictureManager
-                    //Maybe delete the old object from the HashMap first using the old path, and then reinsert
+                    //TODO: need to update the PictureWrapper's new location
+                    // in PictureManager
+                    //Maybe delete the old object from the HashMap first
+                    // using the old path, and then reinsert
                 }
             }
         });
@@ -175,4 +189,5 @@ public class Controller {
 //            }
 //        }
     }
+
 }

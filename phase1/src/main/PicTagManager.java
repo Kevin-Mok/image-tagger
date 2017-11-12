@@ -3,38 +3,39 @@ package main;
 import java.sql.Timestamp;
 import java.util.*;
 
-class PicTagManager {
+public class PicTagManager {
     private TreeMap<Timestamp, String> nameStore;
     // List of all tags this picture has ever had.
     private ArrayList<Tag> tagList;
     // Current tags in picture.
     private Set<Tag> currentTags;
-    private Picture img;
+    private Picture pic;
 
-    PicTagManager(String name, Picture img) {
+    public PicTagManager(String name, Picture pic) {
         nameStore = new TreeMap<>();
         nameStore.put(new Timestamp(System.currentTimeMillis()), name);
         tagList = new ArrayList<>();
         currentTags = new LinkedHashSet<>();
-        this.img = img;
+        this.pic = pic;
     }
 
-    String addTag(Tag tag) {
+    public String addTag(Tag tag) {
         if (!currentTags.contains(tag)) {
             currentTags.add(tag);
             tagList.add(tag);
             String currentName = nameStore.lastEntry().getValue();
             nameStore.put(new Timestamp(System.currentTimeMillis()),
-                    currentName + " " + tag.getName());
+                    currentName + " @" + tag.getName());
             return nameStore.lastEntry().getValue();
         }
         return nameStore.lastEntry().getValue();
     }
 
-    String deleteTag(String tagName) {
-        Tag tag = new Tag(img, tagName);
+    public String deleteTag(String tagName) {
+        Tag tag = new Tag(pic, tagName);
         if (currentTags.contains(tag)) {
             currentTags.remove(tag);
+            TagManager.getInstance().delete(tagName, pic);
             nameStore.put(new Timestamp(System.currentTimeMillis()),
                     getCurrentName());
             return nameStore.lastEntry().getValue();
@@ -50,7 +51,7 @@ class PicTagManager {
         return result.toString();
     }
 
-    String revertName(String name) {
+    public String revertName(String name) {
         if (nameStore.values().contains(name)) {
             nameStore.put(new Timestamp(System.currentTimeMillis()), name);
             rewrite();
@@ -99,7 +100,7 @@ class PicTagManager {
         if (currentTags != null ? !currentTags.equals(that.currentTags) :
                 that.currentTags != null)
             return false;
-        return img != null ? img.equals(that.img) : that.img == null;
+        return pic != null ? pic.equals(that.pic) : that.pic == null;
     }
 
     @Override
@@ -108,7 +109,7 @@ class PicTagManager {
         result = 31 * result + (tagList != null ? tagList.hashCode() : 0);
         result = 31 * result + (currentTags != null ? currentTags.hashCode()
                 : 0);
-        result = 31 * result + (img != null ? img.hashCode() : 0);
+        result = 31 * result + (pic != null ? pic.hashCode() : 0);
         return result;
     }
 }

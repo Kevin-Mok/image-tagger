@@ -11,7 +11,7 @@ import java.util.Map;
  */
 public class Picture {
     private File imageFile;
-    private PicTagManager tagManager;
+    private PicTagManager picTagManager;
     private String imageName;
 
     private static Map<String, Picture> pathToPictureObjects = new HashMap<>();
@@ -20,12 +20,16 @@ public class Picture {
      * Constructor.
      *
      * @param imageFile File object of the image.
-     * @param fileName  The name of the file (without its extension).
+     * @param imageName  The name of the file (without its extension).
      */
-    public Picture(File imageFile, String fileName) {
+    public Picture(File imageFile, String imageName) {
         this.imageFile = imageFile;
-        this.imageName = fileName;
-        tagManager = new PicTagManager(fileName, this);
+        this.imageName = imageName;
+        picTagManager = new PicTagManager(imageName, this);
+    }
+
+    public String getImageName() {
+        return imageName;
     }
 
     public Path getPath() {
@@ -52,6 +56,8 @@ public class Picture {
         String extension = PathExtractor.getExtension(curPath);
         if (!imageFile.renameTo(new File(curDir + tags + extension))) {
             System.out.println("File renaming failed.");
+        } else {
+            imageName = tags;
         }
     }
 
@@ -61,7 +67,7 @@ public class Picture {
      * @param tagName The name of the tag to be added.
      */
     public void addTag(String tagName) {
-        rename(tagManager.addTag(new Tag(this, tagName)));
+        rename(picTagManager.addTag(new Tag(this, tagName)));
     }
 
     /**
@@ -70,7 +76,7 @@ public class Picture {
      * @param tagName The name of the tag to be removed.
      */
     public void deleteTag(String tagName) {
-        rename(tagManager.deleteTag(tagName));
+        rename(picTagManager.deleteTag(tagName));
     }
 
     /**
@@ -79,25 +85,16 @@ public class Picture {
      * @param name Name to be reverted to.
      */
     public void revertName(String name) {
-        rename(tagManager.revertName(name));
+        rename(picTagManager.revertName(name));
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Picture)) return false;
 
         Picture picture = (Picture) o;
 
-        if (imageFile != null ? !imageFile.equals(picture.imageFile) : picture.imageFile != null) return false;
-        return imageName != null ? imageName.equals(picture.imageName) : picture.imageName == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = imageFile != null ? imageFile.hashCode() : 0;
-        result = 31 * result + (tagManager != null ? tagManager.hashCode() : 0);
-        result = 31 * result + (imageName != null ? imageName.hashCode() : 0);
-        return result;
+        return imageFile.equals(picture.imageFile);
     }
 }

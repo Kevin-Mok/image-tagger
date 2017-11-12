@@ -53,11 +53,11 @@
          <tooltip>
             <Tooltip text="Open Current Directory" />
          </tooltip></Button>
-      <TextField layoutX="775.0" layoutY="827.0" prefHeight="26.0" prefWidth="124.0" />
-      <Button layoutX="904.0" layoutY="827.0" mnemonicParsing="false" text="Add Tag" />
+      <TextField fx:id="addNewTagField" layoutX="775.0" layoutY="827.0" prefHeight="26.0" prefWidth="124.0" />
+      <Button fx:id="addNewTagButton" layoutX="904.0" layoutY="827.0" mnemonicParsing="false" text="Add Tag" />
       <ListView fx:id="availableTags" layoutX="378.0" layoutY="591.0" prefHeight="236.0" prefWidth="215.0" />
       <Label layoutX="409.0" layoutY="568.0" text="Available Tags" />
-      <Button layoutX="654.0" layoutY="696.0" mnemonicParsing="false" text="Delete" />
-      <Button layoutX="626.0" layoutY="652.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="116.0" text="Add &gt;&gt;" />
+      <Button fx:id="deleteTagButton" layoutX="654.0" layoutY="696.0" mnemonicParsing="false" text="Delete" />
+      <Button fx:id="addTagFromAvailButton" layoutX="626.0" layoutY="652.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="116.0" text="Add &gt;&gt;" />
    </children>
 </AnchorPane>

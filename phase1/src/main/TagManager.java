@@ -19,7 +19,7 @@ class TagManager {
         return instance;
     }
 
-    void update(Tag tag) {
+    void add(Tag tag) {
         ArrayList<Picture> list;
         if (allTags.containsKey(tag.getName())) {
             list = allTags.get(tag.getName());
@@ -29,5 +29,9 @@ class TagManager {
             list.add(tag.getPicture());
             allTags.put(tag.getName(), list);
         }
+    }
+
+    void delete(String tagName, Picture picture) {
+        allTags.get(tagName).remove(picture);
     }
 }

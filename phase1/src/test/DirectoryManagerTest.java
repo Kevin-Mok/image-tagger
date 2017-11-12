@@ -1,6 +1,9 @@
 package test;
 
 import main.*;
+import main.wrapper.DirectoryWrapper;
+import main.wrapper.ItemWrapper;
+import main.wrapper.PictureWrapper;
 
 import java.io.File;
 import java.io.IOException;
