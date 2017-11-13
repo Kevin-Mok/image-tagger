@@ -11,8 +11,8 @@ import main.DirectoryManager;
 import main.Image;
 import main.PathExtractor;
 import main.wrapper.DirectoryWrapper;
+import main.wrapper.ImageWrapper;
 import main.wrapper.ItemWrapper;
-import main.wrapper.PictureWrapper;
 
 import java.io.File;
 import java.io.IOException;
@@ -90,7 +90,7 @@ public class Controller {
         addNewTagButton.setOnAction(event -> {
             // todo: not allow empty tags to be added
             curSelectedPic.addTag(addNewTagField.getText());
-            lastPicTreeItemSelected = new TreeItem<>(new PictureWrapper
+            lastPicTreeItemSelected = new TreeItem<>(new ImageWrapper
                     (curSelectedPic));
             imagesTreeView.refresh();
         });
@@ -101,11 +101,11 @@ public class Controller {
                     .getSelectedItems();
             if (selectedTreeItems.size() != 0) {
                 ItemWrapper clickedObject = selectedTreeItems.get(0).getValue();
-                if (clickedObject instanceof PictureWrapper) {
+                if (clickedObject instanceof ImageWrapper) {
                     String filePath = clickedObject.getPath().toString();
                     imageViewPort.setImage(new javafx.scene.image.Image("file:" + filePath));
                     lastPicTreeItemSelected = selectedTreeItems.get(0);
-                    curSelectedPic = ((PictureWrapper) clickedObject)
+                    curSelectedPic = ((ImageWrapper) clickedObject)
                             .getImage();
                     imageNameLabel.setText(curSelectedPic.getImageName());
                 }
@@ -128,7 +128,7 @@ public class Controller {
                     e.printStackTrace();
                 }
                 refreshGUIElements();
-                // todo: need to update the PictureWrapper's new location
+                // todo: need to update the ImageWrapper's new location
                 // in PictureManager, maybe delete the old object from the
                 // HashMap first using the old path, and then reinsert
             }

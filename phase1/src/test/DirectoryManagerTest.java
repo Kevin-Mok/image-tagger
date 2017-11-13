@@ -4,8 +4,8 @@ import main.DirectoryManager;
 import main.Image;
 import main.PathExtractor;
 import main.wrapper.DirectoryWrapper;
+import main.wrapper.ImageWrapper;
 import main.wrapper.ItemWrapper;
-import main.wrapper.PictureWrapper;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,14 +36,14 @@ class DirectoryManagerTest {
         File testImageOne = new File(testDirectory + File.separator +
                 "test1.jpg");
         testImageOne.createNewFile();
-        PictureWrapper imageOne = new PictureWrapper(
+        ImageWrapper imageOne = new ImageWrapper(
                 new Image(testImageOne, PathExtractor.getImageFileName(
                         (testImageOne).toString())));
 
         File testImageTwo = new File(testDirectory + File.separator +
                 "test2.jpg");
         testImageTwo.createNewFile();
-        PictureWrapper imageTwo = new PictureWrapper(
+        ImageWrapper imageTwo = new ImageWrapper(
                 new Image(testImageTwo, PathExtractor.getImageFileName(
                         (testImageTwo).toString())));
 

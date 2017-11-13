@@ -77,7 +77,7 @@ public class DirectoryWrapper extends ItemWrapper {
                             return false;
                         }
                     } else {
-                        if (!that.getChildObjects().contains((PictureWrapper)
+                        if (!that.getChildObjects().contains((ImageWrapper)
                                 wrapper)) {
                             return false;
                         }

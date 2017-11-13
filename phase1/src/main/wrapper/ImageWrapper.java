@@ -7,14 +7,14 @@ import java.nio.file.Path;
 /**
  * Wrapper class for a Image object
  */
-public class PictureWrapper extends ItemWrapper {
+public class ImageWrapper extends ItemWrapper {
 
     /**
      * The Image object that this wrapper encapsulates. Null if isDirectory
      */
     private Image image;
 
-    public PictureWrapper(Image image) {
+    public ImageWrapper(Image image) {
         this.image = image;
     }
 
@@ -37,7 +37,7 @@ public class PictureWrapper extends ItemWrapper {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        PictureWrapper that = (PictureWrapper) o;
+        ImageWrapper that = (ImageWrapper) o;
 
         return image != null ? image.equals(that.image) : that.image
                 == null;

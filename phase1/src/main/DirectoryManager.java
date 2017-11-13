@@ -2,7 +2,7 @@ package main;
 
 import main.wrapper.DirectoryWrapper;
 import main.wrapper.ItemWrapper;
-import main.wrapper.PictureWrapper;
+import main.wrapper.ImageWrapper;
 
 import java.awt.*;
 import java.io.File;
@@ -110,7 +110,7 @@ public class DirectoryManager {
                 Matcher matcher = imgFilePattern.matcher(file.toString());
                 // System.out.println(file);
                 if (matcher.matches()) {
-                    images.addToDirectory(new PictureWrapper(new Image(file
+                    images.addToDirectory(new ImageWrapper(new Image(file
                             .toFile(), PathExtractor.getImageName(file
                             .toString()))));
                 }
