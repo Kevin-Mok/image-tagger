@@ -8,7 +8,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
-import main.*;
+import main.DirectoryManager;
+import main.PathExtractor;
+import main.Picture;
 import main.wrapper.DirectoryWrapper;
 import main.wrapper.ItemWrapper;
 import main.wrapper.PictureWrapper;
@@ -24,26 +26,24 @@ public class Controller {
     // to get a hook on those elements
     @FXML
     private Button chooseDirButton;
-
     @FXML
     private Button moveFileButton;
-
     @FXML
     private Button openCurDirButton;
-
     @FXML
     private Label currentFolderLabel;
-
     @FXML
     private TreeView<ItemWrapper> imagesTreeView;
-
     @FXML
     private ImageView imageViewPort;
-
+    @FXML
+    private Button addNewTagButton;
     @FXML
     private TextField addNewTagField;
 
     private Picture curSelectedPic;
+    private ObservableList<TreeItem<ItemWrapper>> selectedTreeItems;
+    private TreeItem<ItemWrapper> lastPicTreeItemSelected;
 
     private EventHandler<javafx.scene.input.MouseEvent> mouseEvent;
     // private File rootFolder = new File("/home/kevin/Documents");
@@ -83,57 +83,49 @@ public class Controller {
             }
         });
 
-        addNewTagField.setOnAction(event -> {
+        addNewTagButton.setOnAction(event -> {
+            // todo: not allow empty tags to be added
             curSelectedPic.addTag(addNewTagField.getText());
+            lastPicTreeItemSelected = new TreeItem<>(new PictureWrapper
+                    (curSelectedPic));
+            imagesTreeView.refresh();
         });
 
-        //For displaying the picture with a mouse click
+        // For displaying the picture with a mouse click
         mouseEvent = (javafx.scene.input.MouseEvent event) -> {
-            ObservableList<TreeItem<ItemWrapper>> selectedItems
-                    = imagesTreeView.getSelectionModel().getSelectedItems();
-            if (selectedItems.size() != 0) {
-                ItemWrapper clickedObject = selectedItems.get(0).getValue();
+            selectedTreeItems = imagesTreeView.getSelectionModel()
+                    .getSelectedItems();
+            if (selectedTreeItems.size() != 0) {
+                ItemWrapper clickedObject = selectedTreeItems.get(0).getValue();
                 if (clickedObject instanceof PictureWrapper) {
                     String filePath = clickedObject.getPath().toString();
                     imageViewPort.setImage(new Image("file:" + filePath));
+                    lastPicTreeItemSelected = selectedTreeItems.get(0);
                     curSelectedPic = ((PictureWrapper) clickedObject)
                             .getPicture();
                 }
             }
         };
 
+        // todo: display no image when picture is moved?
         moveFileButton.setOnAction(event -> {
-            ObservableList<TreeItem<ItemWrapper>> selectedItems
-                    = imagesTreeView.getSelectionModel().getSelectedItems();
-            //If something is selected
-            if (selectedItems.size() != 0) {
-                ItemWrapper selectedObject = selectedItems.get(0).getValue();
-                if (selectedObject instanceof PictureWrapper) {
-//                    System.out.println(selectedObject);
-//                    System.out.printf("Path of selected object: %s\n",
-// selectedObject.getPath());
-                    DirectoryChooser chooser = new DirectoryChooser();
-                    chooser.setTitle("Move Selected Item");
-                    String newDirectory = chooser.showDialog(stage).toString();
-                    String imageFileName = PathExtractor.getImageName
-                            (selectedObject.getPath().toString());
-//                    System.out.printf("new directory: %s\n", newDirectory);
-//                    System.out.printf("image file name: %s\n", imageFileName);
-                    String newPathOfImage = newDirectory + "/" + imageFileName;
-//                    System.out.printf("New path of image: %s\n",
-// newPathOfImage);
-                    try {
-                        Files.move(selectedObject.getPath(), Paths.get
-                                (newPathOfImage));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    refreshGUIElements();
-                    //TODO: need to update the PictureWrapper's new location
-                    // in PictureManager
-                    //Maybe delete the old object from the HashMap first
-                    // using the old path, and then reinsert
+            if (curSelectedPic != null) {
+                DirectoryChooser chooser = new DirectoryChooser();
+                chooser.setTitle("Move Selected Item");
+                String newDirectory = chooser.showDialog(stage).toString();
+                String imageFileName = PathExtractor.getImageFileName
+                        (curSelectedPic.getPath().toString());
+                String newPathOfImage = newDirectory + "/" + imageFileName;
+                try {
+                    Files.move(curSelectedPic.getPath(), Paths.get
+                            (newPathOfImage));
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
+                refreshGUIElements();
+                // todo: need to update the PictureWrapper's new location
+                // in PictureManager, maybe delete the old object from the
+                // HashMap first using the old path, and then reinsert
             }
         });
     }
@@ -169,7 +161,7 @@ public class Controller {
                     String parentPath = wrappedItem.getPath().toString();
                     TreeItem<ItemWrapper> childNode = new TreeItem<>
                             (new DirectoryWrapper(new File(PathExtractor
-                                    .getImageName(parentPath))));
+                                    .getImageFileName(parentPath))));
                     populateParentNode(childNode, wrappedItem);
                     parentNode.getChildren().add(childNode);
                 } else {
@@ -181,7 +173,7 @@ public class Controller {
 //            if (o instanceof List) {
 //                String parentPath = (String) ((List) o).get(0);
 //                TreeItem<Object> childNode = new TreeItem<>(PathExtractor
-//                        .getImageName(parentPath));
+//                        .getImageFileName(parentPath));
 //                populateParentNode(childNode, (List) o);
 //                parentNode.getChildren().add(childNode);
 //            } else if (o instanceof Picture) {

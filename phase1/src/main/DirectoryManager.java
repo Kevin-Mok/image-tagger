@@ -34,6 +34,17 @@ public class DirectoryManager {
         imageFormats.add("jpeg");
     }
 
+    // main() for testing purposes only
+    public static void main(String[] args) {
+        // File rootFolder = new File("/h/u7/c7/05/shyichin");
+        // File rootFolder = new File("/home/kevin/Documents");
+        File rootFolder = new File("/h/u3/c7/05/mokkar/Downloads");
+        main.DirectoryManager m = new main.DirectoryManager(rootFolder);
+        // manager.openRootFolder();
+        System.out.println(m.generateImageMatchingPattern());
+        System.out.println(m.getImages(rootFolder.toPath(), true));
+    }
+
     public DirectoryWrapper getRootFolder() {
         return rootFolder;
     }
@@ -51,7 +62,8 @@ public class DirectoryManager {
     }
 
     /**
-     * Returns ItemWrapper representing only images directly under the root folder
+     * Returns ItemWrapper representing only images directly under the root
+     * folder
      *
      * @return List of image paths directly under the root folder
      */
@@ -60,8 +72,8 @@ public class DirectoryManager {
     }
 
     /**
-     * Returns ItemWrapper representing all images under the root folder, including those in subdirectories
-     *
+     * Returns ItemWrapper representing all images under the root folder,
+     * including those in subdirectories
      *
      * @return List of image paths under the root directory, including those
      * in subdirectories
@@ -76,7 +88,8 @@ public class DirectoryManager {
      *
      * @param directory the directory to search in
      * @param recursive whether or not to search recursively in the subfolders
-     * @return ItemWrapper representing the subdirectories and pictures in a directory
+     * @return ItemWrapper representing the subdirectories and pictures in a
+     * directory
      */
     private ItemWrapper getImages(Path directory, boolean recursive) {
         DirectoryWrapper images = new DirectoryWrapper(directory.toFile());
@@ -88,7 +101,8 @@ public class DirectoryManager {
                 if (recursive) {
                     if (Files.isDirectory(file)) {
                         ItemWrapper subImages = getImages(file, true);
-                        if (((DirectoryWrapper)subImages).getChildObjects().size() != 0) {
+                        if (((DirectoryWrapper) subImages).getChildObjects()
+                                .size() != 0) {
                             images.addToDirectory(subImages);
                         }
                     }
@@ -96,8 +110,9 @@ public class DirectoryManager {
                 Matcher matcher = imgFilePattern.matcher(file.toString());
                 // System.out.println(file);
                 if (matcher.matches()) {
-                    images.addToDirectory(new PictureWrapper(new Picture(file.toFile(), PathExtractor
-                            .getImageName(file.toString()))));
+                    images.addToDirectory(new PictureWrapper(new Picture(file
+                            .toFile(), PathExtractor.getImageName(file
+                            .toString()))));
                 }
             }
         } catch (IOException e) {
@@ -114,7 +129,8 @@ public class DirectoryManager {
         if (Desktop.isDesktopSupported()) {
             new Thread(() -> {
                 try {
-                    Desktop.getDesktop().open(this.rootFolder.getPath().toFile());
+                    Desktop.getDesktop().open(this.rootFolder.getPath()
+                            .toFile());
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
@@ -134,16 +150,5 @@ public class DirectoryManager {
         sb.deleteCharAt(sb.length() - 1);
         sb.append(")$");
         return sb.toString();
-    }
-
-    // main() for testing purposes only
-    public static void main(String[] args) {
-        // File rootFolder = new File("/h/u7/c7/05/shyichin");
-        // File rootFolder = new File("/home/kevin/Documents");
-        File rootFolder = new File("/h/u3/c7/05/mokkar/Downloads");
-        main.DirectoryManager m = new main.DirectoryManager(rootFolder);
-        // manager.openRootFolder();
-        System.out.println(m.generateImageMatchingPattern());
-        System.out.println(m.getImages(rootFolder.toPath(), true));
     }
 }

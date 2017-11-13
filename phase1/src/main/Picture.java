@@ -10,30 +10,21 @@ import java.util.Map;
  * its tags.
  */
 public class Picture {
+    private static Map<String, Picture> pathToPictureObjects = new HashMap<>();
     private File imageFile;
     private PicTagManager picTagManager;
     private String imageName;
-
-    private static Map<String, Picture> pathToPictureObjects = new HashMap<>();
 
     /**
      * Constructor.
      *
      * @param imageFile File object of the image.
-     * @param imageName  The name of the file (without its extension).
+     * @param imageName The name of the file (without its extension).
      */
     public Picture(File imageFile, String imageName) {
         this.imageFile = imageFile;
         this.imageName = imageName;
         picTagManager = new PicTagManager(imageName, this);
-    }
-
-    public String getImageName() {
-        return imageName;
-    }
-
-    public Path getPath() {
-        return imageFile.toPath();
     }
 
     public static Picture pictureLookup(String path) {
@@ -44,20 +35,30 @@ public class Picture {
         pathToPictureObjects.put(path, picture);
     }
 
-    @Override
-    public String toString() {
+    public String getImageName() {
         return imageName;
     }
 
+    public Path getPath() {
+        return imageFile.toPath();
+    }
+
+    @Override
+    public String toString() {
+        return PathExtractor.getImageFileName(imageFile.toString());
+    }
+
     // Renames the file to the given String.
-    void rename(String tags) {
+    void rename(String newImageName) {
         String curPath = imageFile.getPath();
         String curDir = PathExtractor.getDirectory(curPath);
         String extension = PathExtractor.getExtension(curPath);
-        if (!imageFile.renameTo(new File(curDir + tags + extension))) {
+        String newPathString = curDir + newImageName + extension;
+        if (!imageFile.renameTo(new File(newPathString))) {
             System.out.println("File renaming failed.");
         } else {
-            imageName = tags;
+            imageFile = new File(newPathString);
+            imageName = newImageName;
         }
     }
 

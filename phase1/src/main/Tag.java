@@ -1,7 +1,5 @@
 package main;
 
-import java.util.Objects;
-
 public class Tag {
     private Picture picture;
     private String name;

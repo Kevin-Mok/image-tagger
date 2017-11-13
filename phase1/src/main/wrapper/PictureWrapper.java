@@ -39,7 +39,8 @@ public class PictureWrapper extends ItemWrapper {
 
         PictureWrapper that = (PictureWrapper) o;
 
-        return picture != null ? picture.equals(that.picture) : that.picture == null;
+        return picture != null ? picture.equals(that.picture) : that.picture
+                == null;
     }
 
     @Override

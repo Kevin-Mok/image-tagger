@@ -19,6 +19,12 @@ public class PicTagManager {
         this.pic = pic;
     }
 
+    /**
+     * Adds parameter tag to this tag manager.
+     *
+     * @param tag Tag to add.
+     * @return What the new name of the file should be.
+     */
     public String addTag(Tag tag) {
         if (!currentTags.contains(tag)) {
             currentTags.add(tag);

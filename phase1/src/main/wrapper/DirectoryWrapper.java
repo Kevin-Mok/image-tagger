@@ -3,7 +3,6 @@ package main.wrapper;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -12,7 +11,8 @@ import java.util.List;
 public class DirectoryWrapper extends ItemWrapper {
 
     /**
-     * List of ItemWrappers representing the contents of this directory, only includes subdirectories or images
+     * List of ItemWrappers representing the contents of this directory, only
+     * includes subdirectories or images
      */
     private List<ItemWrapper> childObjects;
 
@@ -72,11 +72,13 @@ public class DirectoryWrapper extends ItemWrapper {
             } else {
                 for (ItemWrapper wrapper : this.childObjects) {
                     if (wrapper instanceof DirectoryWrapper) {
-                        if (!that.getChildObjects().contains((DirectoryWrapper)wrapper)) {
+                        if (!that.getChildObjects().contains(
+                                (DirectoryWrapper) wrapper)) {
                             return false;
                         }
                     } else {
-                        if (!that.getChildObjects().contains((PictureWrapper) wrapper)) {
+                        if (!that.getChildObjects().contains((PictureWrapper)
+                                wrapper)) {
                             return false;
                         }
                     }
