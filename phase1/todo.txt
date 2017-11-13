@@ -1,7 +1,5 @@
 TODO List 
 
--create tests for main.DirectoryManager [Chris]
-
 -create and store Picture objects in PictureManager class [Saad]
 
 -implement serializing logic, override Stage.stop[] to store images prior to
@@ -12,3 +10,5 @@ same in the debugger) [Saad]
 
 -add functionality to GUI [Kevin]
 	-display available tags in appropriate ListView
+
+-Reposition UI elements so that things line up [Chris]

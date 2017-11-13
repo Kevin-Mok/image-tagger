@@ -41,6 +41,9 @@ public class Controller {
     @FXML
     private TextField addNewTagField;
 
+    /*
+     * The following three fields were used repeatedly in the button EventHandlers, made sense to factor them out
+     */
     private Picture curSelectedPic;
     private ObservableList<TreeItem<ItemWrapper>> selectedTreeItems;
     private TreeItem<ItemWrapper> lastPicTreeItemSelected;
