@@ -1,13 +1,16 @@
 package main;
 
+import java.io.File;
+
 public class PathExtractor {
     public static String getImageName(String imagePath) {
-        return imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath
+
+        return imagePath.substring(imagePath.lastIndexOf(File.separatorChar) + 1, imagePath
                 .lastIndexOf('.'));
     }
 
     public static String getImageFileName(String imagePath) {
-        return imagePath.substring(imagePath.lastIndexOf('/') + 1);
+        return imagePath.substring(imagePath.lastIndexOf(File.separatorChar) + 1);
     }
 
     // Extracts the last directory from the path name.
@@ -25,7 +28,7 @@ public class PathExtractor {
 
     // Extracts the full directory from the path name.
     public static String getDirectory(String imagePath) {
-        int indexOfLastSlash = imagePath.lastIndexOf('/');
+        int indexOfLastSlash = imagePath.lastIndexOf(File.separatorChar);
         return imagePath.substring(0, indexOfLastSlash + 1);
     }
 
