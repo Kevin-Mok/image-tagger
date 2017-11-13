@@ -1,6 +1,6 @@
 package test;
 
-import main.Picture;
+import main.Image;
 import main.Tag;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,13 +12,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class TagTest {
     Tag tag;
-    Picture pic;
+    Image pic;
     File picFile;
 
     @BeforeEach
     void setUp() {
         picFile = new File("test1.jpg");
-        pic = new Picture(picFile, "test1");
+        pic = new Image(picFile, "test1");
         tag = new Tag(pic, "blah");
     }
 
@@ -29,7 +29,7 @@ class TagTest {
     @Test
     void equals() {
         File samePicFile = new File("test1.jpg");
-        Picture samePic = new Picture(samePicFile, "test1");
+        Image samePic = new Image(samePicFile, "test1");
         Tag compareTag = new Tag(samePic, "blah");
         assertEquals(tag, compareTag);
     }

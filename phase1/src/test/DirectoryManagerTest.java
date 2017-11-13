@@ -1,8 +1,8 @@
 package test;
 
 import main.DirectoryManager;
+import main.Image;
 import main.PathExtractor;
-import main.Picture;
 import main.wrapper.DirectoryWrapper;
 import main.wrapper.ItemWrapper;
 import main.wrapper.PictureWrapper;
@@ -37,14 +37,14 @@ class DirectoryManagerTest {
                 "test1.jpg");
         testImageOne.createNewFile();
         PictureWrapper imageOne = new PictureWrapper(
-                new Picture(testImageOne, PathExtractor.getImageFileName(
+                new Image(testImageOne, PathExtractor.getImageFileName(
                         (testImageOne).toString())));
 
         File testImageTwo = new File(testDirectory + File.separator +
                 "test2.jpg");
         testImageTwo.createNewFile();
         PictureWrapper imageTwo = new PictureWrapper(
-                new Picture(testImageTwo, PathExtractor.getImageFileName(
+                new Image(testImageTwo, PathExtractor.getImageFileName(
                         (testImageTwo).toString())));
 
         ItemWrapper rootDirectory = manager.getAllImagesUnderRoot();

@@ -21,7 +21,7 @@ Which class displays the entire history of all the names a file has had?
 
 Where and how is persistent information (information that is not lost on closing) stored?
 
-Which class is responsible for retrieving a list of all picture files under a directory?
+Which class is responsible for retrieving a list of all image files under a directory?
 
 What does the Tag class need to store?
 

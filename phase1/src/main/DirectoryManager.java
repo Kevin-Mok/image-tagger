@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 
 public class DirectoryManager {
     /**
-     * The top level directory for the current instance of the Picture Viewer
+     * The top level directory for the current instance of the Image Viewer
      * program
      */
     private DirectoryWrapper rootFolder;
@@ -110,7 +110,7 @@ public class DirectoryManager {
                 Matcher matcher = imgFilePattern.matcher(file.toString());
                 // System.out.println(file);
                 if (matcher.matches()) {
-                    images.addToDirectory(new PictureWrapper(new Picture(file
+                    images.addToDirectory(new PictureWrapper(new Image(file
                             .toFile(), PathExtractor.getImageName(file
                             .toString()))));
                 }

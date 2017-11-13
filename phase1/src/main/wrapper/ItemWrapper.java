@@ -4,7 +4,7 @@ import java.nio.file.Path;
 
 /**
  * Wrapper class for displaying a TreeItem, representing either a directory
- * or a Picture object
+ * or a Image object
  */
 public abstract class ItemWrapper {
 

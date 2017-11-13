@@ -4,13 +4,12 @@ import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import main.DirectoryManager;
+import main.Image;
 import main.PathExtractor;
-import main.Picture;
 import main.wrapper.DirectoryWrapper;
 import main.wrapper.ItemWrapper;
 import main.wrapper.PictureWrapper;
@@ -46,7 +45,7 @@ public class Controller {
     /*
      * The following three fields were used repeatedly in the button EventHandlers, made sense to factor them out
      */
-    private Picture curSelectedPic;
+    private Image curSelectedPic;
     private ObservableList<TreeItem<ItemWrapper>> selectedTreeItems;
     private TreeItem<ItemWrapper> lastPicTreeItemSelected;
 
@@ -104,10 +103,10 @@ public class Controller {
                 ItemWrapper clickedObject = selectedTreeItems.get(0).getValue();
                 if (clickedObject instanceof PictureWrapper) {
                     String filePath = clickedObject.getPath().toString();
-                    imageViewPort.setImage(new Image("file:" + filePath));
+                    imageViewPort.setImage(new javafx.scene.image.Image("file:" + filePath));
                     lastPicTreeItemSelected = selectedTreeItems.get(0);
                     curSelectedPic = ((PictureWrapper) clickedObject)
-                            .getPicture();
+                            .getImage();
                     imageNameLabel.setText(curSelectedPic.getImageName());
                 }
             }
@@ -182,7 +181,7 @@ public class Controller {
 //                        .getImageFileName(parentPath));
 //                populateParentNode(childNode, (List) o);
 //                parentNode.getChildren().add(childNode);
-//            } else if (o instanceof Picture) {
+//            } else if (o instanceof Image) {
 //                parentNode.getChildren().add(new TreeItem<>(o));
 //            }
 //        }

@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 class TagManager {
     private static TagManager instance = null;
-    private HashMap<String, ArrayList<Picture>> allTags;
+    private HashMap<String, ArrayList<Image>> allTags;
 
     private TagManager() {
         // Exists only to defeat instantiation.
@@ -20,18 +20,18 @@ class TagManager {
     }
 
     void add(Tag tag) {
-        ArrayList<Picture> list;
+        ArrayList<Image> list;
         if (allTags.containsKey(tag.getName())) {
             list = allTags.get(tag.getName());
-            list.add(tag.getPicture());
+            list.add(tag.getImage());
         } else {
             list = new ArrayList<>();
-            list.add(tag.getPicture());
+            list.add(tag.getImage());
             allTags.put(tag.getName(), list);
         }
     }
 
-    void delete(String tagName, Picture picture) {
-        allTags.get(tagName).remove(picture);
+    void delete(String tagName, Image image) {
+        allTags.get(tagName).remove(image);
     }
 }

@@ -1,11 +1,11 @@
 package main;
 
 public class Tag {
-    private Picture picture;
+    private Image image;
     private String name;
 
-    public Tag(Picture picture, String name) {
-        this.picture = picture;
+    public Tag(Image image, String name) {
+        this.image = image;
         this.name = name;
         TagManager.getInstance().add(this);
     }
@@ -14,8 +14,8 @@ public class Tag {
         return name;
     }
 
-    public Picture getPicture() {
-        return picture;
+    public Image getImage() {
+        return image;
     }
 
 /*    public boolean equals(Object obj) {
@@ -30,7 +30,7 @@ public class Tag {
 
         Tag tag = (Tag) o;
 
-        if (!picture.equals(tag.picture)) return false;
+        if (!image.equals(tag.image)) return false;
         return name.equals(tag.name);
     }
 

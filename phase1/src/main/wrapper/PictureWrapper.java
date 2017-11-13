@@ -1,35 +1,35 @@
 package main.wrapper;
 
-import main.Picture;
+import main.Image;
 
 import java.nio.file.Path;
 
 /**
- * Wrapper class for a Picture object
+ * Wrapper class for a Image object
  */
 public class PictureWrapper extends ItemWrapper {
 
     /**
-     * The Picture object that this wrapper encapsulates. Null if isDirectory
+     * The Image object that this wrapper encapsulates. Null if isDirectory
      */
-    private Picture picture;
+    private Image image;
 
-    public PictureWrapper(Picture picture) {
-        this.picture = picture;
+    public PictureWrapper(Image image) {
+        this.image = image;
     }
 
-    public Picture getPicture() {
-        return picture;
+    public Image getImage() {
+        return image;
     }
 
     @Override
     public Path getPath() {
-        return this.picture.getPath();
+        return this.image.getPath();
     }
 
     @Override
     public String toString() {
-        return this.picture.toString();
+        return this.image.toString();
     }
 
     @Override
@@ -39,12 +39,12 @@ public class PictureWrapper extends ItemWrapper {
 
         PictureWrapper that = (PictureWrapper) o;
 
-        return picture != null ? picture.equals(that.picture) : that.picture
+        return image != null ? image.equals(that.image) : that.image
                 == null;
     }
 
     @Override
     public int hashCode() {
-        return picture != null ? picture.hashCode() : 0;
+        return image != null ? image.hashCode() : 0;
     }
 }

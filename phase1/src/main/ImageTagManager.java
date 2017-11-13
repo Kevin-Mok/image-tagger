@@ -3,15 +3,15 @@ package main;
 import java.sql.Timestamp;
 import java.util.*;
 
-public class PicTagManager {
+public class ImageTagManager {
     private TreeMap<Timestamp, String> nameStore;
     // List of all tags this picture has ever had.
     private ArrayList<Tag> tagList;
     // Current tags in picture.
     private Set<Tag> currentTags;
-    private Picture pic;
+    private Image pic;
 
-    public PicTagManager(String name, Picture pic) {
+    public ImageTagManager(String name, Image pic) {
         nameStore = new TreeMap<>();
         nameStore.put(new Timestamp(System.currentTimeMillis()), name);
         tagList = new ArrayList<>();
@@ -95,7 +95,7 @@ public class PicTagManager {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        PicTagManager that = (PicTagManager) o;
+        ImageTagManager that = (ImageTagManager) o;
 
         if (nameStore != null ? !nameStore.equals(that.nameStore) : that
                 .nameStore != null)

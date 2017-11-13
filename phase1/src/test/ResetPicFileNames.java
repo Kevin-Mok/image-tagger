@@ -11,7 +11,7 @@ import java.nio.file.Path;
 /**
  * Resets all pictures in dirString to their original names. Will probably be
  * remade if we get rid of the original file name and have it serialized in the
- * nameStore map in PicTagManager.
+ * nameStore map in ImageTagManager.
  */
 public class ResetPicFileNames {
     public static void main(String[] args) {
