@@ -40,6 +40,8 @@ public class Controller {
     private Button addNewTagButton;
     @FXML
     private TextField addNewTagField;
+    @FXML
+    private Label imageNameLabel;
 
     /*
      * The following three fields were used repeatedly in the button EventHandlers, made sense to factor them out
@@ -106,6 +108,7 @@ public class Controller {
                     lastPicTreeItemSelected = selectedTreeItems.get(0);
                     curSelectedPic = ((PictureWrapper) clickedObject)
                             .getPicture();
+                    imageNameLabel.setText(curSelectedPic.getImageName());
                 }
             }
         };
