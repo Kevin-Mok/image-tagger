@@ -29,7 +29,7 @@ public class PathExtractor {
         return imagePath.substring(0, indexOfLastSlash + 1);
     }
 
-    // Extracts the full directory from the path name.
+    // For resetting file name to original.
     public static String getPathWithoutTags(String imagePath) {
         int indexOfFirstTag = imagePath.indexOf('@');
         if (indexOfFirstTag < 0) {

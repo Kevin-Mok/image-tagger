@@ -8,6 +8,11 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+/**
+ * Resets all pictures in dirString to their original names. Will probably be
+ * remade if we get rid of the original file name and have it serialized in the
+ * nameStore map in PicTagManager.
+ */
 public class ResetPicFileNames {
     public static void main(String[] args) {
         String dirString = "/home/kevin/Pictures";

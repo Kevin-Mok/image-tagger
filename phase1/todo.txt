@@ -2,9 +2,13 @@ TODO List
 
 -create tests for main.DirectoryManager [Chris]
 
--create and store Picture objects in PictureManager class (Saad)
+-create and store Picture objects in PictureManager class [Saad]
 
--Implement serializing logic, override Stage.stop() to store images prior to program closing (Saad)
+-implement serializing logic, override Stage.stop[] to store images prior to
+program closing [Saad]
 
--add functionality to GUI (Kevin)
-	-display available tags in ListView
+-debug deleteTag in PicTagManager (it's not deleting Tags that are visibly the
+same in the debugger) [Saad]
+
+-add functionality to GUI [Kevin]
+	-display available tags in appropriate ListView
