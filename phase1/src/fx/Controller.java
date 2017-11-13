@@ -43,11 +43,12 @@ public class Controller {
     private Label imageNameLabel;
 
     /*
-     * The following three fields were used repeatedly in the button EventHandlers, made sense to factor them out
+     * The following three fields were used repeatedly in the button
+     * EventHandlers, made sense to factor them out
      */
-    private Image curSelectedPic;
+    private Image curSelectedImage;
     private ObservableList<TreeItem<ItemWrapper>> selectedTreeItems;
-    private TreeItem<ItemWrapper> lastPicTreeItemSelected;
+    private TreeItem<ItemWrapper> lastImageTreeItemSelected;
 
     private EventHandler<javafx.scene.input.MouseEvent> mouseEvent;
     // private File rootFolder = new File("/home/kevin/Documents");
@@ -71,9 +72,7 @@ public class Controller {
     public void initialize() {
 
         chooseDirButton.setOnAction(event -> {
-            DirectoryChooser directoryChooser = new DirectoryChooser();
-            directoryChooser.setTitle("Choose a directory to open");
-            File rootDirectory = directoryChooser.showDialog(stage);
+            File rootDirectory = chooseDirectory("Choose a directory to open");
             if (rootDirectory != null) {
                 rootDirectoryManager.setRootFolder(new DirectoryWrapper
                         (rootDirectory));
@@ -88,51 +87,70 @@ public class Controller {
         });
 
         addNewTagButton.setOnAction(event -> {
-            // todo: not allow empty tags to be added
-            curSelectedPic.addTag(addNewTagField.getText());
-            lastPicTreeItemSelected = new TreeItem<>(new ImageWrapper
-                    (curSelectedPic));
-            imagesTreeView.refresh();
+            addNewTag();
         });
 
-        // For displaying the picture with a mouse click
+        // For displaying the image with a mouse click
         mouseEvent = (javafx.scene.input.MouseEvent event) -> {
             selectedTreeItems = imagesTreeView.getSelectionModel()
                     .getSelectedItems();
             if (selectedTreeItems.size() != 0) {
                 ItemWrapper clickedObject = selectedTreeItems.get(0).getValue();
                 if (clickedObject instanceof ImageWrapper) {
-                    String filePath = clickedObject.getPath().toString();
-                    imageViewPort.setImage(new javafx.scene.image.Image("file:" + filePath));
-                    lastPicTreeItemSelected = selectedTreeItems.get(0);
-                    curSelectedPic = ((ImageWrapper) clickedObject)
-                            .getImage();
-                    imageNameLabel.setText(curSelectedPic.getImageName());
+                    updateSelectedImage(((ImageWrapper) clickedObject)
+                            .getImage());
                 }
             }
         };
 
         // todo: display no image when picture is moved?
         moveFileButton.setOnAction(event -> {
-            if (curSelectedPic != null) {
-                DirectoryChooser chooser = new DirectoryChooser();
-                chooser.setTitle("Move Selected Item");
-                String newDirectory = chooser.showDialog(stage).toString();
+            if (curSelectedImage != null) {
+                String newDirectory = chooseDirectory("Move file to " +
+                        "directory").toString();
                 String imageFileName = PathExtractor.getImageFileName
-                        (curSelectedPic.getPath().toString());
+                        (curSelectedImage.getPath().toString());
                 String newPathOfImage = newDirectory + "/" + imageFileName;
                 try {
-                    Files.move(curSelectedPic.getPath(), Paths.get
+                    Files.move(curSelectedImage.getPath(), Paths.get
                             (newPathOfImage));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                // todo: regenerating entire tree is a bit overkill here,
+                // should only deal with that specific TreeItem?
                 refreshGUIElements();
                 // todo: need to update the ImageWrapper's new location
                 // in PictureManager, maybe delete the old object from the
                 // HashMap first using the old path, and then reinsert
             }
         });
+    }
+
+    @FXML
+    public void addNewTag() {
+        // todo: not allow empty tags to be added
+        curSelectedImage.addTag(addNewTagField.getText());
+        lastImageTreeItemSelected = new TreeItem<>(new ImageWrapper
+                (curSelectedImage));
+        imagesTreeView.refresh();
+        imageNameLabel.setText(curSelectedImage.getImageName());
+    }
+
+    @FXML
+    private File chooseDirectory(String title) {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle(title);
+        return directoryChooser.showDialog(stage);
+    }
+
+    private void updateSelectedImage(Image clickedImage) {
+        String filePath = clickedImage.getPath().toString();
+        imageViewPort.setImage(new javafx.scene.image.Image
+                ("file:" + filePath));
+        lastImageTreeItemSelected = selectedTreeItems.get(0);
+        curSelectedImage = clickedImage;
+        imageNameLabel.setText(clickedImage.getImageName());
     }
 
     // Updates all the needed elements when a new directory is selected.

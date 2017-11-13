@@ -1,11 +1,11 @@
 TODO List 
 
--create and store Picture objects in PictureManager class [Saad]
+-create and store Image objects in ImageManager class [Saad]
 
 -implement serializing logic, override Stage.stop[] to store images prior to
 program closing [Saad]
 
--debug deleteTag in PicTagManager (it's not deleting Tags that are visibly the
+-debug deleteTag in ImageTagManager (it's not deleting Tags that are visibly the
 same in the debugger) [Saad]
 
 -add functionality to GUI [Kevin]

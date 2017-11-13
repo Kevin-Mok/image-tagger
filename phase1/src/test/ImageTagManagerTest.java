@@ -13,18 +13,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ImageTagManagerTest {
     ImageTagManager manager;
-    Image pic;
+    Image image;
     Tag addedTag;
 
     @BeforeEach
     void setUp() {
-        pic = new Image(new File("test1.jpg"), "test1");
-        manager = new ImageTagManager(pic.getImageName(), pic);
-        addedTag = new Tag(pic, "yooo");
+        image = new Image(new File("test1.jpg"), "test1");
+        manager = new ImageTagManager(image.getImageName(), image);
+        addedTag = new Tag(image, "yooo");
     }
 
     @Test
-    void addTagToNewPicture() {
+    void addTagToNewImage() {
         assertEquals("test1 @yooo", manager.addTag(addedTag));
         // Code below for testing Image class that actually renames files.
         // File newFile = new File("test1 @yooo.jpg");

@@ -12,14 +12,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class TagTest {
     Tag tag;
-    Image pic;
-    File picFile;
+    Image image;
+    File imageFile;
 
     @BeforeEach
     void setUp() {
-        picFile = new File("test1.jpg");
-        pic = new Image(picFile, "test1");
-        tag = new Tag(pic, "blah");
+        imageFile = new File("test1.jpg");
+        image = new Image(imageFile, "test1");
+        tag = new Tag(image, "blah");
     }
 
     @AfterEach
@@ -28,9 +28,9 @@ class TagTest {
 
     @Test
     void equals() {
-        File samePicFile = new File("test1.jpg");
-        Image samePic = new Image(samePicFile, "test1");
-        Tag compareTag = new Tag(samePic, "blah");
+        File sameImageFile = new File("test1.jpg");
+        Image sameImage = new Image(sameImageFile, "test1");
+        Tag compareTag = new Tag(sameImage, "blah");
         assertEquals(tag, compareTag);
     }
 

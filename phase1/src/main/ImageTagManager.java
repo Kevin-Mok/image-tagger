@@ -9,14 +9,14 @@ public class ImageTagManager {
     private ArrayList<Tag> tagList;
     // Current tags in picture.
     private Set<Tag> currentTags;
-    private Image pic;
+    private Image image;
 
-    public ImageTagManager(String name, Image pic) {
+    public ImageTagManager(String name, Image image) {
         nameStore = new TreeMap<>();
         nameStore.put(new Timestamp(System.currentTimeMillis()), name);
         tagList = new ArrayList<>();
         currentTags = new LinkedHashSet<>();
-        this.pic = pic;
+        this.image = image;
     }
 
     /**
@@ -38,10 +38,10 @@ public class ImageTagManager {
     }
 
     public String deleteTag(String tagName) {
-        Tag tag = new Tag(pic, tagName);
+        Tag tag = new Tag(image, tagName);
         if (currentTags.contains(tag)) {
             currentTags.remove(tag);
-            TagManager.getInstance().delete(tagName, pic);
+            TagManager.getInstance().delete(tagName, image);
             nameStore.put(new Timestamp(System.currentTimeMillis()),
                     getCurrentName());
             return nameStore.lastEntry().getValue();
@@ -106,7 +106,7 @@ public class ImageTagManager {
         if (currentTags != null ? !currentTags.equals(that.currentTags) :
                 that.currentTags != null)
             return false;
-        return pic != null ? pic.equals(that.pic) : that.pic == null;
+        return image != null ? image.equals(that.image) : that.image == null;
     }
 
     @Override
@@ -115,7 +115,7 @@ public class ImageTagManager {
         result = 31 * result + (tagList != null ? tagList.hashCode() : 0);
         result = 31 * result + (currentTags != null ? currentTags.hashCode()
                 : 0);
-        result = 31 * result + (pic != null ? pic.hashCode() : 0);
+        result = 31 * result + (image != null ? image.hashCode() : 0);
         return result;
     }
 }

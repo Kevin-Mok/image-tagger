@@ -13,9 +13,9 @@ import java.nio.file.Path;
  * remade if we get rid of the original file name and have it serialized in the
  * nameStore map in ImageTagManager.
  */
-public class ResetPicFileNames {
-    public static void main(String[] args) {
-        String dirString = "/home/kevin/Pictures";
+public class ResetImageFileNames {
+    // Recursively rename images in passed in directory.
+    private static void renameImagesInDir(String dirString) {
         File dir = new File(dirString);
         try (DirectoryStream<Path> stream = Files.newDirectoryStream
                 (dir.toPath())) {
@@ -28,10 +28,18 @@ public class ResetPicFileNames {
                     if (!curFile.renameTo(renamedFile)) {
                         System.out.println("File renaming failed.");
                     }
+                } else {
+                    renameImagesInDir(path.toString());
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    public static void main(String[] args) {
+        String dirString = "/home/kevin/Pictures";
+        renameImagesInDir(dirString);
+    }
+
 }
