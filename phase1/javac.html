@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+</head>
+<body>
+<h1 id="csc207—javafromthecommandline">CSC207 — Java from the command line</h1>
+
+<p>As part of the project, you are required to provide file <code>help.txt</code>, which contains &#8220;a concise and clear set of instructions for how to compile and run your code from the command line&#8221;. See the announcement from 5 November for more details.</p>
+
+<p>We recommend that more than one group member try this, rather than having four people clustered around 1 computer.</p>
+
+<h2 id="javac">javac</h2>
+
+<p>In the Teaching Labs, <code>javac</code> compiles Java programs. It is one of the commands found on your path, which is a list of directories. To see your path, type this (what’s the separator character?):</p>
+
+<pre><code>echo $PATH
+</code></pre>
+
+<p>To find out where <code>javac</code> is, type this (it’s probably something like <code>/local/bin/javac</code>):</p>
+
+<pre><code>which javac
+</code></pre>
+
+<h2 id="thebasics">The basics</h2>
+
+<p>Create an IntelliJ project. Create a package in the project called <code>pack</code>. Create a class called <code>Main</code> with a <code>main</code> method.</p>
+
+<p>On the command line, use <code>cd</code> to change to the <code>src</code> directory in the project. When you type <code>ls</code>, you should see the package name.</p>
+
+<p>Now type this; it should exit silently:</p>
+
+<pre><code>javac pack/Main.java
+</code></pre>
+
+<p>That creates file <code>Main.class</code> inside directory <code>pack</code>. To run it:</p>
+
+<pre><code>java pack.Main
+</code></pre>
+
+<h2 id="classpath">classpath</h2>
+
+<p>Sometimes you might use external libraries, which in Java come in files with suffix <code>.jar</code>. If you use one, you need to let the <code>javac</code> program know where it is. To do this, you will need to do some web research, maybe for something like &#8220;javac classpath example&#8221; (the word “example” can be of tremendous help in web searches). Let you TA know if you need help.</p>
+
+<p>Make sure that the help instructions work for more than one group member!</p>
+
+<h2 id="backtotheproject">Back to the project</h2>
+
+<p>Spend the rest of the hour working on your project! Your TA will stop by to get a brief progress report.</p>
+
+</body>
+</html>
