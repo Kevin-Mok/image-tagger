@@ -51,6 +51,7 @@ public class ImageTagManager {
 
     private String getCurrentName() {
         StringBuilder result = new StringBuilder();
+        result.append(image.getImageName());
         for (Tag currentTag : currentTags) {
             result.append(currentTag.getName());
         }

@@ -34,4 +34,10 @@ public class Tag {
         return name.equals(tag.name);
     }
 
+    @Override
+    public int hashCode() {
+        int result = image != null ? image.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        return result;
+    }
 }
