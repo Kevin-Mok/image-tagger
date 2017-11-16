@@ -13,6 +13,4 @@ same in the debugger) [Saad]
 
 -Reposition UI elements so that things line up [Chris]
 
-javac -cp /local/packages/idea-IC-172.4155.36/plugins/junit/lib/junit-jupiter-api-5.0.0.jar:/local/packages/idea-IC-172.4155.36/plugins/junit/lib/opentest4j-1.0.0.jar -d compiled $(find src -name *.java)
-
-javac -cp $(find src -name /local/packages/idea-IC-172.4155.36/lib/*) -d compiled $(find src -name *.java)
+-Remove the image formats in the DirectoryManager constructor and pass them in through a setter method instead? [Chris]

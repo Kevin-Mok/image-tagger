@@ -141,6 +141,10 @@ public class DirectoryManager {
         }
     }
 
+    /**
+     * Generates a string matching pattern, using the formats in imageFormats
+     * @return a regular expression
+     */
     public String generateImageMatchingPattern() {
         StringBuilder sb = new StringBuilder();
         sb.append(".+(");

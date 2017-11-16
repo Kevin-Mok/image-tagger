@@ -48,7 +48,10 @@ public class Image {
         return PathExtractor.getImageFileName(imageFile.toString());
     }
 
-    // Renames the file to the given String.
+    /**
+     * Renames this image
+     * @param newImageName the new image name
+     */
     void rename(String newImageName) {
         String curPath = imageFile.getPath();
         String curDir = PathExtractor.getDirectory(curPath);

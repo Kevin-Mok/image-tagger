@@ -67,6 +67,7 @@ public class Controller {
 
     /**
      * This method is automatically called after the FXML file is loaded
+     * Used primarily to bind UI elements to event listeners
      */
     @FXML
     public void initialize() {
@@ -174,7 +175,11 @@ public class Controller {
                 .MOUSE_CLICKED, mouseEvent);
     }
 
-    // Populates parent node with all images under it.
+    /**
+     * Populates the parentNode using ItemWrapper objects from the parentNodeList
+     * @param parentNode The UI element to be populated
+     * @param parentNodeList ItemWrapper containing the data needed to populate the parent
+     */
     private void populateParentNode(TreeItem<ItemWrapper> parentNode,
                                     ItemWrapper parentNodeList) {
         if (parentNodeList instanceof DirectoryWrapper) {
