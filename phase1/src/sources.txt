@@ -1,0 +1,16 @@
+/home/chris/WorkSpace/csc207/group_0485/phase1/src/fx/Controller.java
+/home/chris/WorkSpace/csc207/group_0485/phase1/src/fx/Main.java
+/home/chris/WorkSpace/csc207/group_0485/phase1/src/main/DirectoryManager.java
+/home/chris/WorkSpace/csc207/group_0485/phase1/src/main/Image.java
+/home/chris/WorkSpace/csc207/group_0485/phase1/src/main/ImageTagManager.java
+/home/chris/WorkSpace/csc207/group_0485/phase1/src/main/TagManager.java
+/home/chris/WorkSpace/csc207/group_0485/phase1/src/main/Tag.java
+/home/chris/WorkSpace/csc207/group_0485/phase1/src/main/wrapper/DirectoryWrapper.java
+/home/chris/WorkSpace/csc207/group_0485/phase1/src/main/wrapper/ItemWrapper.java
+/home/chris/WorkSpace/csc207/group_0485/phase1/src/main/wrapper/ImageWrapper.java
+/home/chris/WorkSpace/csc207/group_0485/phase1/src/main/PathExtractor.java
+/home/chris/WorkSpace/csc207/group_0485/phase1/src/test/TagTest.java
+/home/chris/WorkSpace/csc207/group_0485/phase1/src/test/ResetImageFileNames.java
+/home/chris/WorkSpace/csc207/group_0485/phase1/src/test/PathExtractorTest.java
+/home/chris/WorkSpace/csc207/group_0485/phase1/src/test/ImageTagManagerTest.java
+/home/chris/WorkSpace/csc207/group_0485/phase1/src/test/DirectoryManagerTest.java
