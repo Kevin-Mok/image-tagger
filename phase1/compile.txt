@@ -1,7 +1,0 @@
-javac -cp /opt/idea-IU-172.4155.36/plugins/junit/lib/junit-jupiter-api-5.0.0.jar:/opt/idea-IU-172.4155.36/plugins/junit/lib/opentest4j-1.0.0.jar  @sources.txt -d ~/WorkSpace/csc207/group_0485/phase1/class_files/
-
-cp -a /home/chris/WorkSpace/csc207/group_0485/phase1/src/fx/resources/ /home/chris/WorkSpace/csc207/group_0485/phase1/class_files/fx/
-
-cp /home/chris/WorkSpace/csc207/group_0485/phase1/src/fx/layout.fxml /home/chris/WorkSpace/csc207/group_0485/phase1/class_files/fx/
-
-java -cp /home/chris/WorkSpace/csc207/group_0485/phase1/class_files fx.Main
