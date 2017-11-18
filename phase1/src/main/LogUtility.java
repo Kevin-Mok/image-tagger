@@ -12,9 +12,9 @@ import java.util.logging.SimpleFormatter;
 public class LogUtility {
 
 	/** The logger. */
-	private static Logger logger;
-	private static Logger imgLogger;
-
+	private  Logger logger;
+	private  Logger imgLogger;
+	private static LogUtility logUtility;
 
 	/**
 	 * Instantiates a new my logging.
@@ -38,12 +38,24 @@ public class LogUtility {
 		imgLogger.addHandler(imgFileHandler);
 	}
 
+	public static LogUtility getInstance() {
+		if (logUtility == null){
+			try {
+				return new LogUtility();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return logUtility;
+	}
+
+
 	/**
 	 * Gets the logger.
 	 *
 	 * @return the logger
 	 */
-	private static Logger getLogger(boolean imageOrTag) {
+	private  Logger getLogger(boolean imageOrTag) {
 		if (imageOrTag) {
 			if (logger == null) {
 				try {
@@ -72,7 +84,7 @@ public class LogUtility {
 	 * @param level the level
 	 * @param msg the message to log.
 	 */
-	public static void log(Level level, String msg, boolean imgOrName) {
+	public  void log(Level level, String msg, boolean imgOrName) {
 		getLogger(imgOrName).log(level, msg);
 	}
 }

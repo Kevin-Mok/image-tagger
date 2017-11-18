@@ -58,7 +58,7 @@ public class Image implements Serializable {
         if (!imageFile.renameTo(new File(newPathString))) {
             System.out.println("File renaming failed.");
         } else {
-            LogUtility.log(Level.INFO, "Changed name from: " +  this.getImageName() + "  -->  " + newImageName,
+            LogUtility.getInstance().log(Level.INFO, "Changed name from: " +  this.getImageName() + "  -->  " + newImageName,
                     false );
             imageFile = new File(newPathString);
             imageName = newImageName;
