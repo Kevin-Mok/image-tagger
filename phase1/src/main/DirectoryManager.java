@@ -111,11 +111,9 @@ public class DirectoryManager {
                 Matcher matcher = imgFilePattern.matcher(file.toString());
                 // System.out.println(file);
                 if (matcher.matches()) {
-                    if (ImageTagManager.getInstance().getAllImages()
-                            .containsKey(file.toString())) {
+                    if (ImageTagManager.getInstance().containsImagePath(file.toString())) {
                         images.addToDirectory(new ImageWrapper
-                                (ImageTagManager.getInstance().getAllImages()
-                                        .get(file.toString())));
+                                (ImageTagManager.getInstance().getImage(file.toString())));
                     } else {
                         images.addToDirectory(new ImageWrapper(new Image(file
                                 .toFile(), PathExtractor.getImageName(file
