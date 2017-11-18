@@ -102,11 +102,31 @@ class LogUtility {
      * @param msg    the message to log.
      * @param logTag true if logging a tag related event, false if anything else
      */
-    void log(Level level, String msg, boolean logTag) {
+    private void log(Level level, String msg, boolean logTag) {
         try {
             getLogger(logTag).log(level, msg);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    void logAddOrDeleteTag(String tagName, String imageName, boolean addTag) {
+        String message;
+        if (addTag) {
+            message = String.format("Created new Tag %s for Image %s", tagName, imageName);
+        } else {
+            message = String.format("Deleted Tag %s from Image %s", tagName, imageName);
+        }
+        log(Level.INFO, message, true);
+    }
+
+    void logRevertName(String oldName, String newName) {
+        String message = String.format("Reverted name from %s to %s", oldName, newName);
+        log(Level.INFO, message, true);
+    }
+
+    void logImageRename(String oldName, String newName) {
+        String message = String.format("Changed name from %s to %s", oldName, newName);
+        log(Level.INFO, message, false);
     }
 }

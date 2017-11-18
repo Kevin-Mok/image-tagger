@@ -37,9 +37,7 @@ public class TagManager implements Serializable {
             nameStore.put(new Timestamp(System.currentTimeMillis()),
                     currentName + " @" + tag.getName());
 
-            LogUtility.getInstance().log(Level.INFO, "Created new Tag for " +
-                    "image " + image.getImageName() + " called " + tag
-                    .getName(), true);
+            LogUtility.getInstance().logAddOrDeleteTag(tag.getName(), image.getImageName(), true);
             return nameStore.lastEntry().getValue();
 
         }
@@ -53,8 +51,7 @@ public class TagManager implements Serializable {
             currentTags.remove(tag);
             nameStore.put(new Timestamp(System.currentTimeMillis()),
                     getCurrentName());
-            LogUtility.getInstance().log(Level.INFO, "Deleted Tag from Image " +
-                    "" + image.getImageName() + " called " + tagName, true);
+            LogUtility.getInstance().logAddOrDeleteTag(tagName, image.getImageName(), false);
             return nameStore.lastEntry().getValue();
         }
         return nameStore.lastEntry().getValue();
@@ -90,8 +87,7 @@ public class TagManager implements Serializable {
 
     public String revertName(String name) {
         if (nameStore.values().contains(name)) {
-            LogUtility.getInstance().log(Level.INFO, "Reverted name from: " +
-                    nameStore.lastEntry().getValue() + "to: " + name, true);
+            LogUtility.getInstance().logRevertName(nameStore.lastEntry().getValue(), name);
             nameStore.put(new Timestamp(System.currentTimeMillis()), name);
             rewrite();
         }
