@@ -1,5 +1,6 @@
 package main;
 
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.*;
 import java.io.Serializable;
@@ -31,10 +32,13 @@ public class TagManager implements Serializable {
             currentTags.add(tag);
             tagList.add(tag);
             String currentName = nameStore.lastEntry().getValue();
+
             nameStore.put(new Timestamp(System.currentTimeMillis()),
                     currentName + " @" + tag.getName());
+
             return nameStore.lastEntry().getValue();
         }
+
         return nameStore.lastEntry().getValue();
     }
 
@@ -57,6 +61,14 @@ public class TagManager implements Serializable {
             result.append(currentTag.getName());
         }
         return result.toString();
+    }
+
+    public ArrayList<String> getNames(){
+        ArrayList<String> result = new ArrayList<>();
+        for (Timestamp keys: nameStore.keySet()){
+            result.add(nameStore.get(keys));
+        }
+        return result;
     }
 
     public String revertName(String name) {
