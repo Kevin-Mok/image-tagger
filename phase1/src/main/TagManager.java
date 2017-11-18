@@ -1,5 +1,6 @@
 package main;
 
+import java.awt.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -63,7 +64,7 @@ public class TagManager implements Serializable {
         return result.toString();
     }
 
-    public ArrayList<String> getNames() {
+    public ArrayList<String> getNameHistory() {
         ArrayList<String> result = new ArrayList<>();
         for (Timestamp keys : nameStore.keySet()) {
             String s = new SimpleDateFormat("MM/dd HH:mm:ss").format(keys);
@@ -77,6 +78,7 @@ public class TagManager implements Serializable {
         for (Tag tag: currentTags){
             result.add(tag.getName());
         }
+        Collections.sort(result);
         return result;
     }
 

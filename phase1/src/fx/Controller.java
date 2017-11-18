@@ -20,7 +20,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 
 public class Controller {
 
@@ -45,7 +44,9 @@ public class Controller {
     @FXML
     private ListView<String> availableTagsView;
     @FXML
-    private ListView nameHistory;
+    private ListView nameHistoryView;
+    @FXML
+    private ListView<String> currentTagsView;
     @FXML
     private Button revertName;
 
@@ -102,10 +103,9 @@ public class Controller {
             if (selectedTreeItems.size() != 0) {
                 ItemWrapper clickedObject = selectedTreeItems.get(0).getValue();
                 if (clickedObject instanceof ImageWrapper) {
-                    updateSelectedImage(((ImageWrapper) clickedObject)
-                            .getImage());
-                    updateNameHistory(((ImageWrapper) clickedObject).getImage
-                            ());
+                    curSelectedImage = ((ImageWrapper) clickedObject)
+                            .getImage();
+                    updateSelectedImageGUI();
                 }
             }
         };
@@ -134,32 +134,40 @@ public class Controller {
         });
 
         revertName.setOnAction(event -> {
-            if (curSelectedImage != null){
-                String chosenName = (String)nameHistory.getSelectionModel().getSelectedItems().get(0);
-                chosenName = chosenName.substring(chosenName.indexOf("→")+1);
-                chosenName = chosenName.trim();
+            if (curSelectedImage != null) {
+                String chosenName = (String) nameHistoryView
+                        .getSelectionModel().getSelectedItems().get(0);
+                chosenName = chosenName.substring(chosenName.indexOf("→") +
+                        1).trim();
                 System.out.println(chosenName);
                 curSelectedImage.revertName(chosenName);
+                updateSelectedImageGUI();
             }
-            imagesTreeView.refresh();
-            updateNameHistory(curSelectedImage);
         });
     }
 
-    private void updateSelectedImage() {
+    private void updateSelectedImageGUI() {
+        // Update ImageView.
+        String filePath = curSelectedImage.getPath().toString();
+        imageViewPort.setImage(new javafx.scene.image.Image
+                ("file:" + filePath));
+        // Update TreeView.
         lastImageTreeItemSelected = new TreeItem<>(new ImageWrapper
                 (curSelectedImage));
         imagesTreeView.refresh();
+        // Update label.
         imageNameLabel.setText(curSelectedImage.getImageName());
-        updateNameHistory(curSelectedImage);
+        updateNameHistory();
+        updateCurrentTags();
     }
 
     @FXML
     public void addNewTag() {
         // todo: not allow empty tags to be added
         curSelectedImage.addTag(addNewTagField.getText());
-        updateSelectedImage();
-        populateAvailableTags();
+        addNewTagField.clear();
+        updateSelectedImageGUI();
+        updateAvailableTags();
     }
 
     @FXML
@@ -169,7 +177,7 @@ public class Controller {
         if (selectedAvailableTag.size() != 0) {
             curSelectedImage.addTag(selectedAvailableTag.get(0));
         }
-        updateSelectedImage();
+        updateSelectedImageGUI();
     }
 
     @FXML
@@ -179,21 +187,12 @@ public class Controller {
         return directoryChooser.showDialog(stage);
     }
 
-    private void updateSelectedImage(Image clickedImage) {
-        String filePath = clickedImage.getPath().toString();
-        imageViewPort.setImage(new javafx.scene.image.Image
-                ("file:" + filePath));
-        lastImageTreeItemSelected = selectedTreeItems.get(0);
-        curSelectedImage = clickedImage;
-        imageNameLabel.setText(clickedImage.getImageName());
-    }
-
     // Updates all the needed elements when a new directory is selected.
     private void refreshGUIElements() {
         currentFolderLabel.setText(rootDirectoryManager.getRootFolder()
                 .toString());
         populateImageList();
-        populateAvailableTags();
+        updateAvailableTags();
     }
 
     // Populates the TreeView with list of all images under current dir.
@@ -210,12 +209,12 @@ public class Controller {
                 .MOUSE_CLICKED, mouseEvent);
     }
 
-    private void updateNameHistory(Image clickedImage) {
-        nameHistory.getItems().clear();
-        ArrayList<String> toWorkWith = clickedImage.getTagManager().getNames();
-        for (String name : toWorkWith) {
-            nameHistory.getItems().add(name);
-        }
+    private void updateNameHistory() {
+        ObservableList<String> nameHistoryList = FXCollections
+                .observableArrayList();
+        nameHistoryList.setAll(curSelectedImage.getTagManager()
+                .getNameHistory());
+        nameHistoryView.setItems(nameHistoryList);
     }
 
     /**
@@ -245,11 +244,18 @@ public class Controller {
         }
     }
 
-    private void populateAvailableTags() {
+    private void updateAvailableTags() {
         ObservableList<String> availableTagsList = FXCollections
                 .observableArrayList();
         availableTagsList.setAll(ImageTagManager.getInstance().getListOfTags());
         availableTagsView.setItems(availableTagsList);
+    }
+
+    private void updateCurrentTags() {
+        ObservableList<String> currentTagsList = FXCollections
+                .observableArrayList();
+        currentTagsList.setAll(curSelectedImage.getTagManager().getTagNames());
+        currentTagsView.setItems(currentTagsList);
     }
 
 }

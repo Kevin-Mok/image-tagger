@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 /**
  * Resets all pictures in dirString to their original names. Will probably be
@@ -38,15 +37,21 @@ public class ResetImageFileNames {
         }
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         // String dirString = "/home/kevin/Pictures";
         String dirString = "/h/u3/c7/05/mokkar/Downloads";
         renameImagesInDir(dirString);
 
-        // String imagesSerString = "../../images.ser";
-        // String tagsSerString = "../../tags.ser";
-        // Files.delete(Paths.get(imagesSerString));
-        // Files.delete(Paths.get(tagsSerString));
+        File imagesSer = new File
+                ("/h/u3/c7/05/mokkar/207/group_0485/phase1/images.ser");
+        File filesSer = new File
+                ("/h/u3/c7/05/mokkar/207/group_0485/phase1/tags" +
+                        ".ser");
+        if (imagesSer.delete() && filesSer.delete()) {
+            System.out.println("Ser's deleted.");
+        } else {
+            System.out.println("Could not delete ser's.");
+        }
     }
 
 }
