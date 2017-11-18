@@ -46,9 +46,10 @@ public class Controller {
     private Label imageNameLabel;
     @FXML
     private ListView<String> availableTagsView;
-
     @FXML
     private ListView nameHistory;
+    @FXML
+    private Button revertName;
 
     /*
      * The following three fields were used repeatedly in the button
@@ -135,6 +136,18 @@ public class Controller {
                 // in PictureManager, maybe delete the old object from the
                 // HashMap first using the old path, and then reinsert
             }
+        });
+
+        revertName.setOnAction(event -> {
+            if (curSelectedImage != null){
+                String chosenName = (String)nameHistory.getSelectionModel().getSelectedItems().get(0);
+                chosenName = chosenName.substring(chosenName.indexOf("→")+1);
+                chosenName = chosenName.trim();
+                System.out.println(chosenName);
+                curSelectedImage.revertName(chosenName);
+            }
+            imagesTreeView.refresh();
+            updateNameHistory(curSelectedImage);
         });
     }
 

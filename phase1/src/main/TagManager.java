@@ -2,6 +2,7 @@ package main;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class TagManager implements Serializable {
@@ -65,7 +66,16 @@ public class TagManager implements Serializable {
     public ArrayList<String> getNames() {
         ArrayList<String> result = new ArrayList<>();
         for (Timestamp keys : nameStore.keySet()) {
-            result.add(nameStore.get(keys));
+            String s = new SimpleDateFormat("MM/dd HH:mm:ss").format(keys);
+            result.add(s+ "  →  " + nameStore.get(keys));
+        }
+        return result;
+    }
+
+    public ArrayList<String> getTagNames(){
+        ArrayList<String> result = new ArrayList<>();
+        for (Tag tag: currentTags){
+            result.add(tag.getName());
         }
         return result;
     }

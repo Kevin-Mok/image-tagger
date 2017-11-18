@@ -101,6 +101,7 @@ public class Image implements Serializable {
      */
     public void revertName(String name) {
         rename(tagManager.revertName(name));
+        ImageTagManager.getInstance().rebuildTagList();
     }
 
     @Override

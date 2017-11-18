@@ -40,7 +40,10 @@ public class ImageTagManager {
         ArrayList<Image> list;
         if (allTags.containsKey(tag.getName())) {
             list = allTags.get(tag.getName());
-            list.add(tag.getImage());
+            if (!list.contains(tag.getImage())){
+				list.add(tag.getImage());
+			}
+
         } else {
             list = new ArrayList<>();
             list.add(tag.getImage());
@@ -53,6 +56,27 @@ public class ImageTagManager {
         allImages.put(image.getPath().toString(), image);
         System.out.println(allImages);
     }
+
+    void rebuildTagList(){
+    	HashMap<String, ArrayList<Image>> rebuild = new HashMap<>();
+    	for (String keys: allImages.keySet()){
+    		mapBuilder(allImages.get(keys), rebuild);
+		}
+		allTags = rebuild;
+		System.out.println(allTags);
+	}
+
+	void mapBuilder(Image image, HashMap<String, ArrayList<Image>> map){
+    	for(String tagName: image.getTagManager().getTagNames()){
+    		if(map.containsKey(tagName)){
+    			map.get(tagName).add(image);
+			}
+			else{
+    			map.put(tagName, new ArrayList<Image>());
+    			map.get(tagName).add(image);
+			}
+		}
+	}
 
     void delete(String tagName, Image image) {
         allTags.get(tagName).remove(image);
@@ -100,7 +124,7 @@ public class ImageTagManager {
             input1.close();
 
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            System.out.println("Ser files not found. They have been created");
         } catch (IOException e) {
             e.printStackTrace();
         }
