@@ -32,7 +32,7 @@ public class ImageTagManager {
         return listOfTags;
     }
 
-    public HashMap<String, Image> getAllImages() {
+    HashMap<String, Image> getAllImages() {
         return allImages;
     }
 
@@ -66,13 +66,13 @@ public class ImageTagManager {
 		System.out.println(allTags);
 	}
 
-	void mapBuilder(Image image, HashMap<String, ArrayList<Image>> map){
+	private void mapBuilder(Image image, HashMap<String, ArrayList<Image>> map){
     	for(String tagName: image.getTagManager().getTagNames()){
     		if(map.containsKey(tagName)){
     			map.get(tagName).add(image);
 			}
 			else{
-    			map.put(tagName, new ArrayList<Image>());
+    			map.put(tagName, new ArrayList<>());
     			map.get(tagName).add(image);
 			}
 		}
@@ -101,7 +101,7 @@ public class ImageTagManager {
 
     public void readFromFile() throws IOException {
 
-        InputStream file = null;
+        InputStream file;
         try {
             file = new FileInputStream("images.ser");
             InputStream buffer = new BufferedInputStream(file);
@@ -129,9 +129,6 @@ public class ImageTagManager {
             e.printStackTrace();
         }
 
-
-//        //deserialize the Map
-//
         System.out.println(allImages);
         System.out.println(allTags);
 

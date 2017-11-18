@@ -41,6 +41,8 @@ public class Controller {
     @FXML
     private Button addNewTagButton;
     @FXML
+    private Button addTagFromAvailButton;
+    @FXML
     private TextField addNewTagField;
     @FXML
     private Label imageNameLabel;
@@ -57,6 +59,7 @@ public class Controller {
      */
     private Image curSelectedImage;
     private ObservableList<TreeItem<ItemWrapper>> selectedTreeItems;
+    private ObservableList<String> selectedAvailableTag;
     private TreeItem<ItemWrapper> lastImageTreeItemSelected;
 
     private EventHandler<javafx.scene.input.MouseEvent> mouseEvent;
@@ -94,10 +97,6 @@ public class Controller {
             if (rootDirectoryManager.getRootFolder() != null) {
                 rootDirectoryManager.openRootFolder();
             }
-        });
-
-        addNewTagButton.setOnAction(event -> {
-            addNewTag();
         });
 
         // For displaying the image with a mouse click
@@ -151,16 +150,30 @@ public class Controller {
         });
     }
 
-    @FXML
-    public void addNewTag() {
-        // todo: not allow empty tags to be added
-        curSelectedImage.addTag(addNewTagField.getText());
+    private void updateSelectedImage() {
         lastImageTreeItemSelected = new TreeItem<>(new ImageWrapper
                 (curSelectedImage));
         imagesTreeView.refresh();
         imageNameLabel.setText(curSelectedImage.getImageName());
         updateNameHistory(curSelectedImage);
+    }
+
+    @FXML
+    public void addNewTag() {
+        // todo: not allow empty tags to be added
+        curSelectedImage.addTag(addNewTagField.getText());
+        updateSelectedImage();
         populateAvailableTags();
+    }
+
+    @FXML
+    public void addAvailableTag() {
+        selectedAvailableTag = availableTagsView.getSelectionModel()
+                .getSelectedItems();
+        if (selectedAvailableTag.size() != 0) {
+            curSelectedImage.addTag(selectedAvailableTag.get(0));
+        }
+        updateSelectedImage();
     }
 
     @FXML
