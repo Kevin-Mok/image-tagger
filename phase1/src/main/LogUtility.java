@@ -7,9 +7,9 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 /**
- * The Class MyLogging. Used for logging in user input.
+ * Utility class used for logging user interactions with the program
  */
-public class ForLogging {
+public class LogUtility {
 
 	/** The logger. */
 	private static Logger logger;
@@ -21,7 +21,7 @@ public class ForLogging {
 	 *
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
-	private ForLogging() throws IOException{
+	private LogUtility() throws IOException{
 		System.setProperty("java.util.logging.SimpleFormatter.format",
 				"%1$tF %1$tT [%4$-2s: %5$s] %n");
 		//instance the logger
@@ -47,7 +47,7 @@ public class ForLogging {
 		if (imageOrTag) {
 			if (logger == null) {
 				try {
-					new ForLogging();
+					new LogUtility();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -57,7 +57,7 @@ public class ForLogging {
 		else{
 			if (imgLogger == null) {
 				try {
-					new ForLogging();
+					new LogUtility();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}

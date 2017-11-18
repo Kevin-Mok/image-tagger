@@ -1,0 +1,3 @@
+2017-11-18 10:31:56 [INFO: Created new Tag for image galaxy-wallpaper-4 called galaxy] 
+2017-11-18 10:32:49 [INFO: Created new Tag for image galaxy-wallpaper-4 @galaxy called sky] 
+2017-11-18 10:32:56 [INFO: Reverted name from: galaxy-wallpaper-4 @galaxy @skyto: galaxy-wallpaper-4] 
