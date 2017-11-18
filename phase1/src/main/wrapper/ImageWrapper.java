@@ -10,7 +10,7 @@ import java.nio.file.Path;
 public class ImageWrapper extends ItemWrapper {
 
     /**
-     * The Image object that this wrapper encapsulates. Null if isDirectory
+     * The Image object that this wrapper encapsulates.
      */
     private Image image;
 
