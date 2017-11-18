@@ -63,16 +63,6 @@ public class DirectoryManager {
     }
 
     /**
-     * Returns ItemWrapper representing only images directly under the root
-     * folder
-     *
-     * @return List of image paths directly under the root folder
-     */
-    public ItemWrapper getImagesUnderRoot() {
-        return getImages(rootFolder.getPath(), false);
-    }
-
-    /**
      * Returns ItemWrapper representing all images under the root folder,
      * including those in subdirectories
      *
@@ -133,7 +123,6 @@ public class DirectoryManager {
      * Open the root folder using the OS's file viewer
      */
     public void openRootFolder() {
-        Desktop desktop;
         if (Desktop.isDesktopSupported()) {
             new Thread(() -> {
                 try {
@@ -154,11 +143,11 @@ public class DirectoryManager {
      *
      * @return a regular expression
      */
-    public String generateImageMatchingPattern() {
+    private String generateImageMatchingPattern() {
         StringBuilder sb = new StringBuilder();
         sb.append(".+(");
         for (String format : imageFormats) {
-            sb.append(format + "|");
+            sb.append(format).append("|");
         }
         sb.deleteCharAt(sb.length() - 1);
         sb.append(")$");

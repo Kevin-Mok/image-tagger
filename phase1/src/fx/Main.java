@@ -10,7 +10,7 @@ import main.ImageTagManager;
 import java.io.IOException;
 
 public class Main extends Application {
-    ImageTagManager t = ImageTagManager.getInstance();
+    ImageTagManager imgTagManager = ImageTagManager.getInstance();
 
     public static void main(String[] args) {
         launch(args);
@@ -18,13 +18,13 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        t.readFromFile();
+        imgTagManager.readFromFile();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("layout" +
                 ".fxml"));
         Parent root = loader.load();
         Controller controller = loader.getController();
         controller.setStage(primaryStage);
-        // todo: not sure why taskbar icon won't show up
+        // todo: not sure why taskbar icon won'imgTagManager show up
         // Image taskbarIcon = new Image("file:resources/icons/taskbar-icon
         // .png");
         primaryStage.setTitle("Image Renamer");
@@ -35,7 +35,7 @@ public class Main extends Application {
 
     public void stop() throws IOException {
         System.out.println("Stage is closing");
-        t.saveToFile();
+        imgTagManager.saveToFile();
 
     }
 
