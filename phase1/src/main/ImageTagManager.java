@@ -32,6 +32,10 @@ public class ImageTagManager {
         return instance;
     }
 
+    public HashMap<String, Image> getAllImages(){
+      return allImages;
+    }
+
     void add(Tag tag) {
         ArrayList<Image> list;
         if (allTags.containsKey(tag.getName())) {

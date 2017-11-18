@@ -25,6 +25,7 @@ public class DirectoryManager {
      */
     private ArrayList<String> imageFormats;
 
+
     public DirectoryManager(File rootFolder) {
         this.rootFolder = new DirectoryWrapper(rootFolder);
         this.imageFormats = new ArrayList<>();
@@ -110,9 +111,13 @@ public class DirectoryManager {
                 Matcher matcher = imgFilePattern.matcher(file.toString());
                 // System.out.println(file);
                 if (matcher.matches()) {
-                    images.addToDirectory(new ImageWrapper(new Image(file
+                    if (ImageTagManager.getInstance().getAllImages().containsKey(file.toString())) {
+                        images.addToDirectory(new ImageWrapper(ImageTagManager.getInstance().getAllImages().get(file.toString())));
+                    } else {
+                        images.addToDirectory(new ImageWrapper(new Image(file
                             .toFile(), PathExtractor.getImageName(file
                             .toString()))));
+                    }
                 }
             }
         } catch (IOException e) {
