@@ -1,8 +1,8 @@
 package test;
 
 import main.Image;
-import main.TagManager;
 import main.Tag;
+import main.TagManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

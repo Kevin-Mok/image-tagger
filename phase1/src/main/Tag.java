@@ -2,7 +2,7 @@ package main;
 
 import java.io.Serializable;
 
-public class Tag implements Serializable{
+public class Tag implements Serializable {
     private Image image;
     private String name;
 

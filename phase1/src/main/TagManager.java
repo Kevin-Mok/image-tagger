@@ -1,9 +1,8 @@
 package main;
 
-import java.sql.Time;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.*;
-import java.io.Serializable;
 
 public class TagManager implements Serializable {
     private TreeMap<Timestamp, String> nameStore;
@@ -63,9 +62,9 @@ public class TagManager implements Serializable {
         return result.toString();
     }
 
-    public ArrayList<String> getNames(){
+    public ArrayList<String> getNames() {
         ArrayList<String> result = new ArrayList<>();
-        for (Timestamp keys: nameStore.keySet()){
+        for (Timestamp keys : nameStore.keySet()) {
             result.add(nameStore.get(keys));
         }
         return result;

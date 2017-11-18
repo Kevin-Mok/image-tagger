@@ -9,6 +9,7 @@ public class PathExtractor {
 
     /**
      * Gets the image name of an image file given a path
+     *
      * @param imagePath absolute path of an image file
      * @return the image name without the extension
      */
@@ -21,6 +22,7 @@ public class PathExtractor {
 
     /**
      * Gets the name of an image file given a path
+     *
      * @param imagePath absolute path of an image file
      * @return the image file name with its file extension
      */
@@ -38,6 +40,7 @@ public class PathExtractor {
 
     /**
      * Gets the file extension of an image file given a path
+     *
      * @param imagePath absolute path of an image file
      * @return the image file extension
      */
@@ -48,6 +51,7 @@ public class PathExtractor {
 
     /**
      * Gets the directory that an image file is in, given a path
+     *
      * @param imagePath absolute path an image file
      * @return the full path of the directory where the image file is located
      */
@@ -58,6 +62,7 @@ public class PathExtractor {
 
     /**
      * Gets the path of an image file without any tags, given a path
+     *
      * @param imagePath absolute path of an image file
      * @return the full path to the image file, excluding any tags
      */

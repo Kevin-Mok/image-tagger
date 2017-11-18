@@ -1,5 +1,6 @@
 package fx;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -9,6 +10,7 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import main.DirectoryManager;
 import main.Image;
+import main.ImageTagManager;
 import main.PathExtractor;
 import main.wrapper.DirectoryWrapper;
 import main.wrapper.ImageWrapper;
@@ -42,6 +44,8 @@ public class Controller {
     private TextField addNewTagField;
     @FXML
     private Label imageNameLabel;
+    @FXML
+    private ListView<String> availableTagsView;
 
     @FXML
     private ListView nameHistory;
@@ -104,7 +108,8 @@ public class Controller {
                 if (clickedObject instanceof ImageWrapper) {
                     updateSelectedImage(((ImageWrapper) clickedObject)
                             .getImage());
-                    updateNameHistory(((ImageWrapper) clickedObject).getImage());
+                    updateNameHistory(((ImageWrapper) clickedObject).getImage
+                            ());
                 }
             }
         };
@@ -142,6 +147,7 @@ public class Controller {
         imagesTreeView.refresh();
         imageNameLabel.setText(curSelectedImage.getImageName());
         updateNameHistory(curSelectedImage);
+        populateAvailableTags();
     }
 
     @FXML
@@ -165,6 +171,7 @@ public class Controller {
         currentFolderLabel.setText(rootDirectoryManager.getRootFolder()
                 .toString());
         populateImageList();
+        populateAvailableTags();
     }
 
     // Populates the TreeView with list of all images under current dir.
@@ -181,18 +188,21 @@ public class Controller {
                 .MOUSE_CLICKED, mouseEvent);
     }
 
-    private void updateNameHistory(Image clickedImage){
+    private void updateNameHistory(Image clickedImage) {
         nameHistory.getItems().clear();
         ArrayList<String> toWorkWith = clickedImage.getTagManager().getNames();
-        for (String name: toWorkWith){
+        for (String name : toWorkWith) {
             nameHistory.getItems().add(name);
         }
     }
 
     /**
-     * Populates the parentNode using ItemWrapper objects from the parentNodeList
-     * @param parentNode The UI element to be populated
-     * @param parentNodeList ItemWrapper containing the data needed to populate the parent
+     * Populates the parentNode using ItemWrapper objects from the
+     * parentNodeList
+     *
+     * @param parentNode     The UI element to be populated
+     * @param parentNodeList ItemWrapper containing the data needed to
+     *                       populate the parent
      */
     private void populateParentNode(TreeItem<ItemWrapper> parentNode,
                                     ItemWrapper parentNodeList) {
@@ -211,17 +221,13 @@ public class Controller {
                 }
             }
         }
-//        for (Object o : imagesList) {
-//            if (o instanceof List) {
-//                String parentPath = (String) ((List) o).get(0);
-//                TreeItem<Object> childNode = new TreeItem<>(PathExtractor
-//                        .getImageFileName(parentPath));
-//                populateParentNode(childNode, (List) o);
-//                parentNode.getChildren().add(childNode);
-//            } else if (o instanceof Image) {
-//                parentNode.getChildren().add(new TreeItem<>(o));
-//            }
-//        }
+    }
+
+    private void populateAvailableTags() {
+        ObservableList<String> availableTagsList = FXCollections
+                .observableArrayList();
+        availableTagsList.setAll(ImageTagManager.getInstance().getListOfTags());
+        availableTagsView.setItems(availableTagsList);
     }
 
 }

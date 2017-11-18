@@ -6,4 +6,5 @@
 */*/ignore
 */commit-msg.txt
 */*.ser
+*/*/*.ser
 phase1/src/sources.txt

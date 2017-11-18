@@ -111,12 +111,15 @@ public class DirectoryManager {
                 Matcher matcher = imgFilePattern.matcher(file.toString());
                 // System.out.println(file);
                 if (matcher.matches()) {
-                    if (ImageTagManager.getInstance().getAllImages().containsKey(file.toString())) {
-                        images.addToDirectory(new ImageWrapper(ImageTagManager.getInstance().getAllImages().get(file.toString())));
+                    if (ImageTagManager.getInstance().getAllImages()
+                            .containsKey(file.toString())) {
+                        images.addToDirectory(new ImageWrapper
+                                (ImageTagManager.getInstance().getAllImages()
+                                        .get(file.toString())));
                     } else {
                         images.addToDirectory(new ImageWrapper(new Image(file
-                            .toFile(), PathExtractor.getImageName(file
-                            .toString()))));
+                                .toFile(), PathExtractor.getImageName(file
+                                .toString()))));
                     }
                 }
             }
@@ -148,6 +151,7 @@ public class DirectoryManager {
 
     /**
      * Generates a string matching pattern, using the formats in imageFormats
+     *
      * @return a regular expression
      */
     public String generateImageMatchingPattern() {
