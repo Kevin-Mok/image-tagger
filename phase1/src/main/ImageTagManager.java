@@ -114,7 +114,7 @@ public class ImageTagManager {
 	private void deleteUselessImageObjects() {
 		HashMap<String, Image> rebuild = new HashMap<>();
 		for (String keys: allImages.keySet()){
-			if(allImages.get(keys).getTagManager().getNames().size() != 1){
+			if(allImages.get(keys).getTagManager().getNameHistory().size() != 1){
 				rebuild.put(keys, allImages.get(keys));
 			}
 		}

@@ -26,11 +26,11 @@ public class Controller {
     // Use the UI element id specified in the FXML file as the variable name
     // to get a hook on those elements
     @FXML
-    private Button chooseDirButton;
+    private Button chooseDirBtn;
     @FXML
-    private Button moveFileButton;
+    private Button moveFileBtn;
     @FXML
-    private Button openCurDirButton;
+    private Button openCurDirBtn;
     @FXML
     private Label currentFolderLabel;
     @FXML
@@ -55,8 +55,6 @@ public class Controller {
      * EventHandlers, made sense to factor them out
      */
     private Image curSelectedImage;
-    private ObservableList<TreeItem<ItemWrapper>> selectedTreeItems;
-    private ObservableList<String> selectedAvailableTag;
     private TreeItem<ItemWrapper> lastImageTreeItemSelected;
 
     private EventHandler<javafx.scene.input.MouseEvent> mouseEvent;
@@ -81,7 +79,7 @@ public class Controller {
     @FXML
     public void initialize() {
 
-        chooseDirButton.setOnAction(event -> {
+        chooseDirBtn.setOnAction(event -> {
             File rootDirectory = chooseDirectory("Choose a directory to open");
             if (rootDirectory != null) {
                 rootDirectoryManager.setRootFolder(new DirectoryWrapper
@@ -90,7 +88,7 @@ public class Controller {
             }
         });
 
-        openCurDirButton.setOnAction(event -> {
+        openCurDirBtn.setOnAction(event -> {
             if (rootDirectoryManager.getRootFolder() != null) {
                 rootDirectoryManager.openRootFolder();
             }
@@ -98,8 +96,8 @@ public class Controller {
 
         // For displaying the image with a mouse click
         mouseEvent = (javafx.scene.input.MouseEvent event) -> {
-            selectedTreeItems = imagesTreeView.getSelectionModel()
-                    .getSelectedItems();
+            ObservableList<TreeItem<ItemWrapper>> selectedTreeItems =
+                    imagesTreeView.getSelectionModel().getSelectedItems();
             if (selectedTreeItems.size() != 0) {
                 ItemWrapper clickedObject = selectedTreeItems.get(0).getValue();
                 if (clickedObject instanceof ImageWrapper) {
@@ -111,7 +109,7 @@ public class Controller {
         };
 
         // todo: display no image when picture is moved?
-        moveFileButton.setOnAction(event -> {
+        moveFileBtn.setOnAction(event -> {
             if (curSelectedImage != null) {
                 String newDirectory = chooseDirectory("Move file to " +
                         "directory").toString();
@@ -129,7 +127,6 @@ public class Controller {
                 }
                 // todo: regenerating entire tree is a bit overkill here,
                 // should only deal with that specific TreeItem?
-
                 // todo: need to update the ImageWrapper's new location
                 // in PictureManager, maybe delete the old object from the
                 // HashMap first using the old path, and then reinsert
@@ -175,10 +172,20 @@ public class Controller {
 
     @FXML
     public void addAvailableTag() {
-        selectedAvailableTag = availableTagsView.getSelectionModel()
-                .getSelectedItems();
+        ObservableList<String> selectedAvailableTag = availableTagsView
+                .getSelectionModel().getSelectedItems();
         if (selectedAvailableTag.size() != 0) {
             curSelectedImage.addTag(selectedAvailableTag.get(0));
+        }
+        updateSelectedImageGUI();
+    }
+
+    @FXML
+    public void deleteTag() {
+        ObservableList<String> selectedCurrentTag = availableTagsView
+                .getSelectionModel().getSelectedItems();
+        if (selectedCurrentTag.size() != 0) {
+            curSelectedImage.deleteTag(selectedCurrentTag.get(0));
         }
         updateSelectedImageGUI();
     }

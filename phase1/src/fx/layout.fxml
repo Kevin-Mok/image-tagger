@@ -22,7 +22,7 @@
         <Label alignment="CENTER" layoutX="19.0" layoutY="501.0" prefHeight="16.0" prefWidth="299.0" text="Name History" AnchorPane.bottomAnchor="374.0" AnchorPane.leftAnchor="19.0" />
         <Label alignment="CENTER" layoutX="774.0" layoutY="565.0" prefHeight="16.0" prefWidth="200.0" text="Current Tags" AnchorPane.bottomAnchor="310.0" AnchorPane.rightAnchor="138.0" />
         <TreeView fx:id="imagesTreeView" editable="true" layoutX="20.0" layoutY="95.0" prefHeight="398.0" prefWidth="299.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="95.0" />
-        <Button fx:id="chooseDirButton" layoutX="20.0" layoutY="23.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="50.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="23.0">
+        <Button fx:id="chooseDirBtn" layoutX="20.0" layoutY="23.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="50.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="23.0">
             <graphic>
                 <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                     <image>
@@ -34,7 +34,7 @@
                 <Tooltip text="Choose Directory" />
             </tooltip>
         </Button>
-        <Button fx:id="moveFileButton" layoutX="269.0" layoutY="23.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="50.0" AnchorPane.leftAnchor="268.0" AnchorPane.topAnchor="23.0">
+        <Button fx:id="moveFileBtn" layoutX="269.0" layoutY="23.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="50.0" AnchorPane.leftAnchor="268.0" AnchorPane.topAnchor="23.0">
             <graphic>
                 <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                     <image>
@@ -46,7 +46,7 @@
                 <Tooltip text="Move Current File" />
             </tooltip>
         </Button>
-        <Button fx:id="openCurDirButton" layoutX="145.0" layoutY="23.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="50.0" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="23.0">
+        <Button fx:id="openCurDirBtn" layoutX="145.0" layoutY="23.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="50.0" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="23.0">
             <graphic>
                 <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                     <image>
@@ -63,7 +63,7 @@
                    onAction="#addNewTag" prefHeight="26.0" prefWidth="124.0"
                    AnchorPane.bottomAnchor="25.0"
                    AnchorPane.rightAnchor="212.0"/>
-        <Button fx:id="addNewTagButton" layoutX="902.0" layoutY="840.0"
+        <Button fx:id="addNewTagBtn" layoutX="902.0" layoutY="840.0"
                 onAction="#addNewTag" mnemonicParsing="false" text="Add Tag"
                 AnchorPane.bottomAnchor="25.0" AnchorPane.rightAnchor="138.0"/>
         <ListView fx:id="availableTagsView" layoutX="395.0" layoutY="588.0"
@@ -73,10 +73,10 @@
         <Label alignment="CENTER" layoutX="395.0" layoutY="565.0"
                prefHeight="16.0" prefWidth="215.0" text="Available Tags"
                AnchorPane.rightAnchor="502.0" AnchorPane.topAnchor="565.0"/>
-        <Button fx:id="deleteTagButton" layoutX="661.0" layoutY="700.0"
-                mnemonicParsing="false" text="Delete"
+        <Button fx:id="deleteTagBtn" layoutX="661.0" layoutY="700.0"
+                onAction="#deleteTag" mnemonicParsing="false" text="Delete"
                 AnchorPane.bottomAnchor="165.0" AnchorPane.rightAnchor="388.0"/>
-        <Button fx:id="addTagFromAvailButton" layoutX="633.0" layoutY="654.0"
+        <Button fx:id="addTagFromAvailBtn" layoutX="633.0" layoutY="654.0"
                 onAction="#addAvailableTag" mnemonicParsing="false" prefHeight="26.0"
                 prefWidth="116.0"
                 text="Add &gt;&gt;" AnchorPane.bottomAnchor="210.0"
