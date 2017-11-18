@@ -5,3 +5,5 @@
 */out
 */*/ignore
 */commit-msg.txt
+*/*.ser
+phase1/src/sources.txt
