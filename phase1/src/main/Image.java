@@ -3,6 +3,7 @@ package main;
 import java.io.File;
 import java.io.Serializable;
 import java.nio.file.Path;
+import java.util.logging.Level;
 
 /**
  * Image class that stores its path and a ImageTagManager object to work with
@@ -57,6 +58,8 @@ public class Image implements Serializable {
         if (!imageFile.renameTo(new File(newPathString))) {
             System.out.println("File renaming failed.");
         } else {
+            ForLogging.log(Level.INFO, "Changed name from: " +  this.getImageName() + "  -->  " + newImageName,
+                    false );
             imageFile = new File(newPathString);
             imageName = newImageName;
             ImageTagManager.getInstance().addImage(this);

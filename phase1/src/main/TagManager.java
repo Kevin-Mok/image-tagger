@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.logging.Level;
 
 public class TagManager implements Serializable {
     private TreeMap<Timestamp, String> nameStore;
@@ -36,7 +37,9 @@ public class TagManager implements Serializable {
             nameStore.put(new Timestamp(System.currentTimeMillis()),
                     currentName + " @" + tag.getName());
 
+            ForLogging.log(Level.INFO, "Created new Tag for image " + image.getImageName() + " called " + tag.getName(), true);
             return nameStore.lastEntry().getValue();
+
         }
 
         return nameStore.lastEntry().getValue();
@@ -48,6 +51,7 @@ public class TagManager implements Serializable {
             currentTags.remove(tag);
             nameStore.put(new Timestamp(System.currentTimeMillis()),
                     getCurrentName());
+            ForLogging.log(Level.INFO, "Deleted Tag from Image " + image.getImageName() + " called " + tagName, true);
             return nameStore.lastEntry().getValue();
         }
         return nameStore.lastEntry().getValue();
@@ -83,6 +87,7 @@ public class TagManager implements Serializable {
 
     public String revertName(String name) {
         if (nameStore.values().contains(name)) {
+            ForLogging.log(Level.INFO, "Reverted name from: " + nameStore.lastEntry().getValue() + "to: "+ name, true);
             nameStore.put(new Timestamp(System.currentTimeMillis()), name);
             rewrite();
         }

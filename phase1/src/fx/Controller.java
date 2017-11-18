@@ -65,7 +65,7 @@ public class Controller {
     private Stage stage;
 
     public Controller() {
-    }
+   }
 
     void setStage(Stage stage) {
         this.stage = stage;
