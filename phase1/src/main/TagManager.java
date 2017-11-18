@@ -1,6 +1,5 @@
 package main;
 
-import java.awt.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -56,7 +55,8 @@ public class TagManager implements Serializable {
 
     private String getCurrentName() {
         StringBuilder result = new StringBuilder();
-        result.append(PathExtractor.getOriginalName((image.getPath().toString())));
+        result.append(PathExtractor.getOriginalName((image.getPath().toString
+                ())));
         for (Tag currentTag : currentTags) {
             result.append(" @" + currentTag.getName());
         }
@@ -67,14 +67,14 @@ public class TagManager implements Serializable {
         ArrayList<String> result = new ArrayList<>();
         for (Timestamp keys : nameStore.keySet()) {
             String s = new SimpleDateFormat("MM/dd HH:mm:ss").format(keys);
-            result.add(s+ "  →  " + nameStore.get(keys));
+            result.add(s + "  →  " + nameStore.get(keys));
         }
         return result;
     }
 
-    public ArrayList<String> getTagNames(){
+    public ArrayList<String> getTagNames() {
         ArrayList<String> result = new ArrayList<>();
-        for (Tag tag: currentTags){
+        for (Tag tag : currentTags) {
             result.add(tag.getName());
         }
         Collections.sort(result);

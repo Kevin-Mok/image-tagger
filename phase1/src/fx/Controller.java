@@ -110,7 +110,7 @@ public class Controller {
         // todo: display no image when picture is moved?
         moveFileBtn.setOnAction(event -> {
             if (curSelectedImage != null) {
-                try{
+                try {
                     String newDirectory = chooseDirectory("Move file to " +
                             "directory").toString();
                     String imageFileName = PathExtractor.getImageFileName
@@ -120,7 +120,8 @@ public class Controller {
                     Files.move(curSelectedImage.getPath(), Paths.get
                             (newPathOfImage));
                     System.out.println(curSelectedImage.getPath().toString());
-                    ImageTagManager.getInstance().removeImage(curSelectedImage.getPath().toString());
+                    ImageTagManager.getInstance().removeImage
+                            (curSelectedImage.getPath().toString());
                     curSelectedImage.setPath(newPathOfImage);
                     ImageTagManager.getInstance().addImage(curSelectedImage);
                     //ImageTagManager.getInstance().saveToFile();

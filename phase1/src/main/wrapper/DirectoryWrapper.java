@@ -41,7 +41,7 @@ public class DirectoryWrapper extends ItemWrapper {
 
     @Override
     public Path getPath() {
-        if(path == null){
+        if (path == null) {
             return null;
         }
         return this.path.toPath();

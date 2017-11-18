@@ -1,11 +1,8 @@
 package main;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.Serializable;
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Image class that stores its path and a ImageTagManager object to work with
@@ -37,7 +34,7 @@ public class Image implements Serializable {
         return imageFile.toPath();
     }
 
-    public void setPath(String path){
+    public void setPath(String path) {
         imageFile = new File(path);
     }
 
@@ -51,7 +48,7 @@ public class Image implements Serializable {
      *
      * @param newImageName the new image name
      */
-    void rename(String newImageName)  {
+    void rename(String newImageName) {
         String curPath = imageFile.getPath();
         String curDir = PathExtractor.getDirectory(curPath);
         ImageTagManager.getInstance().removeImage(curPath);

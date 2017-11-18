@@ -32,18 +32,17 @@ public class ImageTagManager {
         return listOfTags;
     }
 
-	public void removeImage(String path){
-    	allImages.remove(path);
-	}
+    public void removeImage(String path) {
+        allImages.remove(path);
+    }
 
-	public Image getImage(String path){
-		return allImages.get(path);
-	}
+    public Image getImage(String path) {
+        return allImages.get(path);
+    }
 
-	public boolean containsImagePath(String path){
-		return allImages.containsKey(path);
-	}
-
+    public boolean containsImagePath(String path) {
+        return allImages.containsKey(path);
+    }
 
 
     public void addImage(Image image) {
@@ -51,30 +50,30 @@ public class ImageTagManager {
         System.out.println(allImages);
     }
 
-    public void rebuildTagList(){
-    	HashMap<String, ArrayList<Image>> rebuild = new HashMap<>();
-    	for (String keys: allImages.keySet()){
-    		mapBuilder(allImages.get(keys), rebuild);
-		}
-		allTags = rebuild;
-		System.out.println(allTags);
-	}
+    public void rebuildTagList() {
+        HashMap<String, ArrayList<Image>> rebuild = new HashMap<>();
+        for (String keys : allImages.keySet()) {
+            mapBuilder(allImages.get(keys), rebuild);
+        }
+        allTags = rebuild;
+        System.out.println(allTags);
+    }
 
-	private void mapBuilder(Image image, HashMap<String, ArrayList<Image>> map){
-    	for(String tagName: image.getTagManager().getTagNames()){
-    		if(map.containsKey(tagName)){
-    			map.get(tagName).add(image);
-			}
-			else{
-    			map.put(tagName, new ArrayList<>());
-    			map.get(tagName).add(image);
-			}
-		}
-	}
+    private void mapBuilder(Image image, HashMap<String, ArrayList<Image>>
+            map) {
+        for (String tagName : image.getTagManager().getTagNames()) {
+            if (map.containsKey(tagName)) {
+                map.get(tagName).add(image);
+            } else {
+                map.put(tagName, new ArrayList<>());
+                map.get(tagName).add(image);
+            }
+        }
+    }
 
 
     public void saveToFile() throws IOException {
-		deleteUselessImageObjects();
+        deleteUselessImageObjects();
         OutputStream file = new FileOutputStream("images.ser");
         OutputStream buffer = new BufferedOutputStream(file);
         ObjectOutput output = new ObjectOutputStream(buffer);
@@ -90,17 +89,18 @@ public class ImageTagManager {
         output1.close();
     }
 
-	private void deleteUselessImageObjects() {
-		HashMap<String, Image> rebuild = new HashMap<>();
-		for (String keys: allImages.keySet()){
-			if(allImages.get(keys).getTagManager().getNameHistory().size() != 1){
-				rebuild.put(keys, allImages.get(keys));
-			}
-		}
-		allImages = rebuild;
-	}
+    private void deleteUselessImageObjects() {
+        HashMap<String, Image> rebuild = new HashMap<>();
+        for (String keys : allImages.keySet()) {
+            if (allImages.get(keys).getTagManager().getNameHistory().size()
+                    != 1) {
+                rebuild.put(keys, allImages.get(keys));
+            }
+        }
+        allImages = rebuild;
+    }
 
-	public void readFromFile() throws IOException {
+    public void readFromFile() throws IOException {
 
         InputStream file;
         try {

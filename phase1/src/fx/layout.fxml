@@ -1,61 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.Tooltip?>
-<?import javafx.scene.control.TreeView?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="891.0" prefWidth="1112.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fx.Controller">
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity"
+            prefHeight="891.0" prefWidth="1112.0"
+            xmlns="http://javafx.com/javafx/8.0.141" fx:controller="fx.Controller">
     <children>
-        <Label fx:id="currentFolderLabel" alignment="CENTER" contentDisplay="RIGHT" layoutX="21.0" layoutY="74.0" prefHeight="16.0" prefWidth="299.0" text="Current Folder" AnchorPane.leftAnchor="21.0" AnchorPane.topAnchor="74.0" />
-        <ImageView fx:id="imageViewPort" fitHeight="466.0" fitWidth="751.0" layoutX="330.0" layoutY="74.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="31.0" AnchorPane.topAnchor="74.0" />
-        <Label fx:id="imageNameLabel" alignment="CENTER" layoutX="577.0" layoutY="39.0" prefHeight="16.0" prefWidth="751.0" text="Image Name" wrapText="true" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="39.0" />
+        <Label fx:id="currentFolderLabel" alignment="CENTER"
+               contentDisplay="RIGHT" layoutX="21.0" layoutY="74.0"
+               prefHeight="16.0" prefWidth="299.0" text="Current Folder"
+               AnchorPane.leftAnchor="21.0" AnchorPane.topAnchor="74.0"/>
+        <ImageView fx:id="imageViewPort" fitHeight="466.0" fitWidth="751.0"
+                   layoutX="330.0" layoutY="74.0" pickOnBounds="true"
+                   preserveRatio="true" AnchorPane.rightAnchor="31.0"
+                   AnchorPane.topAnchor="74.0"/>
+        <Label fx:id="imageNameLabel" alignment="CENTER" layoutX="577.0"
+               layoutY="39.0" prefHeight="16.0" prefWidth="751.0"
+               text="Image Name" wrapText="true" AnchorPane.rightAnchor="25.0"
+               AnchorPane.topAnchor="39.0"/>
         <ListView fx:id="nameHistoryView" layoutX="20.0" layoutY="522.0"
-                  prefHeight="316.0" prefWidth="299.0" AnchorPane.bottomAnchor="53.0" AnchorPane.leftAnchor="20.0" />
+                  prefHeight="316.0" prefWidth="299.0"
+                  AnchorPane.bottomAnchor="53.0" AnchorPane.leftAnchor="20.0"/>
         <ListView fx:id="currentTagsView" layoutX="776.0" layoutY="588.0"
-                  prefHeight="250.0" prefWidth="200.0" AnchorPane.bottomAnchor="53.0" AnchorPane.rightAnchor="136.0" />
-        <Label alignment="CENTER" layoutX="19.0" layoutY="501.0" prefHeight="16.0" prefWidth="299.0" text="Name History" AnchorPane.bottomAnchor="374.0" AnchorPane.leftAnchor="19.0" />
-        <Label alignment="CENTER" layoutX="774.0" layoutY="565.0" prefHeight="16.0" prefWidth="200.0" text="Current Tags" AnchorPane.bottomAnchor="310.0" AnchorPane.rightAnchor="138.0" />
-        <TreeView fx:id="imagesTreeView" editable="true" layoutX="20.0" layoutY="95.0" prefHeight="398.0" prefWidth="299.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="95.0" />
-        <Button fx:id="chooseDirBtn" layoutX="20.0" layoutY="23.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="50.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="23.0">
+                  prefHeight="250.0" prefWidth="200.0"
+                  AnchorPane.bottomAnchor="53.0"
+                  AnchorPane.rightAnchor="136.0"/>
+        <Label alignment="CENTER" layoutX="19.0" layoutY="501.0"
+               prefHeight="16.0" prefWidth="299.0" text="Name History"
+               AnchorPane.bottomAnchor="374.0" AnchorPane.leftAnchor="19.0"/>
+        <Label alignment="CENTER" layoutX="774.0" layoutY="565.0"
+               prefHeight="16.0" prefWidth="200.0" text="Current Tags"
+               AnchorPane.bottomAnchor="310.0" AnchorPane.rightAnchor="138.0"/>
+        <TreeView fx:id="imagesTreeView" editable="true" layoutX="20.0"
+                  layoutY="95.0" prefHeight="398.0" prefWidth="299.0"
+                  AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="95.0"/>
+        <Button fx:id="chooseDirBtn" layoutX="20.0" layoutY="23.0"
+                mnemonicParsing="false" prefHeight="48.0" prefWidth="50.0"
+                AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="23.0">
             <graphic>
-                <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true"
+                           preserveRatio="true">
                     <image>
-                        <Image url="@resources/icons/select_dir.png" />
+                        <Image url="@resources/icons/select_dir.png"/>
                     </image>
                 </ImageView>
             </graphic>
             <tooltip>
-                <Tooltip text="Choose Directory" />
+                <Tooltip text="Choose Directory"/>
             </tooltip>
         </Button>
-        <Button fx:id="moveFileBtn" layoutX="269.0" layoutY="23.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="50.0" AnchorPane.leftAnchor="268.0" AnchorPane.topAnchor="23.0">
+        <Button fx:id="moveFileBtn" layoutX="269.0" layoutY="23.0"
+                mnemonicParsing="false" prefHeight="48.0" prefWidth="50.0"
+                AnchorPane.leftAnchor="268.0" AnchorPane.topAnchor="23.0">
             <graphic>
-                <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true"
+                           preserveRatio="true">
                     <image>
-                        <Image url="@resources/icons/move_file.png" />
+                        <Image url="@resources/icons/move_file.png"/>
                     </image>
                 </ImageView>
             </graphic>
             <tooltip>
-                <Tooltip text="Move Current File" />
+                <Tooltip text="Move Current File"/>
             </tooltip>
         </Button>
-        <Button fx:id="openCurDirBtn" layoutX="145.0" layoutY="23.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="50.0" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="23.0">
+        <Button fx:id="openCurDirBtn" layoutX="145.0" layoutY="23.0"
+                mnemonicParsing="false" prefHeight="48.0" prefWidth="50.0"
+                AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="23.0">
             <graphic>
-                <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true"
+                           preserveRatio="true">
                     <image>
-                        <Image url="@resources/icons/open_dir.png" />
+                        <Image url="@resources/icons/open_dir.png"/>
                     </image>
                 </ImageView>
             </graphic>
             <tooltip>
-                <Tooltip text="Open Current Directory" />
+                <Tooltip text="Open Current Directory"/>
             </tooltip>
         </Button>
 
@@ -77,11 +99,13 @@
                 onAction="#deleteTag" mnemonicParsing="false" text="Delete"
                 AnchorPane.bottomAnchor="165.0" AnchorPane.rightAnchor="388.0"/>
         <Button fx:id="addTagFromAvailBtn" layoutX="633.0" layoutY="654.0"
-                onAction="#addAvailableTag" mnemonicParsing="false" prefHeight="26.0"
+                onAction="#addAvailableTag" mnemonicParsing="false"
+                prefHeight="26.0"
                 prefWidth="116.0"
                 text="Add &gt;&gt;" AnchorPane.bottomAnchor="210.0"
                 AnchorPane.rightAnchor="363.0"/>
-        <Button fx:id = "revertName" alignment="CENTER" layoutX="20.0" layoutY="840.0"
+        <Button fx:id="revertName" alignment="CENTER" layoutX="20.0"
+                layoutY="840.0"
                 mnemonicParsing="false" prefHeight="26.0" prefWidth="299.0"
                 text="Revert Name"/>
 
