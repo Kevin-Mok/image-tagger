@@ -19,9 +19,11 @@ public class ImageTagManager {
     private HashMap<String, Image> pathToImages;
 
     /**
-     * Private constructor so that only one instance may be created through a static method
+     * Private constructor so that only one instance may be created through a
+     * static method
      */
-    private ImageTagManager() {}
+    private ImageTagManager() {
+    }
 
     /**
      * Returns the singleton instance of this class.
