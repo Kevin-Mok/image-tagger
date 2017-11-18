@@ -11,3 +11,6 @@ phase1/src/sources.txt
 phase1/myLog.txt
 phase1/nameChangeLog.txt
 test-images/
+*.txt
+*.lck
+*/*.lck

@@ -25,7 +25,7 @@ class ImageTagManagerTest {
 
     @Test
     void addTagToNewImage() {
-        assertEquals("test1 @yooo", manager.addTag(addedTag));
+        assertEquals("test1 @yooo", manager.addTag(addedTag.toString()));
         // Code below for testing Image class that actually renames files.
         // File newFile = new File("test1 @yooo.jpg");
         // Image newPic = new Image(newFile, "test1 @yooo");
@@ -34,7 +34,7 @@ class ImageTagManagerTest {
 
     @Test
     void deleteTag() {
-        manager.addTag(addedTag);
+        manager.addTag(addedTag.toString());
         assertEquals("test1", manager.deleteTag("yooo"));
     }
 

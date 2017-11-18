@@ -37,7 +37,7 @@ public class Controller {
     @FXML
     private TreeView<ItemWrapper> imagesTreeView;
     @FXML
-    private ImageView imageViewPort;
+    private ImageView imageView;
     @FXML
     private TextField addNewTagField;
     @FXML
@@ -123,8 +123,10 @@ public class Controller {
                     System.out.println(curSelectedImage.getPath().toString());
                     ImageTagManager.getInstance().removeImage
                             (curSelectedImage.getPath().toString());
-                    curSelectedImage.setImageFile(newPathOfImage);
+                    // curSelectedImage.setImageFile(newPathOfImage);
                     ImageTagManager.getInstance().addImage(curSelectedImage);
+                    // todo: select new image in TreeView afterwards?
+                    curSelectedImage = null;
                     //ImageTagManager.getInstance().saveToFile();
                     refreshGUIElements();
                 } catch (IOException | NullPointerException e) {
@@ -153,46 +155,51 @@ public class Controller {
     }
 
     private void updateSelectedImageGUI() {
-        // Update ImageView.
-        String filePath = curSelectedImage.getPath().toString();
-        imageViewPort.setImage(new javafx.scene.image.Image
-                ("file:" + filePath));
-        // Update TreeView.
-        imagesTreeView.refresh();
-        // Update label.
-        imageNameLabel.setText(curSelectedImage.getImageName());
-        updateNameHistory();
-        updateCurrentTags();
-        updateAvailableTags();
+        if (curSelectedImage != null) {
+            // Update ImageView.
+            String filePath = curSelectedImage.getPath().toString();
+            imageView.setImage(new javafx.scene.image.Image
+                    ("file:" + filePath));
+            // Update TreeView.
+            imagesTreeView.refresh();
+            // Update label.
+            imageNameLabel.setText(curSelectedImage.getImageName());
+            updateNameHistory();
+            updateCurrentTags();
+            updateAvailableTags();
+        } else {
+            imageView.setImage(null);
+        }
     }
 
     @FXML
     public void addNewTag() {
-        // todo: not allow empty tags to be added
-        curSelectedImage.addTag(addNewTagField.getText());
-        addNewTagField.clear();
-        updateSelectedImageGUI();
-        updateAvailableTags();
+        String newTagName = addNewTagField.getText();
+        if (curSelectedImage != null && newTagName.length() > 0) {
+            curSelectedImage.addTag(newTagName);
+            addNewTagField.clear();
+            updateSelectedImageGUI();
+        }
     }
 
     @FXML
     public void addAvailableTag() {
         ObservableList<String> selectedAvailableTag = availableTagsView
                 .getSelectionModel().getSelectedItems();
-        if (selectedAvailableTag.size() != 0) {
+        if (curSelectedImage != null && selectedAvailableTag.size() != 0) {
             curSelectedImage.addTag(selectedAvailableTag.get(0));
+            updateSelectedImageGUI();
         }
-        updateSelectedImageGUI();
     }
 
     @FXML
     public void deleteTag() {
         ObservableList<String> selectedCurrentTag = currentTagsView
                 .getSelectionModel().getSelectedItems();
-        if (selectedCurrentTag.size() != 0) {
+        if (curSelectedImage != null && selectedCurrentTag.size() != 0) {
             curSelectedImage.deleteTag(selectedCurrentTag.get(0));
+            updateSelectedImageGUI();
         }
-        updateSelectedImageGUI();
     }
 
     @FXML
@@ -208,6 +215,7 @@ public class Controller {
                 .toString());
         populateImageList();
         updateAvailableTags();
+        updateSelectedImageGUI();
     }
 
     // Populates the TreeView with list of all images under current dir.
