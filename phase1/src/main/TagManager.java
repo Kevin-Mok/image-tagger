@@ -106,7 +106,7 @@ public class TagManager implements Serializable {
         Collections.sort(result);
         return result;
     }
-    
+
     /**
      * Reverts the Image to a previous name in nameHistory.
      *

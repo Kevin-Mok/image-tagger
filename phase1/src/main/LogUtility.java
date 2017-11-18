@@ -69,10 +69,10 @@ class LogUtility {
 
         if (getRenameLogger) {
             loggerName = "Current Image Name Change Log: ";
-            pattern = "nameChangeLog.txt";
+            pattern = "renameLog.txt";
         } else {
             loggerName = "Current log: ";
-            pattern = "myLog.txt";
+            pattern = "tagEventLog.txt";
         }
         Logger logger = Logger.getLogger(loggerName);
         FileHandler handler;

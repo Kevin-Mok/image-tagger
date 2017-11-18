@@ -132,12 +132,6 @@ public class Controller {
                 } catch (IOException | NullPointerException e) {
                     System.out.println("No move");
                 }
-
-                // todo: regenerating entire tree is a bit overkill here,
-                // should only deal with that specific TreeItem?
-                // todo: need to update the ImageWrapper's new location
-                // in PictureManager, maybe delete the old object from the
-                // HashMap first using the old path, and then reinsert
             }
         });
 
@@ -172,6 +166,10 @@ public class Controller {
         }
     }
 
+    /**
+     * Method that allows the user to add new tags by interacting with GUI elements
+     * Exposed to the FXML file through the @FXML annotation
+     */
     @FXML
     public void addNewTag() {
         String newTagName = addNewTagField.getText();
@@ -182,6 +180,9 @@ public class Controller {
         }
     }
 
+    /**
+     * Allows the user to add a tag from the ListView of available tags by interacting with a GUI element
+     */
     @FXML
     public void addAvailableTag() {
         ObservableList<String> selectedAvailableTag = availableTagsView
@@ -192,6 +193,9 @@ public class Controller {
         }
     }
 
+    /**
+     * Allows user to delete a tag by interacting with a GUI element
+     */
     @FXML
     public void deleteTag() {
         ObservableList<String> selectedCurrentTag = currentTagsView
@@ -209,7 +213,9 @@ public class Controller {
         return directoryChooser.showDialog(stage);
     }
 
-    // Updates all the needed elements when a new directory is selected.
+    /**
+     * Refreshes all GUI elements when something is changed by the user
+     */
     private void refreshGUIElements() {
         currentFolderLabel.setText(rootDirectoryManager.getRootFolder()
                 .toString());
@@ -232,6 +238,10 @@ public class Controller {
                 .MOUSE_CLICKED, mouseEvent);
     }
 
+    /**
+     * Clears the current name history ListView and rebuilds it using the selected
+     * image's TagManager
+     */
     private void updateNameHistory() {
         ObservableList<String> nameHistoryList = FXCollections
                 .observableArrayList();

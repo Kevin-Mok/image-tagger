@@ -22,8 +22,7 @@ public class ImageTagManager {
      * Private constructor so that only one instance may be created through a
      * static method
      */
-    private ImageTagManager() {
-    }
+    private ImageTagManager() {}
 
     /**
      * Returns the singleton instance of this class.
