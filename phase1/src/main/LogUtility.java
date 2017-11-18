@@ -1,7 +1,9 @@
 package main;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.logging.FileHandler;
-import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
@@ -11,9 +13,9 @@ import java.util.logging.SimpleFormatter;
  */
 class LogUtility {
 
-	/** The logger. */
-	private Logger logger;
-	private Logger imgLogger;
+	/** The tagLogger. */
+	private Logger tagLogger;
+	private Logger renameLogger;
 	private static LogUtility logUtility;
 
 	/**
@@ -24,24 +26,14 @@ class LogUtility {
 	private LogUtility() throws IOException{
 		System.setProperty("java.util.logging.SimpleFormatter.format",
 				"%1$tF %1$tT [%4$-2s: %5$s] %n");
-		//instance the tagLogger
-		tagLogger = Logger.getLogger("Current Log: ");
-
-		//instance the filehandler
-		Handler fileHandler = new FileHandler("myLog.txt",true);
-		Handler imgFileHandler = new FileHandler("nameChangeLog.txt",true);
-		//instance formatter, set formatting, and handler
-		SimpleFormatter plainText = new SimpleFormatter();
-		fileHandler.setFormatter(plainText);
-		imgFileHandler.setFormatter(plainText);
-		tagLogger.addHandler(fileHandler);
-		renameLogger.addHandler(imgFileHandler);
+		tagLogger = this.getLogger(false);
+		renameLogger = this.getLogger(true);
 	}
 
-	public static LogUtility getInstance() {
+	static LogUtility getInstance() {
 		if (logUtility == null){
 			try {
-				return new LogUtility();
+				logUtility = new LogUtility();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -49,67 +41,57 @@ class LogUtility {
 		return logUtility;
 	}
 
-	public static Logger getLogger(boolean getRenameLogger) {
+	private Logger getLogger(boolean getRenameLogger) throws IOException {
+	    if (getRenameLogger && this.renameLogger != null) {
+	        return this.renameLogger;
+        }
+        if (this.tagLogger != null) {
+	        return this.tagLogger;
+        }
+
 	    String loggerName;
 	    String pattern;
 
-	    if ()
-    }
-
-	public static Logger getRenameLogger() {
-        System.setProperty("java.util.logging.SimpleFormatter.format",
-                "%1$tF %1$tT [%4$-2s: %5$s] %n");
-	    if (LogUtility.renameLogger == null) {
-            renameLogger = Logger.getLogger("Current Image Name Change Log: ");
-            try {
-                Handler imgFileHandler = new FileHandler("nameChangeLog.txt",true);
-            } catch (IOException e) {
-                e.printStackTrace();
-                System.out.println("File not found");
-            }
+	    if (getRenameLogger) {
+	        loggerName = "Current Image Name Change Log: ";
+	        pattern = "nameChangeLog.txt";
+        } else {
+	        loggerName = "Current log: ";
+	        pattern = "myLog.txt";
         }
-	    return LogUtility.renameLogger;
-    }
+        Logger logger = Logger.getLogger(loggerName);
+	    FileHandler handler;
+	    try {
+            handler = new FileHandler(pattern, true);
+        } catch (IOException e) {
+            System.out.println(pattern + "doesn't exist, creating file now");
+            String filePath = System.getProperty("user.dir") + File.separator + pattern;
 
-    public static Logger getTagLogger() {
-	    return LogUtility.tagLogger;
-    }
+            try {
+                Files.createFile(Paths.get(filePath));
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            handler = new FileHandler(pattern, true);
+        }
 
-	/**
-	 * Gets the tagLogger.=======
-	 *
-	 * @return the tagLogger
-	 */
-	private  Logger getLogger(boolean imageOrTag) {
-		if (imageOrTag) {
-			if (tagLogger == null) {
-				try {
-					new LogUtility();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-			return tagLogger;
-		}
-		else{
-			if (renameLogger == null) {
-				try {
-					new LogUtility();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-			return renameLogger;
-		}
-	}
+        SimpleFormatter formatter = new SimpleFormatter();
+        handler.setFormatter(formatter);
+        logger.addHandler(handler);
+        return logger;
+    }
 
 	/**
 	 * Logs the level and the message.
-	 *
-	 * @param level the level
-	 * @param msg the message to log.
-	 */
-	public  void log(Level level, String msg, boolean imgOrName) {
-		getLogger(imgOrName).log(level, msg);
-	}
+     * @param level the level
+     * @param msg the message to log.
+     * @param logTag true if logging a tag related event, false if anything else
+     */
+	void log(Level level, String msg, boolean logTag) {
+        try {
+            getLogger(logTag).log(level, msg);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
