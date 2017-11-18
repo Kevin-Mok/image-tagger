@@ -39,10 +39,6 @@ public class Controller {
     @FXML
     private ImageView imageViewPort;
     @FXML
-    private Button addNewTagButton;
-    @FXML
-    private Button addTagFromAvailButton;
-    @FXML
     private TextField addNewTagField;
     @FXML
     private Label imageNameLabel;

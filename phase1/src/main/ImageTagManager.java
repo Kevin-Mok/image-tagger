@@ -83,7 +83,7 @@ public class ImageTagManager {
     }
 
     public void saveToFile() throws IOException {
-
+		deleteUselessImageObjects();
         OutputStream file = new FileOutputStream("images.ser");
         OutputStream buffer = new BufferedOutputStream(file);
         ObjectOutput output = new ObjectOutputStream(buffer);
@@ -99,7 +99,17 @@ public class ImageTagManager {
         output1.close();
     }
 
-    public void readFromFile() throws IOException {
+	private void deleteUselessImageObjects() {
+		HashMap<String, Image> rebuild = new HashMap<>();
+		for (String keys: allImages.keySet()){
+			if(allImages.get(keys).getTagManager().getNames().size() != 1){
+				rebuild.put(keys, allImages.get(keys));
+			}
+		}
+		allImages = rebuild;
+	}
+
+	public void readFromFile() throws IOException {
 
         InputStream file;
         try {
