@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 
 public class Controller {
 
@@ -41,6 +42,9 @@ public class Controller {
     private TextField addNewTagField;
     @FXML
     private Label imageNameLabel;
+
+    @FXML
+    private ListView nameHistory;
 
     /*
      * The following three fields were used repeatedly in the button
@@ -100,6 +104,7 @@ public class Controller {
                 if (clickedObject instanceof ImageWrapper) {
                     updateSelectedImage(((ImageWrapper) clickedObject)
                             .getImage());
+                    updateNameHistory(((ImageWrapper) clickedObject).getImage());
                 }
             }
         };
@@ -136,6 +141,7 @@ public class Controller {
                 (curSelectedImage));
         imagesTreeView.refresh();
         imageNameLabel.setText(curSelectedImage.getImageName());
+        updateNameHistory(curSelectedImage);
     }
 
     @FXML
@@ -173,6 +179,14 @@ public class Controller {
         imagesTreeView.refresh();
         imagesTreeView.addEventHandler(javafx.scene.input.MouseEvent
                 .MOUSE_CLICKED, mouseEvent);
+    }
+
+    private void updateNameHistory(Image clickedImage){
+        nameHistory.getItems().clear();
+        ArrayList<String> toWorkWith = clickedImage.getTagManager().getNames();
+        for (String name: toWorkWith){
+            nameHistory.getItems().add(name);
+        }
     }
 
     /**
