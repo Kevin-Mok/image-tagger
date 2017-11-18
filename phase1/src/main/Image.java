@@ -11,7 +11,6 @@ import java.util.Map;
  * its tags.
  */
 public class Image implements Serializable {
-    private static Map<String, Image> pathToPictureObjects = new HashMap<>();
     private File imageFile;
     private TagManager tagManager;
     private String imageName;
@@ -27,14 +26,6 @@ public class Image implements Serializable {
         this.imageName = imageName;
         tagManager = new TagManager(imageName, this);
         ImageTagManager.getInstance().addImage(this);
-    }
-
-    public static Image pictureLookup(String path) {
-        return pathToPictureObjects.get(path);
-    }
-
-    public static void addPictureObject(String path, Image image) {
-        pathToPictureObjects.put(path, image);
     }
 
     public String getImageName() {
@@ -58,7 +49,7 @@ public class Image implements Serializable {
     void rename(String newImageName) {
         String curPath = imageFile.getPath();
         String curDir = PathExtractor.getDirectory(curPath);
-        ImageTagManager.getInstance().getAllImages().remove(curPath);
+        ImageTagManager.getInstance().removeImage(curPath);
         String extension = PathExtractor.getExtension(curPath);
         String newPathString = curDir + newImageName + extension;
         if (!imageFile.renameTo(new File(newPathString))) {
@@ -66,7 +57,7 @@ public class Image implements Serializable {
         } else {
             imageFile = new File(newPathString);
             imageName = newImageName;
-            ImageTagManager.getInstance().getAllImages().put(newPathString,
+            ImageTagManager.getInstance().putImage(newPathString,
                     this);
         }
     }

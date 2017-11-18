@@ -32,9 +32,21 @@ public class ImageTagManager {
         return listOfTags;
     }
 
-    HashMap<String, Image> getAllImages() {
-        return allImages;
-    }
+    public void putImage(String path, Image image){
+    	allImages.put(path, image);
+	}
+
+	public void removeImage(String path){
+    	allImages.remove(path);
+	}
+
+	public Image getImage(String path){
+		return allImages.get(path);
+	}
+
+	public boolean containsImagePath(String path){
+		return allImages.containsKey(path);
+	}
 
     void add(Tag tag) {
         ArrayList<Image> list;

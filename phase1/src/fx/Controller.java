@@ -118,15 +118,18 @@ public class Controller {
                 String imageFileName = PathExtractor.getImageFileName
                         (curSelectedImage.getPath().toString());
                 String newPathOfImage = newDirectory + "/" + imageFileName;
+
                 try {
                     Files.move(curSelectedImage.getPath(), Paths.get
                             (newPathOfImage));
+                    ImageTagManager.getInstance().removeImage(curSelectedImage.getPath().toString());
+                    refreshGUIElements();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 // todo: regenerating entire tree is a bit overkill here,
                 // should only deal with that specific TreeItem?
-                refreshGUIElements();
+
                 // todo: need to update the ImageWrapper's new location
                 // in PictureManager, maybe delete the old object from the
                 // HashMap first using the old path, and then reinsert
