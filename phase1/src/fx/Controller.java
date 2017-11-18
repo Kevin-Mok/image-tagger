@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.stage.DirectoryChooser;
@@ -56,7 +57,7 @@ public class Controller {
      */
     private Image curSelectedImage;
 
-    private EventHandler<javafx.scene.input.MouseEvent> mouseEvent;
+    private EventHandler<MouseEvent> mouseEvent;
     // private File rootFolder = new File("/home/kevin/Documents");
     private DirectoryManager rootDirectoryManager = new DirectoryManager(null);
     /**
@@ -94,7 +95,7 @@ public class Controller {
         });
 
         // For displaying the image with a mouse click
-        mouseEvent = (javafx.scene.input.MouseEvent event) -> {
+        mouseEvent = (MouseEvent event) -> {
             ObservableList<TreeItem<ItemWrapper>> selectedTreeItems =
                     imagesTreeView.getSelectionModel().getSelectedItems();
             if (selectedTreeItems.size() != 0) {

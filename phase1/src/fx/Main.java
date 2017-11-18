@@ -10,7 +10,7 @@ import main.ImageTagManager;
 import java.io.IOException;
 
 public class Main extends Application {
-    ImageTagManager imgTagManager = ImageTagManager.getInstance();
+    private ImageTagManager imgTagManager = ImageTagManager.getInstance();
 
     public static void main(String[] args) {
         launch(args);

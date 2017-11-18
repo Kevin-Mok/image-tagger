@@ -77,8 +77,8 @@ public class Image implements Serializable {
             imageTagManager.removeImage(curPath);
             imageTagManager.addImage(this);
             imageTagManager.refreshNameToTags();
-            ForLogging.log(Level.INFO, "Changed name from: " + this
-                    .getImageName() + "  -->  " + newImageName, false);
+            LogUtility.getInstance().log(Level.INFO, "Changed name from: " +
+                    this.getImageName() + "  -->  " + newImageName, false);
         }
 
     }
