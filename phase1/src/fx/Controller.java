@@ -2,11 +2,9 @@ package fx;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import main.DirectoryManager;
@@ -57,7 +55,6 @@ public class Controller {
      */
     private Image curSelectedImage;
 
-    private EventHandler<MouseEvent> mouseEvent;
     // private File rootFolder = new File("/home/kevin/Documents");
     private DirectoryManager rootDirectoryManager = new DirectoryManager(null);
     /**
@@ -94,8 +91,8 @@ public class Controller {
             }
         });
 
-        // For displaying the image with a mouse click
-        mouseEvent = (MouseEvent event) -> {
+        // For displaying the image with a mouse click.
+        imagesTreeView.setOnMouseClicked(event -> {
             ObservableList<TreeItem<ItemWrapper>> selectedTreeItems =
                     imagesTreeView.getSelectionModel().getSelectedItems();
             if (selectedTreeItems.size() != 0) {
@@ -106,9 +103,8 @@ public class Controller {
                     updateSelectedImageGUI();
                 }
             }
-        };
+        });
 
-        // todo: display no image when picture is moved?
         moveFileBtn.setOnAction(event -> {
             if (curSelectedImage != null) {
                 try {
@@ -167,7 +163,8 @@ public class Controller {
     }
 
     /**
-     * Method that allows the user to add new tags by interacting with GUI elements
+     * Method that allows the user to add new tags by interacting with GUI
+     * elements
      * Exposed to the FXML file through the @FXML annotation
      */
     @FXML
@@ -181,7 +178,8 @@ public class Controller {
     }
 
     /**
-     * Allows the user to add a tag from the ListView of available tags by interacting with a GUI element
+     * Allows the user to add a tag from the ListView of available tags by
+     * interacting with a GUI element
      */
     @FXML
     public void addAvailableTag() {
@@ -234,12 +232,11 @@ public class Controller {
         rootFolderNode.setExpanded(true);
         imagesTreeView.setRoot(rootFolderNode);
         imagesTreeView.refresh();
-        imagesTreeView.addEventHandler(javafx.scene.input.MouseEvent
-                .MOUSE_CLICKED, mouseEvent);
     }
 
     /**
-     * Clears the current name history ListView and rebuilds it using the selected
+     * Clears the current name history ListView and rebuilds it using the
+     * selected
      * image's TagManager
      */
     private void updateNameHistory() {

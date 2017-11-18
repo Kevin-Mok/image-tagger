@@ -41,13 +41,6 @@ public class Image implements Serializable {
     }
 
     /**
-     * Set imageFile to new File from pathString param.
-     */
-    public void setImageFile(String pathString) {
-        imageFile = new File(pathString);
-    }
-
-    /**
      * Returns file name of image with its extension.
      */
     @Override
