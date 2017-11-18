@@ -9,24 +9,24 @@ import java.util.logging.SimpleFormatter;
 /**
  * Utility class used for logging user interactions with the program
  */
-public class LogUtility {
+class LogUtility {
 
 	/** The logger. */
-	private  Logger logger;
-	private  Logger imgLogger;
+	private Logger logger;
+	private Logger imgLogger;
 	private static LogUtility logUtility;
 
 	/**
-	 * Instantiates a new my logging.
+	 * Instantiates a new LogUtility.
 	 *
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	private LogUtility() throws IOException{
 		System.setProperty("java.util.logging.SimpleFormatter.format",
 				"%1$tF %1$tT [%4$-2s: %5$s] %n");
-		//instance the logger
-		logger = Logger.getLogger("Current Log: ");
-		imgLogger = Logger.getLogger("Current Image Name Change Log: ");
+		//instance the tagLogger
+		tagLogger = Logger.getLogger("Current Log: ");
+
 		//instance the filehandler
 		Handler fileHandler = new FileHandler("myLog.txt",true);
 		Handler imgFileHandler = new FileHandler("nameChangeLog.txt",true);
@@ -34,8 +34,8 @@ public class LogUtility {
 		SimpleFormatter plainText = new SimpleFormatter();
 		fileHandler.setFormatter(plainText);
 		imgFileHandler.setFormatter(plainText);
-		logger.addHandler(fileHandler);
-		imgLogger.addHandler(imgFileHandler);
+		tagLogger.addHandler(fileHandler);
+		renameLogger.addHandler(imgFileHandler);
 	}
 
 	public static LogUtility getInstance() {
@@ -49,32 +49,57 @@ public class LogUtility {
 		return logUtility;
 	}
 
+	public static Logger getLogger(boolean getRenameLogger) {
+	    String loggerName;
+	    String pattern;
+
+	    if ()
+    }
+
+	public static Logger getRenameLogger() {
+        System.setProperty("java.util.logging.SimpleFormatter.format",
+                "%1$tF %1$tT [%4$-2s: %5$s] %n");
+	    if (LogUtility.renameLogger == null) {
+            renameLogger = Logger.getLogger("Current Image Name Change Log: ");
+            try {
+                Handler imgFileHandler = new FileHandler("nameChangeLog.txt",true);
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("File not found");
+            }
+        }
+	    return LogUtility.renameLogger;
+    }
+
+    public static Logger getTagLogger() {
+	    return LogUtility.tagLogger;
+    }
 
 	/**
-	 * Gets the logger.
+	 * Gets the tagLogger.=======
 	 *
-	 * @return the logger
+	 * @return the tagLogger
 	 */
 	private  Logger getLogger(boolean imageOrTag) {
 		if (imageOrTag) {
-			if (logger == null) {
+			if (tagLogger == null) {
 				try {
 					new LogUtility();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 			}
-			return logger;
+			return tagLogger;
 		}
 		else{
-			if (imgLogger == null) {
+			if (renameLogger == null) {
 				try {
 					new LogUtility();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 			}
-			return imgLogger;
+			return renameLogger;
 		}
 	}
 
