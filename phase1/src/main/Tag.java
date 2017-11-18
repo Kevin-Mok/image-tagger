@@ -1,13 +1,15 @@
 package main;
 
-public class Tag {
+import java.io.Serializable;
+
+public class Tag implements Serializable{
     private Image image;
     private String name;
 
     public Tag(Image image, String name) {
         this.image = image;
         this.name = name;
-        TagManager.getInstance().add(this);
+        ImageTagManager.getInstance().add(this);
     }
 
     String getName() {

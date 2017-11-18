@@ -4,15 +4,16 @@ import java.io.File;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
+import java.io.Serializable;
 
 /**
  * Image class that stores its path and a ImageTagManager object to work with
  * its tags.
  */
-public class Image {
+public class Image implements Serializable{
     private static Map<String, Image> pathToPictureObjects = new HashMap<>();
     private File imageFile;
-    private ImageTagManager imageTagManager;
+    private TagManager tagManager;
     private String imageName;
 
     /**
@@ -24,7 +25,8 @@ public class Image {
     public Image(File imageFile, String imageName) {
         this.imageFile = imageFile;
         this.imageName = imageName;
-        imageTagManager = new ImageTagManager(imageName, this);
+        tagManager = new TagManager(imageName, this);
+        ImageTagManager.getInstance().addImage(this);
     }
 
     public static Image pictureLookup(String path) {
@@ -71,7 +73,7 @@ public class Image {
      * @param tagName The name of the tag to be added.
      */
     public void addTag(String tagName) {
-        rename(imageTagManager.addTag(new Tag(this, tagName)));
+        rename(tagManager.addTag(new Tag(this, tagName)));
     }
 
     /**
@@ -80,7 +82,7 @@ public class Image {
      * @param tagName The name of the tag to be removed.
      */
     public void deleteTag(String tagName) {
-        rename(imageTagManager.deleteTag(tagName));
+        rename(tagManager.deleteTag(tagName));
     }
 
     /**
@@ -89,7 +91,7 @@ public class Image {
      * @param name Name to be reverted to.
      */
     public void revertName(String name) {
-        rename(imageTagManager.revertName(name));
+        rename(tagManager.revertName(name));
     }
 
     @Override

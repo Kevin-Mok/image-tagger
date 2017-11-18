@@ -1,7 +1,7 @@
 package test;
 
 import main.Image;
-import main.ImageTagManager;
+import main.TagManager;
 import main.Tag;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,15 +11,15 @@ import java.io.File;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class ImageTagManagerTest {
-    ImageTagManager manager;
+class ImageImageTagManagerTest {
+    TagManager manager;
     Image image;
     Tag addedTag;
 
     @BeforeEach
     void setUp() {
         image = new Image(new File("test1.jpg"), "test1");
-        manager = new ImageTagManager(image.getImageName(), image);
+        manager = new TagManager(image.getImageName(), image);
         addedTag = new Tag(image, "yooo");
     }
 

@@ -1,125 +1,98 @@
 package main;
 
-import java.sql.Timestamp;
-import java.util.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ImageTagManager {
-    private TreeMap<Timestamp, String> nameStore;
-    // List of all tags this picture has ever had.
-    private ArrayList<Tag> tagList;
-    // Current tags in picture.
-    private Set<Tag> currentTags;
-    private Image image;
+    private static ImageTagManager instance = null;
+    private HashMap<String, ArrayList<Image>> allTags;
+    private HashMap<String, Image> allImages;
 
-    public ImageTagManager(String name, Image image) {
-        nameStore = new TreeMap<>();
-        nameStore.put(new Timestamp(System.currentTimeMillis()), name);
-        tagList = new ArrayList<>();
-        currentTags = new LinkedHashSet<>();
-        this.image = image;
+    private ImageTagManager() {
+        // Exists only to defeat instantiation.
     }
 
-    /**
-     * Adds parameter tag to this tag manager.
-     *
-     * @param tag Tag to add.
-     * @return What the new name of the file should be.
-     */
-    public String addTag(Tag tag) {
-        if (!currentTags.contains(tag)) {
-            currentTags.add(tag);
-            tagList.add(tag);
-            String currentName = nameStore.lastEntry().getValue();
-            nameStore.put(new Timestamp(System.currentTimeMillis()),
-                    currentName + " @" + tag.getName());
-            return nameStore.lastEntry().getValue();
+    public static ImageTagManager getInstance() {
+        if (instance == null) {
+            instance = new ImageTagManager();
+            instance.allTags = new HashMap<>();
+            instance.allImages = new HashMap<>();
         }
-        return nameStore.lastEntry().getValue();
+        return instance;
     }
 
-    public String deleteTag(String tagName) {
-        Tag tag = new Tag(image, tagName);
-        if (currentTags.contains(tag)) {
-            currentTags.remove(tag);
-            TagManager.getInstance().delete(tagName, image);
-            nameStore.put(new Timestamp(System.currentTimeMillis()),
-                    getCurrentName());
-            return nameStore.lastEntry().getValue();
+    void add(Tag tag) {
+        ArrayList<Image> list;
+        if (allTags.containsKey(tag.getName())) {
+            list = allTags.get(tag.getName());
+            list.add(tag.getImage());
+        } else {
+            list = new ArrayList<>();
+            list.add(tag.getImage());
+            allTags.put(tag.getName(), list);
         }
-        return nameStore.lastEntry().getValue();
+        System.out.println(allTags);
     }
 
-    private String getCurrentName() {
-        StringBuilder result = new StringBuilder();
-        result.append(image.getImageName());
-        for (Tag currentTag : currentTags) {
-            result.append(currentTag.getName());
-        }
-        return result.toString();
+    void addImage(Image image){
+        allImages.put(image.getPath().toString(), image);
+        System.out.println(allImages);
     }
 
-    public String revertName(String name) {
-        if (nameStore.values().contains(name)) {
-            nameStore.put(new Timestamp(System.currentTimeMillis()), name);
-            rewrite();
-        }
-        return nameStore.lastEntry().getValue();
+    void delete(String tagName, Image image) {
+        allTags.get(tagName).remove(image);
     }
 
-    private void rewrite() {
-        String name = nameStore.lastEntry().getValue();
-        ArrayList<String> tags = new ArrayList<>(Arrays.asList(name
-                .split("@")));
-        for (int i = 0; i < tags.size(); i++) {
-            tags.set(i, tags.get(i).trim());
-        }
-        tags.remove(0);
+    public void saveToFile() throws IOException {
 
-        currentTags = new LinkedHashSet<>(returnTagsNeeded(tags));
+        OutputStream file = new FileOutputStream("images.ser");
+        OutputStream buffer = new BufferedOutputStream(file);
+        ObjectOutput output = new ObjectOutputStream(buffer);
+
+        OutputStream file1 = new FileOutputStream("tags.ser");
+        OutputStream buffer1 = new BufferedOutputStream(file1);
+        ObjectOutput output1 = new ObjectOutputStream(buffer1);
+
+        // serialize the Map
+        output1.writeObject(allTags);
+        output.writeObject(allImages);
+        output.close();
+        output1.close();
     }
 
-    // Return tags needed from tagList when reverting name.
-    private ArrayList<Tag> returnTagsNeeded(ArrayList<String> names) {
-        ArrayList<Tag> tags = new ArrayList<>();
-        for (String name : names) {
-            for (Tag tag : tagList) {
-                if (name.equals(tag.getName())) {
-                    tags.add(tag);
-                }
-            }
-        }
-        return tags;
+    public void readFromFile() throws IOException, ClassNotFoundException {
+
+            InputStream file = new FileInputStream("images.ser");
+            InputStream buffer = new BufferedInputStream(file);
+            ObjectInput input = new ObjectInputStream(buffer);
+
+            InputStream file1 = new FileInputStream("tags.ser");
+            InputStream buffer1 = new BufferedInputStream(file1);
+            ObjectInput input1 = new ObjectInputStream(buffer1);
+
+            //deserialize the Map
+            Object a  = input.readObject();
+            Object b = input1.readObject();
+            allImages = (HashMap<String,Image>) a;
+            allTags = (HashMap<String, ArrayList<Image>>) b;
+            input.close();
+           input1.close();
+        System.out.println(allImages);
+        System.out.println(allTags);
+
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        ImageTagManager that = (ImageTagManager) o;
-
-        if (nameStore != null ? !nameStore.equals(that.nameStore) : that
-                .nameStore != null)
-            return false;
-        if (tagList != null ? !tagList.equals(that.tagList) : that.tagList !=
-                null)
-            return false;
-        if (currentTags != null ? !currentTags.equals(that.currentTags) :
-                that.currentTags != null)
-            return false;
-        return image != null ? image.equals(that.image) : that.image == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = nameStore != null ? nameStore.hashCode() : 0;
-        result = 31 * result + (tagList != null ? tagList.hashCode() : 0);
-        result = 31 * result + (currentTags != null ? currentTags.hashCode()
-                : 0);
-        result = 31 * result + (image != null ? image.hashCode() : 0);
-        return result;
-    }
 }
-
 
 
