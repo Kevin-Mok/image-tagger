@@ -6,60 +6,104 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Set;
 
+/**
+ * Singleton manager class to keep track of all the existing Images and Tags
+ * contained within them.
+ */
 public class ImageTagManager {
+    // Singleton instance of this class.
     private static ImageTagManager instance = null;
-    private HashMap<String, ArrayList<Image>> allTags;
-    private HashMap<String, Image> allImages;
+    // HashMap of String of tag names to list of Images containing that tag.
+    private HashMap<String, ArrayList<Image>> nameToTags;
+    // HashMap of String of paths to Image with that path.
+    private HashMap<String, Image> pathToImages;
 
     private ImageTagManager() {
         // Exists only to defeat instantiation.
     }
 
+    /**
+     * Returns the singleton instance of this class.
+     */
     public static ImageTagManager getInstance() {
         if (instance == null) {
             instance = new ImageTagManager();
-            instance.allTags = new HashMap<>();
-            instance.allImages = new HashMap<>();
+            instance.nameToTags = new HashMap<>();
+            instance.pathToImages = new HashMap<>();
         }
         return instance;
     }
 
+    /**
+     * Returns String array of all existing tag names in alphabetical order.
+     */
     public String[] getListOfTags() {
-        Set<String> setOfTagString = allTags.keySet();
+        Set<String> setOfTagString = nameToTags.keySet();
         String[] listOfTags = setOfTagString.toArray(new
                 String[setOfTagString.size()]);
         Arrays.sort(listOfTags);
         return listOfTags;
     }
 
-    public void removeImage(String path) {
-        allImages.remove(path);
+    /**
+     * Remove Image with path of parameter from HashMap of pathToImages.
+     *
+     * @param pathString Path of Image to remove.
+     */
+    public void removeImage(String pathString) {
+        pathToImages.remove(pathString);
     }
 
-    public Image getImage(String path) {
-        return allImages.get(path);
+    /**
+     * Returns image with path parameter in pathToImages.
+     */
+    Image getImage(String path) {
+        return pathToImages.get(path);
     }
 
-    public boolean containsImagePath(String path) {
-        return allImages.containsKey(path);
+    /**
+     * Returns whether pathToImages contains a key of path parameter.
+     */
+    boolean containsImagePath(String path) {
+        return pathToImages.containsKey(path);
     }
 
-
+    /**
+     * Add Image parameter to pathToImages.
+     *
+     * @param image Image to add.
+     */
     public void addImage(Image image) {
-        allImages.put(image.getPath().toString(), image);
-        System.out.println(allImages);
+        pathToImages.put(image.getPath().toString(), image);
+        System.out.println(pathToImages);
     }
 
-    public void rebuildTagList() {
-        HashMap<String, ArrayList<Image>> rebuild = new HashMap<>();
-        for (String keys : allImages.keySet()) {
-            mapBuilder(allImages.get(keys), rebuild);
+    /**
+     * Recreates nameToTags HashMap based on Images in pathToImages.
+     */
+    void refreshNameToTags() {
+        HashMap<String, ArrayList<Image>> nameToTags = new HashMap<>();
+        // Iterates through all existing Images and adds all their tag names
+        // and associated images to new nameToTags map.
+        for (Image image : pathToImages.values()) {
+            ArrayList<String> imageTagNames = image.getTagManager()
+                    .getTagNames();
+            for (String tagName : imageTagNames) {
+                // If tag name is not a key, create a new mapping from it to
+                // a new ArrayList. Then, add image to new ArrayList or the
+                // already existing one.
+                if (!nameToTags.containsKey(tagName)) {
+                    nameToTags.put(tagName, new ArrayList<>());
+                }
+                nameToTags.get(tagName).add(image);
+            }
+            // mapBuilder(image, nameToTags);
         }
-        allTags = rebuild;
-        System.out.println(allTags);
+        this.nameToTags = nameToTags;
+        System.out.println(this.nameToTags);
     }
 
-    private void mapBuilder(Image image, HashMap<String, ArrayList<Image>>
+/*    private void mapBuilder(Image image, HashMap<String, ArrayList<Image>>
             map) {
         for (String tagName : image.getTagManager().getTagNames()) {
             if (map.containsKey(tagName)) {
@@ -69,70 +113,81 @@ public class ImageTagManager {
                 map.get(tagName).add(image);
             }
         }
+    }*/
+
+    /**
+     * Serializes the HashMaps (nameToTags, pathToImages) of this class.
+     */
+    public void saveToFile() {
+        try {
+            deleteUselessImageObjects();
+            OutputStream imagesFileOutput = new FileOutputStream("images.ser");
+            OutputStream imagesBuffer = new BufferedOutputStream
+                    (imagesFileOutput);
+
+            ObjectOutput imagesObjectOutput = new ObjectOutputStream
+                    (imagesBuffer);
+
+            OutputStream tagsFileOutput = new FileOutputStream("tags.ser");
+            OutputStream tagsBuffer = new BufferedOutputStream(tagsFileOutput);
+            ObjectOutput tagsObjectOutput = new ObjectOutputStream(tagsBuffer);
+
+            tagsObjectOutput.writeObject(nameToTags);
+            imagesObjectOutput.writeObject(pathToImages);
+
+            imagesObjectOutput.close();
+            tagsObjectOutput.close();
+        } catch (IOException e) {
+            System.out.println("Could not serialize ImageTagManager.");
+        }
     }
 
-
-    public void saveToFile() throws IOException {
-        deleteUselessImageObjects();
-        OutputStream file = new FileOutputStream("images.ser");
-        OutputStream buffer = new BufferedOutputStream(file);
-        ObjectOutput output = new ObjectOutputStream(buffer);
-
-        OutputStream file1 = new FileOutputStream("tags.ser");
-        OutputStream buffer1 = new BufferedOutputStream(file1);
-        ObjectOutput output1 = new ObjectOutputStream(buffer1);
-
-        // serialize the Map
-        output1.writeObject(allTags);
-        output.writeObject(allImages);
-        output.close();
-        output1.close();
-    }
-
+    // Deletes entries from pathToImages that only have a name history of
+    // size 1 (i.e. no tags were ever added to that Image). Decreases size of
+    // serialized objects.
     private void deleteUselessImageObjects() {
         HashMap<String, Image> rebuild = new HashMap<>();
-        for (String keys : allImages.keySet()) {
-            if (allImages.get(keys).getTagManager().getNameHistory().size()
+        for (String keys : pathToImages.keySet()) {
+            if (pathToImages.get(keys).getTagManager().getNameHistory().size()
                     != 1) {
-                rebuild.put(keys, allImages.get(keys));
+                rebuild.put(keys, pathToImages.get(keys));
             }
         }
-        allImages = rebuild;
+        pathToImages = rebuild;
     }
 
-    public void readFromFile() throws IOException {
 
-        InputStream file;
+    /**
+     * Reads the serialization of the HashMaps (nameToTags, pathToImages) of
+     * this class.
+     */
+    public void readFromFile() {
         try {
-            file = new FileInputStream("images.ser");
-            InputStream buffer = new BufferedInputStream(file);
-            ObjectInput input = new ObjectInputStream(buffer);
-            InputStream file1 = new FileInputStream("tags.ser");
-            InputStream buffer1 = new BufferedInputStream(file1);
-            ObjectInput input1 = new ObjectInputStream(buffer1);
-            Object a = null;
-            Object b = null;
-            try {
-                a = input.readObject();
-                b = input1.readObject();
-            } catch (ClassNotFoundException e) {
-                System.out.println("Stopped");
-            }
-            allImages = (HashMap<String, Image>) a;
-            allTags = (HashMap<String, ArrayList<Image>>) b;
+            InputStream imagesFileInput = new FileInputStream("images.ser");
+            InputStream imagesBuffer = new BufferedInputStream(imagesFileInput);
+            ObjectInput imagesObjectInput = new ObjectInputStream(imagesBuffer);
 
-            input.close();
-            input1.close();
+            InputStream tagsFileInput = new FileInputStream("tags.ser");
+            InputStream tagsBuffer = new BufferedInputStream(tagsFileInput);
+            ObjectInput tagsObjectOutput = new ObjectInputStream(tagsBuffer);
 
-        } catch (FileNotFoundException e) {
-            System.out.println("Ser files not found. They have been created");
+            Object pathToImagesObject = imagesObjectInput.readObject();
+            Object nameToTagsObject = tagsObjectOutput.readObject();
+            // todo: ask
+            pathToImages = (HashMap<String, Image>) pathToImagesObject;
+            nameToTags = (HashMap<String, ArrayList<Image>>) nameToTagsObject;
+
+            imagesObjectInput.close();
+            tagsObjectOutput.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Ser files were not found and have been " +
+                    "created.");
+        } catch (ClassNotFoundException e) {
+            System.out.println("Class not found.");
         }
 
-        System.out.println(allImages);
-        System.out.println(allTags);
-
+        System.out.println(pathToImages);
+        System.out.println(nameToTags);
     }
 
 }

@@ -63,7 +63,7 @@ public class Image implements Serializable {
             imageFile = new File(newPathString);
             imageName = newImageName;
             ImageTagManager.getInstance().addImage(this);
-            ImageTagManager.getInstance().rebuildTagList();
+            ImageTagManager.getInstance().refreshNameToTags();
             /*try {
                 ImageTagManager.getInstance().saveToFile();
             } catch (IOException e) {
