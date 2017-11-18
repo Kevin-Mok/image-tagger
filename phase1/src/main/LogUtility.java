@@ -10,19 +10,21 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 /**
- * Utility class used for logging user interactions with the program
+ * Singleton utility class used for logging user interactions with the program.
  */
 class LogUtility {
-
     private static LogUtility logUtility;
     /**
-     * The tagLogger.
+     * Logs tag related events
      */
     private Logger tagLogger;
+    /**
+     * Logs renaming events
+     */
     private Logger renameLogger;
 
     /**
-     * Instantiates a new LogUtility.
+     * Instantiates the singleton LogUtility
      *
      * @throws IOException Signals that an I/O exception has occurred.
      */
@@ -33,6 +35,10 @@ class LogUtility {
         renameLogger = this.getLogger(true);
     }
 
+    /**
+     * Get the singleton instance of LogUtility
+     * @return the instance
+     */
     static LogUtility getInstance() {
         if (logUtility == null) {
             try {
@@ -44,6 +50,12 @@ class LogUtility {
         return logUtility;
     }
 
+    /**
+     * Returns either the renameLogger or the tagLogger
+     * @param getRenameLogger true if retrieving the renameLogger
+     * @return renameLogger if getRenameLogger is set to true, tagLogger if otherwise
+     * @throws IOException if any I/O errors occurred during file reading/writing
+     */
     private Logger getLogger(boolean getRenameLogger) throws IOException {
         if (getRenameLogger && this.renameLogger != null) {
             return this.renameLogger;
@@ -70,7 +82,6 @@ class LogUtility {
             System.out.println(pattern + "doesn't exist, creating file now");
             String filePath = System.getProperty("user.dir") + File.separator
                     + pattern;
-
             try {
                 Files.createFile(Paths.get(filePath));
             } catch (IOException e1) {
@@ -84,11 +95,10 @@ class LogUtility {
         logger.addHandler(handler);
         return logger;
     }
-
     /**
      * Logs the level and the message.
      *
-     * @param level  the level
+     * @param level  the level of the message
      * @param msg    the message to log.
      * @param logTag true if logging a tag related event, false if anything else
      */
