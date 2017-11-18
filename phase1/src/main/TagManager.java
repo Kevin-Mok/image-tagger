@@ -74,7 +74,7 @@ public class TagManager implements Serializable {
         result.append(PathExtractor.getOriginalName((image.getPath().toString
                 ())));
         for (Tag currentTag : currentTags) {
-            result.append(" @" + currentTag.getName());
+            result.append(" @").append(currentTag.getName());
         }
         return result.toString();
     }
@@ -106,7 +106,7 @@ public class TagManager implements Serializable {
         Collections.sort(result);
         return result;
     }
-
+    
     /**
      * Reverts the Image to a previous name in nameHistory.
      *

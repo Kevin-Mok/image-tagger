@@ -110,6 +110,12 @@ class LogUtility {
         }
     }
 
+    /**
+     * Logs an add or delete tag event
+     * @param tagName tag that's added or deleted
+     * @param imageName name of the image where the add/delete tag takes place
+     * @param addTag true if logging the addition of a tag, false if logging a deletion
+     */
     void logAddOrDeleteTag(String tagName, String imageName, boolean addTag) {
         String message;
         if (addTag) {
@@ -120,11 +126,21 @@ class LogUtility {
         log(Level.INFO, message, true);
     }
 
+    /**
+     * Logs an image revert name event
+     * @param oldName the name the image currently has
+     * @param newName the name to revert to
+     */
     void logRevertName(String oldName, String newName) {
         String message = String.format("Reverted name from %s to %s", oldName, newName);
         log(Level.INFO, message, true);
     }
 
+    /**
+     * Logs an image rename event
+     * @param oldName the old name of the image
+     * @param newName the new name of the image
+     */
     void logImageRename(String oldName, String newName) {
         String message = String.format("Changed name from %s to %s", oldName, newName);
         log(Level.INFO, message, false);

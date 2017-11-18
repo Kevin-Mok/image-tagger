@@ -31,8 +31,7 @@ public class Tag implements Serializable {
 
         Tag tag = (Tag) o;
 
-        if (!image.equals(tag.image)) return false;
-        return name.equals(tag.name);
+        return image.equals(tag.image) && name.equals(tag.name);
     }
 
     @Override

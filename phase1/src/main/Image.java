@@ -3,7 +3,6 @@ package main;
 import java.io.File;
 import java.io.Serializable;
 import java.nio.file.Path;
-import java.util.logging.Level;
 
 /**
  * Image class that stores its path and a ImageTagManager object to work with

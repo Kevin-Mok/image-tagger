@@ -49,7 +49,7 @@ public class Controller {
     @FXML
     private ListView<String> currentTagsView;
     @FXML
-    private Button revertName;
+    private Button revertNameBtn;
 
     /*
      * The following three fields were used repeatedly in the button
@@ -139,7 +139,7 @@ public class Controller {
             }
         });
 
-        revertName.setOnAction(event -> {
+        revertNameBtn.setOnAction(event -> {
             if (curSelectedImage != null) {
                 String chosenName = (String) nameHistoryView
                         .getSelectionModel().getSelectedItems().get(0);
