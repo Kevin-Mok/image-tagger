@@ -95,7 +95,7 @@ public class Image implements Serializable {
      * @param tagName The name of the tag to be added.
      */
     public void addTag(String tagName) {
-        rename(tagManager.addTag(new Tag(this, tagName)));
+        rename(tagManager.addTag(tagName));
 
     }
 

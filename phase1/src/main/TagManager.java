@@ -4,59 +4,71 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.logging.Level;
 
 public class TagManager implements Serializable {
-    private TreeMap<Timestamp, String> nameStore;
+    private TreeMap<Timestamp, String> nameHistory;
     // List of all tags this picture has ever had.
+    // todo: can this be deleted? one usage and can recreate tags upon reverting
     private ArrayList<Tag> tagList;
     // Current tags in picture.
     private Set<Tag> currentTags;
     private Image image;
 
-    public TagManager(String name, Image image) {
-        nameStore = new TreeMap<>();
-        nameStore.put(new Timestamp(System.currentTimeMillis()), name);
+    /**
+     * Constructor.
+     *
+     * @param originalImageName Original name of image without extension.
+     * @param image             Image this TagManager will be associated with.
+     */
+    public TagManager(String originalImageName, Image image) {
+        nameHistory = new TreeMap<>();
+        nameHistory.put(new Timestamp(System.currentTimeMillis()),
+                originalImageName);
         tagList = new ArrayList<>();
         currentTags = new LinkedHashSet<>();
         this.image = image;
     }
 
     /**
-     * Adds parameter tag to this tag manager.
+     * Adds new Tag with tagName param to this tag manager.
      *
-     * @param tag Tag to add.
+     * @param tagName Name of tag to add.
      * @return What the new name of the file should be.
      */
-    public String addTag(Tag tag) {
+    public String addTag(String tagName) {
+        Tag tag = new Tag(image, tagName);
         if (!currentTags.contains(tag)) {
             currentTags.add(tag);
             tagList.add(tag);
-            String currentName = nameStore.lastEntry().getValue();
-
-            nameStore.put(new Timestamp(System.currentTimeMillis()),
+            String currentName = nameHistory.lastEntry().getValue();
+            nameHistory.put(new Timestamp(System.currentTimeMillis()),
                     currentName + " @" + tag.getName());
-
-            LogUtility.getInstance().logAddOrDeleteTag(tag.getName(), image.getImageName(), true);
-            return nameStore.lastEntry().getValue();
-
+            LogUtility.getInstance().logAddOrDeleteTag(tag.getName(), image
+                    .getImageName(), true);
         }
 
-        return nameStore.lastEntry().getValue();
+        return nameHistory.lastEntry().getValue();
     }
 
+    /**
+     * Deletes Tag with tagName param to this tag manager.
+     *
+     * @param tagName Name of tag to delete.
+     * @return What the new name of the file should be.
+     */
     public String deleteTag(String tagName) {
         Tag tag = new Tag(image, tagName);
         if (currentTags.contains(tag)) {
             currentTags.remove(tag);
-            nameStore.put(new Timestamp(System.currentTimeMillis()),
+            nameHistory.put(new Timestamp(System.currentTimeMillis()),
                     getCurrentName());
-            LogUtility.getInstance().logAddOrDeleteTag(tagName, image.getImageName(), false);
-            return nameStore.lastEntry().getValue();
+            LogUtility.getInstance().logAddOrDeleteTag(tagName, image
+                    .getImageName(), false);
         }
-        return nameStore.lastEntry().getValue();
+        return nameHistory.lastEntry().getValue();
     }
 
+    // Returns current name of Image with its original name and current tags.
     private String getCurrentName() {
         StringBuilder result = new StringBuilder();
         result.append(PathExtractor.getOriginalName((image.getPath().toString
@@ -67,15 +79,25 @@ public class TagManager implements Serializable {
         return result.toString();
     }
 
+    /**
+     * Returns all the names this Image has ever had.
+     *
+     * @return ArrayList of all the names this Image has ever had.
+     */
     public ArrayList<String> getNameHistory() {
         ArrayList<String> result = new ArrayList<>();
-        for (Timestamp keys : nameStore.keySet()) {
+        for (Timestamp keys : nameHistory.keySet()) {
             String s = new SimpleDateFormat("MM/dd HH:mm:ss").format(keys);
-            result.add(s + "  →  " + nameStore.get(keys));
+            result.add(s + "  →  " + nameHistory.get(keys));
         }
         return result;
     }
 
+    /**
+     * Returns of the current tags of this image.
+     *
+     * @return Alphabetically sorted ArrayList of current tags.
+     */
     public ArrayList<String> getTagNames() {
         ArrayList<String> result = new ArrayList<>();
         for (Tag tag : currentTags) {
@@ -85,17 +107,26 @@ public class TagManager implements Serializable {
         return result;
     }
 
-    public String revertName(String name) {
-        if (nameStore.values().contains(name)) {
-            LogUtility.getInstance().logRevertName(nameStore.lastEntry().getValue(), name);
-            nameStore.put(new Timestamp(System.currentTimeMillis()), name);
-            rewrite();
+    /**
+     * Reverts the Image to a previous name in nameHistory.
+     *
+     * @param name Name to be reverted to.
+     * @return New name of Image.
+     */
+    String revertName(String name) {
+        if (nameHistory.values().contains(name)) {
+            LogUtility.getInstance().logRevertName(nameHistory.lastEntry()
+                    .getValue
+                            (), name);
+            nameHistory.put(new Timestamp(System.currentTimeMillis()), name);
+            updateCurrentTags();
         }
-        return nameStore.lastEntry().getValue();
+        return nameHistory.lastEntry().getValue();
     }
 
-    private void rewrite() {
-        String name = nameStore.lastEntry().getValue();
+    // Updates set of current tags based on latest name.
+    private void updateCurrentTags() {
+        String name = nameHistory.lastEntry().getValue();
         ArrayList<String> tags = new ArrayList<>(Arrays.asList(name
                 .split("@")));
         for (int i = 0; i < tags.size(); i++) {
@@ -119,6 +150,13 @@ public class TagManager implements Serializable {
         return tags;
     }
 
+    /**
+     * Object is equal to this TagManager if it is an instance of a
+     * TagManager and all its fields are equal.
+     *
+     * @param o Object to be compared to.
+     * @return Whether this and the object are equal.
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -126,21 +164,27 @@ public class TagManager implements Serializable {
 
         TagManager that = (TagManager) o;
 
-        if (nameStore != null ? !nameStore.equals(that.nameStore) : that
-                .nameStore != null)
+        if (nameHistory != null ? !nameHistory.equals(that.nameHistory) : that
+                .nameHistory != null)
             return false;
         if (tagList != null ? !tagList.equals(that.tagList) : that.tagList !=
                 null)
             return false;
+        // Ignoring this yellow error for readability.
         if (currentTags != null ? !currentTags.equals(that.currentTags) :
                 that.currentTags != null)
             return false;
         return image != null ? image.equals(that.image) : that.image == null;
     }
 
+    /**
+     * Returns hash code of this object based on its fields.
+     *
+     * @return Hashed value.
+     */
     @Override
     public int hashCode() {
-        int result = nameStore != null ? nameStore.hashCode() : 0;
+        int result = nameHistory != null ? nameHistory.hashCode() : 0;
         result = 31 * result + (tagList != null ? tagList.hashCode() : 0);
         result = 31 * result + (currentTags != null ? currentTags.hashCode()
                 : 0);
