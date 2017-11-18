@@ -103,18 +103,6 @@ public class ImageTagManager {
         System.out.println(this.nameToTags);
     }
 
-/*    private void mapBuilder(Image image, HashMap<String, ArrayList<Image>>
-            map) {
-        for (String tagName : image.getTagManager().getTagNames()) {
-            if (map.containsKey(tagName)) {
-                map.get(tagName).add(image);
-            } else {
-                map.put(tagName, new ArrayList<>());
-                map.get(tagName).add(image);
-            }
-        }
-    }*/
-
     /**
      * Serializes the HashMaps (nameToTags, pathToImages) of this class.
      */
@@ -173,14 +161,14 @@ public class ImageTagManager {
 
             Object pathToImagesObject = imagesObjectInput.readObject();
             Object nameToTagsObject = tagsObjectOutput.readObject();
-            // todo: ask
+
             pathToImages = (HashMap<String, Image>) pathToImagesObject;
             nameToTags = (HashMap<String, ArrayList<Image>>) nameToTagsObject;
 
             imagesObjectInput.close();
             tagsObjectOutput.close();
         } catch (IOException e) {
-            System.out.println("Ser files were not found and have been " +
+            System.out.println("Ser files were not found and will be " +
                     "created.");
         } catch (ClassNotFoundException e) {
             System.out.println("Class not found.");

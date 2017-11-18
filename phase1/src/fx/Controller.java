@@ -122,7 +122,7 @@ public class Controller {
                     System.out.println(curSelectedImage.getPath().toString());
                     ImageTagManager.getInstance().removeImage
                             (curSelectedImage.getPath().toString());
-                    curSelectedImage.setPath(newPathOfImage);
+                    curSelectedImage.setImageFile(newPathOfImage);
                     ImageTagManager.getInstance().addImage(curSelectedImage);
                     //ImageTagManager.getInstance().saveToFile();
                     refreshGUIElements();
@@ -162,6 +162,7 @@ public class Controller {
         imageNameLabel.setText(curSelectedImage.getImageName());
         updateNameHistory();
         updateCurrentTags();
+        updateAvailableTags();
     }
 
     @FXML

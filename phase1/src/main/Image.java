@@ -27,53 +27,65 @@ public class Image implements Serializable {
         ImageTagManager.getInstance().addImage(this);
     }
 
+    /**
+     * Return name of image without its extension.
+     */
     public String getImageName() {
         return imageName;
     }
 
+    /**
+     * Return path of image.
+     */
     public Path getPath() {
         return imageFile.toPath();
     }
 
-    public void setPath(String path) {
-        imageFile = new File(path);
+    /**
+     * Set imageFile to new File from pathString param.
+     */
+    public void setImageFile(String pathString) {
+        imageFile = new File(pathString);
     }
 
+    /**
+     * Returns file name of image with its extension.
+     */
     @Override
     public String toString() {
         return PathExtractor.getImageFileName(imageFile.toString());
     }
 
     /**
-     * Renames this image
+     * Renames this Image object and its associated file.
      *
-     * @param newImageName the new image name
+     * @param newImageName The new name of the Image.
      */
-    void rename(String newImageName) {
+    private void rename(String newImageName) {
+        ImageTagManager imageTagManager = ImageTagManager.getInstance();
         String curPath = imageFile.getPath();
         String curDir = PathExtractor.getDirectory(curPath);
-        ImageTagManager.getInstance().removeImage(curPath);
         String extension = PathExtractor.getExtension(curPath);
         String newPathString = curDir + newImageName + extension;
         if (!imageFile.renameTo(new File(newPathString))) {
             System.out.println("File renaming failed.");
         } else {
-            ForLogging.log(Level.INFO, "Changed name from: " +  this.getImageName() + "  -->  " + newImageName,
-                    false );
+            // Renaming was a success and following is all business that
+            // needs to be taken care of upon renaming this image.
             imageFile = new File(newPathString);
             imageName = newImageName;
-            ImageTagManager.getInstance().addImage(this);
-            ImageTagManager.getInstance().refreshNameToTags();
-            /*try {
-                ImageTagManager.getInstance().saveToFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }*/
+            imageTagManager.removeImage(curPath);
+            imageTagManager.addImage(this);
+            imageTagManager.refreshNameToTags();
+            ForLogging.log(Level.INFO, "Changed name from: " + this
+                    .getImageName() + "  -->  " + newImageName, false);
         }
 
     }
 
-
+    /**
+     * Returns this Image's TagManager.
+     */
     public TagManager getTagManager() {
         return tagManager;
     }
@@ -107,6 +119,13 @@ public class Image implements Serializable {
         rename(tagManager.revertName(name));
     }
 
+    /**
+     * Image objects are only equals if they are both Images and the same
+     * instance or their Files are the same.
+     *
+     * @param o Object to be checked with against this Image.
+     * @return Whether this and object o are equal.
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

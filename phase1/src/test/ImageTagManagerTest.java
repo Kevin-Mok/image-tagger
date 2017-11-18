@@ -11,7 +11,7 @@ import java.io.File;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class ImageImageTagManagerTest {
+class ImageTagManagerTest {
     TagManager manager;
     Image image;
     Tag addedTag;
