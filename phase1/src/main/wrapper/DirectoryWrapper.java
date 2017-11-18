@@ -39,16 +39,11 @@ public class DirectoryWrapper extends ItemWrapper {
         this.childObjects.add(item);
     }
 
-    public boolean isEmptyDirectory() {
-        return this.isEmpty;
-    }
-
-    public void setEmptyDirectory(boolean emptyDirectory) {
-        this.isEmpty = emptyDirectory;
-    }
-
     @Override
     public Path getPath() {
+        if(path == null){
+            return null;
+        }
         return this.path.toPath();
     }
 

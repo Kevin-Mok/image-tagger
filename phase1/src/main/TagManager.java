@@ -47,7 +47,6 @@ public class TagManager implements Serializable {
         Tag tag = new Tag(image, tagName);
         if (currentTags.contains(tag)) {
             currentTags.remove(tag);
-            ImageTagManager.getInstance().delete(tagName, image);
             nameStore.put(new Timestamp(System.currentTimeMillis()),
                     getCurrentName());
             return nameStore.lastEntry().getValue();
@@ -57,9 +56,9 @@ public class TagManager implements Serializable {
 
     private String getCurrentName() {
         StringBuilder result = new StringBuilder();
-        result.append(image.getImageName());
+        result.append(PathExtractor.getOriginalName((image.getPath().toString())));
         for (Tag currentTag : currentTags) {
-            result.append(currentTag.getName());
+            result.append(" @" + currentTag.getName());
         }
         return result.toString();
     }

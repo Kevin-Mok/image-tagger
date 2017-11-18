@@ -39,7 +39,7 @@ public class ResetImageFileNames {
 
     public static void main(String[] args) {
         // String dirString = "/home/kevin/Pictures";
-        String dirString = "/h/u3/c7/05/mokkar/Downloads";
+        String dirString = "/h/u5/c6/05/khans167/Desktop/Images";
         renameImagesInDir(dirString);
 
         File imagesSer = new File

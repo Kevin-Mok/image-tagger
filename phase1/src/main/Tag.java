@@ -9,7 +9,6 @@ public class Tag implements Serializable {
     public Tag(Image image, String name) {
         this.image = image;
         this.name = name;
-        ImageTagManager.getInstance().add(this);
     }
 
     String getName() {

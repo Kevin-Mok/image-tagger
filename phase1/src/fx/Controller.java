@@ -55,7 +55,6 @@ public class Controller {
      * EventHandlers, made sense to factor them out
      */
     private Image curSelectedImage;
-    private TreeItem<ItemWrapper> lastImageTreeItemSelected;
 
     private EventHandler<javafx.scene.input.MouseEvent> mouseEvent;
     // private File rootFolder = new File("/home/kevin/Documents");
@@ -111,20 +110,25 @@ public class Controller {
         // todo: display no image when picture is moved?
         moveFileBtn.setOnAction(event -> {
             if (curSelectedImage != null) {
-                String newDirectory = chooseDirectory("Move file to " +
-                        "directory").toString();
-                String imageFileName = PathExtractor.getImageFileName
-                        (curSelectedImage.getPath().toString());
-                String newPathOfImage = newDirectory + "/" + imageFileName;
+                try{
+                    String newDirectory = chooseDirectory("Move file to " +
+                            "directory").toString();
+                    String imageFileName = PathExtractor.getImageFileName
+                            (curSelectedImage.getPath().toString());
+                    String newPathOfImage = newDirectory + "/" + imageFileName;
 
-                try {
                     Files.move(curSelectedImage.getPath(), Paths.get
                             (newPathOfImage));
+                    System.out.println(curSelectedImage.getPath().toString());
                     ImageTagManager.getInstance().removeImage(curSelectedImage.getPath().toString());
+                    curSelectedImage.setPath(newPathOfImage);
+                    ImageTagManager.getInstance().addImage(curSelectedImage);
+                    //ImageTagManager.getInstance().saveToFile();
                     refreshGUIElements();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                } catch (IOException | NullPointerException e) {
+                    System.out.println("No move");
                 }
+
                 // todo: regenerating entire tree is a bit overkill here,
                 // should only deal with that specific TreeItem?
                 // todo: need to update the ImageWrapper's new location
@@ -152,8 +156,6 @@ public class Controller {
         imageViewPort.setImage(new javafx.scene.image.Image
                 ("file:" + filePath));
         // Update TreeView.
-        lastImageTreeItemSelected = new TreeItem<>(new ImageWrapper
-                (curSelectedImage));
         imagesTreeView.refresh();
         // Update label.
         imageNameLabel.setText(curSelectedImage.getImageName());
@@ -182,7 +184,7 @@ public class Controller {
 
     @FXML
     public void deleteTag() {
-        ObservableList<String> selectedCurrentTag = availableTagsView
+        ObservableList<String> selectedCurrentTag = currentTagsView
                 .getSelectionModel().getSelectedItems();
         if (selectedCurrentTag.size() != 0) {
             curSelectedImage.deleteTag(selectedCurrentTag.get(0));

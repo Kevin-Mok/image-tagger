@@ -77,4 +77,8 @@ public class PathExtractor {
         return newPathName;
     }
 
+    public static String getOriginalName(String path){
+        return (getImageName(getPathWithoutTags(path)));
+    }
+
 }

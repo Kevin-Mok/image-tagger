@@ -32,10 +32,6 @@ public class ImageTagManager {
         return listOfTags;
     }
 
-    public void putImage(String path, Image image){
-    	allImages.put(path, image);
-	}
-
 	public void removeImage(String path){
     	allImages.remove(path);
 	}
@@ -48,28 +44,14 @@ public class ImageTagManager {
 		return allImages.containsKey(path);
 	}
 
-    void add(Tag tag) {
-        ArrayList<Image> list;
-        if (allTags.containsKey(tag.getName())) {
-            list = allTags.get(tag.getName());
-            if (!list.contains(tag.getImage())){
-				list.add(tag.getImage());
-			}
 
-        } else {
-            list = new ArrayList<>();
-            list.add(tag.getImage());
-            allTags.put(tag.getName(), list);
-        }
-        System.out.println(allTags);
-    }
 
-    void addImage(Image image) {
+    public void addImage(Image image) {
         allImages.put(image.getPath().toString(), image);
         System.out.println(allImages);
     }
 
-    void rebuildTagList(){
+    public void rebuildTagList(){
     	HashMap<String, ArrayList<Image>> rebuild = new HashMap<>();
     	for (String keys: allImages.keySet()){
     		mapBuilder(allImages.get(keys), rebuild);
@@ -90,9 +72,6 @@ public class ImageTagManager {
 		}
 	}
 
-    void delete(String tagName, Image image) {
-        allTags.get(tagName).remove(image);
-    }
 
     public void saveToFile() throws IOException {
 		deleteUselessImageObjects();

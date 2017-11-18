@@ -1,6 +1,7 @@
 package main;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.nio.file.Path;
 import java.util.HashMap;
@@ -36,6 +37,10 @@ public class Image implements Serializable {
         return imageFile.toPath();
     }
 
+    public void setPath(String path){
+        imageFile = new File(path);
+    }
+
     @Override
     public String toString() {
         return PathExtractor.getImageFileName(imageFile.toString());
@@ -46,7 +51,7 @@ public class Image implements Serializable {
      *
      * @param newImageName the new image name
      */
-    void rename(String newImageName) {
+    void rename(String newImageName)  {
         String curPath = imageFile.getPath();
         String curDir = PathExtractor.getDirectory(curPath);
         ImageTagManager.getInstance().removeImage(curPath);
@@ -57,9 +62,15 @@ public class Image implements Serializable {
         } else {
             imageFile = new File(newPathString);
             imageName = newImageName;
-            ImageTagManager.getInstance().putImage(newPathString,
-                    this);
+            ImageTagManager.getInstance().addImage(this);
+            ImageTagManager.getInstance().rebuildTagList();
+            /*try {
+                ImageTagManager.getInstance().saveToFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }*/
         }
+
     }
 
 
@@ -74,6 +85,7 @@ public class Image implements Serializable {
      */
     public void addTag(String tagName) {
         rename(tagManager.addTag(new Tag(this, tagName)));
+
     }
 
     /**
@@ -83,6 +95,7 @@ public class Image implements Serializable {
      */
     public void deleteTag(String tagName) {
         rename(tagManager.deleteTag(tagName));
+
     }
 
     /**
@@ -92,7 +105,6 @@ public class Image implements Serializable {
      */
     public void revertName(String name) {
         rename(tagManager.revertName(name));
-        ImageTagManager.getInstance().rebuildTagList();
     }
 
     @Override

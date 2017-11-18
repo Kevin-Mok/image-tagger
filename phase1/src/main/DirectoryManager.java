@@ -137,8 +137,8 @@ public class DirectoryManager {
                 try {
                     Desktop.getDesktop().open(this.rootFolder.getPath()
                             .toFile());
-                } catch (IOException e1) {
-                    e1.printStackTrace();
+                } catch (IOException | NullPointerException e) {
+                    System.out.println("No Directory Selected");
                 }
             }).start();
         } else {
