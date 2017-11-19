@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Wrapper class representing a directory
  */
-public class DirectoryWrapper extends ItemWrapper {
+public class DirectoryWrapper implements ItemWrapper {
 
     /**
      * List of ItemWrappers representing the contents of this directory, only
@@ -21,6 +21,10 @@ public class DirectoryWrapper extends ItemWrapper {
      */
     private File path;
 
+    /**
+     * Constructor for this DirectoryWrapper
+     * @param path path of the directory
+     */
     public DirectoryWrapper(File path) {
         this.path = path;
         this.childObjects = new ArrayList<>();
@@ -30,6 +34,10 @@ public class DirectoryWrapper extends ItemWrapper {
         return childObjects;
     }
 
+    /**
+     * Add a subdirectory/image to this directory
+     * @param item the directory/image to be added
+     */
     public void addToDirectory(ItemWrapper item) {
         this.childObjects.add(item);
     }
@@ -47,6 +55,11 @@ public class DirectoryWrapper extends ItemWrapper {
         return this.path.getPath();
     }
 
+    /**
+     * A DirectoryWrapper is equal to this one if all its fields are equal to this one's
+     * @param o the object to be compared to
+     * @return true if o is equal to this, false if otherwise
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -78,6 +91,10 @@ public class DirectoryWrapper extends ItemWrapper {
         return path != null ? path.equals(that.path) : that.path == null;
     }
 
+    /**
+     * Calculates the hash code for this object using its fields
+     * @return the hash code for this object
+     */
     @Override
     public int hashCode() {
         int result = childObjects != null ? childObjects.hashCode() : 0;

@@ -68,7 +68,7 @@ public class Controller {
 
     /**
      * This method is automatically called after the FXML file is loaded
-     * Used primarily to bind UI elements to event listeners
+     * Used to bind UI elements to event listeners
      */
     @FXML
     public void initialize() {
@@ -88,7 +88,7 @@ public class Controller {
             }
         });
 
-        // For displaying the image with a mouse click.
+        /* For displaying the image with a mouse click. */
         imagesTreeView.setOnMouseClicked(event -> {
             ObservableList<TreeItem<ItemWrapper>> selectedTreeItems =
                     imagesTreeView.getSelectionModel().getSelectedItems();
@@ -102,7 +102,6 @@ public class Controller {
             }
         });
 
-        // todo: path not updating properly if moving file
         moveFileBtn.setOnAction(event -> {
             if (curSelectedImage != null) {
                 try {
@@ -148,7 +147,9 @@ public class Controller {
             }
         });
     }
-
+    /* Updates the GUI if any changes were made to the selected image,
+    ** e.g. reverting the name, adding/deleting a tag, etc
+     */
     private void updateSelectedImageGUI() {
         if (curSelectedImage != null) {
             // Update ImageView.
@@ -209,6 +210,11 @@ public class Controller {
         }
     }
 
+    /**
+     * Display the OS's file selector so the user can select a directory
+     * @param title the title of the file selector window
+     * @return the directory that was chosen by the user
+     */
     @FXML
     private File chooseDirectory(String title) {
         DirectoryChooser directoryChooser = new DirectoryChooser();
@@ -227,7 +233,7 @@ public class Controller {
         updateSelectedImageGUI();
     }
 
-    // Populates the TreeView with list of all images under current dir.
+    /* Populates the TreeView with list of all images under current dir. */
     private void populateImageList() {
         TreeItem<ItemWrapper> rootFolderNode = new TreeItem<>(
                 rootDirectoryManager.getRootFolder());
@@ -279,6 +285,9 @@ public class Controller {
         }
     }
 
+    /**
+     * Updates the ListView that displays all available tags in the chosen root directory
+     */
     private void updateAvailableTags() {
         ObservableList<String> availableTagsList = FXCollections
                 .observableArrayList();
@@ -286,6 +295,9 @@ public class Controller {
         availableTagsView.setItems(availableTagsList);
     }
 
+    /**
+     * Updates the ListView that displays all current tags on the selected image
+     */
     private void updateCurrentTags() {
         ObservableList<String> currentTagsList = FXCollections
                 .observableArrayList();

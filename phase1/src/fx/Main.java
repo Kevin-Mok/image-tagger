@@ -16,11 +16,17 @@ public class Main extends Application {
         launch(args);
     }
 
+    /**
+     * Start by reading serialized image and tag information from the local hard disk,
+     * then, load the FXML file that contains the application layout
+     *
+     * @param primaryStage the window where the application will be displayed
+     * @throws IOException if any errors occur during file reading
+     */
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) throws IOException {
         imgTagManager.readFromFile();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("layout" +
-                ".fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("layout.fxml"));
         Parent root = loader.load();
         Controller controller = loader.getController();
         controller.setStage(primaryStage);
@@ -33,6 +39,12 @@ public class Main extends Application {
         primaryStage.show();
     }
 
+    /**
+     * Serializes the ImageTagManager and stores that information on the local hard disk before
+     * the application closes
+     * @throws IOException if any errors occur during writing to file
+     */
+    @Override
     public void stop() throws IOException {
         System.out.println("Serializing files.");
         imgTagManager.saveToFile();

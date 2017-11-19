@@ -26,7 +26,10 @@ public class DirectoryManager {
      */
     private ArrayList<String> imageFormats;
 
-
+    /**
+     * Instantiates a new instance of DirectoryManager with a given root folder
+     * @param rootFolder the root directory of this DirectoryManager
+     */
     public DirectoryManager(File rootFolder) {
         this.rootFolder = new DirectoryWrapper(rootFolder);
         this.imageFormats = new ArrayList<>();

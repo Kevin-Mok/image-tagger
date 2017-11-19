@@ -6,12 +6,23 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class TagManager implements Serializable {
+    /**
+     * The name history of the image this TagManager is associated with
+     */
     private TreeMap<Timestamp, String> nameHistory;
-    // List of all tags this picture has ever had.
+
     // todo: can this be deleted? one usage and can recreate tags upon reverting
+    /**
+     * List of Tags the image has ever had
+     */
     private ArrayList<Tag> tagList;
-    // Current tags in picture.
+    /**
+     * Current tags on the image
+     */
     private Set<Tag> currentTags;
+    /**
+     * The image this TagManager is associated with
+     */
     private Image image;
 
     /**
@@ -124,8 +135,7 @@ public class TagManager implements Serializable {
     String revertName(String name) {
         if (nameHistory.values().contains(name)) {
             LogUtility.getInstance().logRevertName(nameHistory.lastEntry()
-                    .getValue
-                            (), name);
+                    .getValue(), name);
             nameHistory.put(new Timestamp(System.currentTimeMillis()), name);
             updateCurrentTags();
         }

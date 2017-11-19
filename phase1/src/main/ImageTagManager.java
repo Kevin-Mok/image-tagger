@@ -129,10 +129,11 @@ public class ImageTagManager {
             System.out.println("Could not serialize ImageTagManager.");
         }
     }
-
-    // Deletes entries from pathToImages that only have a name history of
-    // size 1 (i.e. no tags were ever added to that Image). Decreases size of
-    // serialized objects.
+    /*
+    ** Deletes entries from pathToImages that only have a name history of
+    ** size 1 (i.e. no tags were ever added to that Image). Decreases size of
+    ** serialized objects.
+    */
     private void deleteUselessImageObjects() {
         HashMap<String, Image> rebuild = new HashMap<>();
         for (String keys : pathToImages.keySet()) {
