@@ -17,6 +17,9 @@ import main.wrapper.ItemWrapper;
 
 import java.io.File;
 
+/**
+ * Controller for JavaFX GUI.
+ */
 public class Controller {
 
     // Use the UI element id specified in the FXML file as the variable name
@@ -106,10 +109,12 @@ public class Controller {
                 try {
                     File newDirectoryFile = chooseDirectory("Move file to " +
                             "directory");
-                    if (newDirectoryFile != null) {
+                    boolean sameDir = newDirectoryFile.toString().equals
+                            (curSelectedImage.getCurDir());
+                    if (!sameDir) {
                         // todo: select new image in TreeView afterwards?
                         curSelectedImage.move(newDirectoryFile.toString(),
-                                curSelectedImage.getImageName());
+                                curSelectedImage.getImageName(), false);
                         curSelectedImage = null;
                         refreshGUIElements();
                     }
@@ -236,11 +241,20 @@ public class Controller {
      * image's TagManager
      */
     private void updateNameHistory() {
-        ObservableList<String> nameHistoryList = FXCollections
-                .observableArrayList();
-        nameHistoryList.setAll(curSelectedImage.getTagManager()
-                .getNameHistory());
-        nameHistoryView.setItems(nameHistoryList);
+        if (curSelectedImage != null) {
+            ObservableList<String> nameHistoryList = FXCollections
+                    .observableArrayList();
+            nameHistoryList.setAll(curSelectedImage.getTagManager()
+                    .getNameHistory());
+            /* Don't know how to fix this yellow error. The suggested fix
+            fort this is the same as the fix for casting from an unknown
+            Serialized object (see ImageTagManager's yellow errors for more
+            clarification).
+             */
+            nameHistoryView.setItems(nameHistoryList);
+        } else {
+            nameHistoryView.getItems().clear();
+        }
     }
 
     /**

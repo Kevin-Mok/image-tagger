@@ -26,7 +26,7 @@ public class Popup {
     /**
      * Displays an error pop-up when no directory is selected
      */
-    public static void noDirSelectedPopup() {
+    static void noDirSelectedPopup() {
         String popupTitle = "No Directory Selected";
         String popupText = "Please select a valid directory and try again.";
         errorPopup(popupTitle, popupText);

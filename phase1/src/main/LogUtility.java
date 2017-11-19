@@ -159,4 +159,15 @@ class LogUtility {
                 newName);
         log(Level.INFO, message, true);
     }
+
+    /**
+     * Logs moving an image.
+     * @param oldDir Old directory of Image.
+     * @param newDir New directory of Image.
+     */
+    void logMoveImage(String oldDir, String newDir) {
+        String message = String.format("Moved image from %s to %s", oldDir,
+                newDir);
+        log(Level.INFO, message, true);
+    }
 }

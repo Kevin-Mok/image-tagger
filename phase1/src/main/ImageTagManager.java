@@ -53,7 +53,7 @@ public class ImageTagManager {
      *
      * @param pathString Path of Image to remove.
      */
-    public void removeImage(String pathString) {
+    void removeImage(String pathString) {
         pathToImages.remove(pathString);
     }
 
@@ -76,7 +76,7 @@ public class ImageTagManager {
      *
      * @param image Image to add.
      */
-    public void addImage(Image image) {
+    void addImage(Image image) {
         pathToImages.put(image.getPathString(), image);
     }
 
@@ -165,6 +165,11 @@ public class ImageTagManager {
             Object pathToImagesObject = imagesObjectInput.readObject();
             Object nameToTagsObject = tagsObjectOutput.readObject();
 
+            /* Can't find a way to fix this yellow error. In the Serializable
+            code given in class, the same error occurs. Also on this answer on
+            Stack Overflow (https://stackoverflow.com/a/1609963/8811872), it
+            says that there isn't really a good way to handle this in Java.
+             */
             pathToImages = (HashMap<String, Image>) pathToImagesObject;
             tagToImageList = (HashMap<String, ArrayList<Image>>)
                     nameToTagsObject;
@@ -178,8 +183,8 @@ public class ImageTagManager {
             System.out.println("Class not found.");
         }
 
-        System.out.println(pathToImages);
-        System.out.println(tagToImageList);
+        // System.out.println(pathToImages);
+        // System.out.println(tagToImageList);
     }
 
 }

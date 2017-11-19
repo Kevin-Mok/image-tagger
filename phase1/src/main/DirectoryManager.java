@@ -40,15 +40,6 @@ public class DirectoryManager {
         imageFormats.add("jpeg");
     }
 
-    // main() for testing purposes only
-    public static void main(String[] args) {
-        // File rootFolder = new File("/h/u7/c7/05/shyichin");
-        // File rootFolder = new File("/home/kevin/Documents");
-        File rootFolder = new File("/h/u3/c7/05/mokkar/Downloads");
-        main.DirectoryManager m = new main.DirectoryManager(rootFolder);
-        // manager.openRootFolder();
-    }
-
     public DirectoryWrapper getRootFolder() {
         return rootFolder;
     }
@@ -65,7 +56,7 @@ public class DirectoryManager {
      * in subdirectories
      */
     public ItemWrapper getAllImagesUnderRoot() {
-        return getImages(rootFolder.getPath(), true);
+        return getImages(rootFolder.getPath());
     }
 
     /**
@@ -73,24 +64,21 @@ public class DirectoryManager {
      * subdirectories
      *
      * @param directory the directory to search in
-     * @param recursive whether or not to search recursively in the subfolders
      * @return ItemWrapper representing the subdirectories and pictures in a
      * directory
      */
-    private ItemWrapper getImages(Path directory, boolean recursive) {
+    private ItemWrapper getImages(Path directory) {
         DirectoryWrapper images = new DirectoryWrapper(directory.toFile());
         Pattern imgFilePattern = Pattern.compile(generateImageMatchingPattern
                 ());
         try (DirectoryStream<Path> stream = Files.newDirectoryStream
                 (directory)) {
             for (Path file : stream) {
-                if (recursive) {
-                    if (Files.isDirectory(file)) {
-                        ItemWrapper subImages = getImages(file, true);
-                        if (((DirectoryWrapper) subImages).getChildObjects()
-                                .size() != 0) {
-                            images.addToDirectory(subImages);
-                        }
+                if (Files.isDirectory(file)) {
+                    ItemWrapper subImages = getImages(file);
+                    if (((DirectoryWrapper) subImages).getChildObjects()
+                            .size() != 0) {
+                        images.addToDirectory(subImages);
                     }
                 }
                 Matcher matcher = imgFilePattern.matcher(file.toString());

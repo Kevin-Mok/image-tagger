@@ -49,6 +49,10 @@ public class Image implements Serializable {
         return imageFile.toString();
     }
 
+    public String getCurDir() {
+        return PathExtractor.getDirectory(imageFile.getPath());
+    }
+
     /**
      * Returns file name of image with its extension.
      */
@@ -63,15 +67,23 @@ public class Image implements Serializable {
      * @param newImageName The new name of the Image.
      */
     private void rename(String newImageName) {
-        String curDir = PathExtractor.getDirectory(imageFile.getPath());
         // String newPathString = curDir + newImageName + extension;
         String curImageName = imageName;
-        move(curDir, newImageName);
+        move(getCurDir(), newImageName, true);
         LogUtility.getInstance().logImageRename(curImageName,
                 newImageName);
     }
 
-    public void move(String newDir, String newImageName) {
+    /**
+     * Moves this Image to a new directory. Also used for renaming when newDir
+     * is same as old but newImageName is different.
+     *
+     * @param newDir       New directory to move this image to.
+     * @param newImageName New name to rename this image to.
+     * @param renaming     Whether the call to this function is for renaming
+     *                     or not.
+     */
+    public void move(String newDir, String newImageName, boolean renaming) {
         try {
             /* Strings of all parts of this image's path. */
             // String imageFileName = PathExtractor.getImageFileName
@@ -82,6 +94,10 @@ public class Image implements Serializable {
             ImageTagManager imageTagManager = ImageTagManager.getInstance();
             imageTagManager.removeImage(imageFile.toString());
             Files.move(imageFile.toPath(), Paths.get(newPathString));
+            if (!renaming) {
+                LogUtility.getInstance().logMoveImage(imageFile.getPath(),
+                        newPathString);
+            }
 
             /* Update changes to this Image's fields. */
             imageFile = new File(newPathString);
