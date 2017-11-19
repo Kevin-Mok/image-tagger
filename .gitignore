@@ -12,5 +12,7 @@ phase1/myLog.txt
 phase1/nameChangeLog.txt
 test-images/
 *.txt
+!phase1/help.txt
+!phase1/duties.txt
 *.lck
 */*.lck
