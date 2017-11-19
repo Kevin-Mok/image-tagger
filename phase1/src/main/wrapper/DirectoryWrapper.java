@@ -21,11 +21,6 @@ public class DirectoryWrapper extends ItemWrapper {
      */
     private File path;
 
-    /**
-     * Is this directory empty?
-     */
-    private boolean isEmpty;
-
     public DirectoryWrapper(File path) {
         this.path = path;
         this.childObjects = new ArrayList<>();
@@ -59,8 +54,6 @@ public class DirectoryWrapper extends ItemWrapper {
 
         DirectoryWrapper that = (DirectoryWrapper) o;
 
-        if (isEmpty != that.isEmpty) return false;
-
         if (childObjects != null) {
             if (that.childObjects == null) {
                 return false;
@@ -89,7 +82,6 @@ public class DirectoryWrapper extends ItemWrapper {
     public int hashCode() {
         int result = childObjects != null ? childObjects.hashCode() : 0;
         result = 31 * result + (path != null ? path.hashCode() : 0);
-        result = 31 * result + (isEmpty ? 1 : 0);
         return result;
     }
 }

@@ -1,5 +1,6 @@
 package main;
 
+import fx.Popup;
 import main.wrapper.DirectoryWrapper;
 import main.wrapper.ImageWrapper;
 import main.wrapper.ItemWrapper;
@@ -42,8 +43,6 @@ public class DirectoryManager {
         File rootFolder = new File("/h/u3/c7/05/mokkar/Downloads");
         main.DirectoryManager m = new main.DirectoryManager(rootFolder);
         // manager.openRootFolder();
-        System.out.println(m.generateImageMatchingPattern());
-        System.out.println(m.getImages(rootFolder.toPath(), true));
     }
 
     public DirectoryWrapper getRootFolder() {
@@ -99,7 +98,6 @@ public class DirectoryManager {
                     }
                 }
                 Matcher matcher = imgFilePattern.matcher(file.toString());
-                // System.out.println(file);
                 if (matcher.matches()) {
                     if (ImageTagManager.getInstance().containsImagePath(file
                             .toString())) {
@@ -123,18 +121,22 @@ public class DirectoryManager {
      * Open the root folder using the OS's file viewer
      */
     public void openRootFolder() {
-        if (Desktop.isDesktopSupported()) {
-            new Thread(() -> {
-                try {
-                    Desktop.getDesktop().open(this.rootFolder.getPath()
-                            .toFile());
-                } catch (IOException | NullPointerException e) {
-                    System.out.println("No Directory Selected");
-                }
-            }).start();
-        } else {
-            System.out.println("The Java awt Desktop API is not supported on " +
-                    "this machine");
+        if (rootFolder.getPath() != null) {
+            if (Desktop.isDesktopSupported()) {
+                new Thread(() -> {
+                    try {
+                        Desktop.getDesktop().open(this.rootFolder.getPath()
+                                .toFile());
+                    } catch (IOException e) {
+                        String popupText = "Unable to open directory.";
+                        Popup.errorPopup("Error", popupText);
+                    }
+                }).start();
+            } else {
+                String popupText = "The Java awt Desktop API is not supported" +
+                        " on this machine.";
+                Popup.errorPopup("Error", popupText);
+            }
         }
     }
 

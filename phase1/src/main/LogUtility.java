@@ -79,7 +79,8 @@ class LogUtility {
         try {
             handler = new FileHandler(pattern, true);
         } catch (IOException e) {
-            System.out.println(pattern + "doesn't exist, creating file now");
+            System.out.println(pattern + "doesn't exist and will be created " +
+                    "now.");
             String filePath = System.getProperty("user.dir") + File.separator
                     + pattern;
             try {

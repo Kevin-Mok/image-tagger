@@ -77,7 +77,6 @@ public class ImageTagManager {
      */
     public void addImage(Image image) {
         pathToImages.put(image.getPath().toString(), image);
-        System.out.println(pathToImages);
     }
 
     /**
@@ -102,7 +101,6 @@ public class ImageTagManager {
             // mapBuilder(image, nameToTags);
         }
         this.nameToTags = nameToTags;
-        System.out.println(this.nameToTags);
     }
 
     /**
@@ -171,7 +169,7 @@ public class ImageTagManager {
             tagsObjectOutput.close();
         } catch (IOException e) {
             System.out.println("Ser files were not found and will be " +
-                    "created.");
+                    "created upon exiting the program.");
         } catch (ClassNotFoundException e) {
             System.out.println("Class not found.");
         }

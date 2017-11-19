@@ -34,7 +34,7 @@ public class Main extends Application {
     }
 
     public void stop() throws IOException {
-        System.out.println("Stage is closing");
+        System.out.println("Serializing files.");
         imgTagManager.saveToFile();
 
     }

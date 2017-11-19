@@ -105,6 +105,7 @@ public class Controller {
             }
         });
 
+        // todo: path not updating properly if moving file
         moveFileBtn.setOnAction(event -> {
             if (curSelectedImage != null) {
                 try {
@@ -116,7 +117,6 @@ public class Controller {
 
                     Files.move(curSelectedImage.getPath(), Paths.get
                             (newPathOfImage));
-                    System.out.println(curSelectedImage.getPath().toString());
                     ImageTagManager.getInstance().removeImage
                             (curSelectedImage.getPath().toString());
                     // curSelectedImage.setImageFile(newPathOfImage);
@@ -125,8 +125,12 @@ public class Controller {
                     curSelectedImage = null;
                     //ImageTagManager.getInstance().saveToFile();
                     refreshGUIElements();
-                } catch (IOException | NullPointerException e) {
-                    System.out.println("No move");
+                } catch (IOException e) {
+                    String popupTitle = "Error";
+                    String popupText = "File could not be moved.";
+                    Popup.errorPopup(popupTitle, popupText);
+                } catch (NullPointerException e) {
+                    Popup.noDirSelectedPopup();
                 }
             }
         });
@@ -137,7 +141,6 @@ public class Controller {
                         .getSelectionModel().getSelectedItems().get(0);
                 chosenName = chosenName.substring(chosenName.indexOf("→") +
                         1).trim();
-                System.out.println(chosenName);
                 curSelectedImage.revertName(chosenName);
                 updateSelectedImageGUI();
             }

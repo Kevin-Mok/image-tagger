@@ -1,5 +1,7 @@
 package main;
 
+import fx.Popup;
+
 import java.io.File;
 import java.io.Serializable;
 import java.nio.file.Path;
@@ -60,7 +62,8 @@ public class Image implements Serializable {
         String extension = PathExtractor.getExtension(curPath);
         String newPathString = curDir + newImageName + extension;
         if (!imageFile.renameTo(new File(newPathString))) {
-            System.out.println("File renaming failed.");
+            String popupText = "Could not rename file.";
+            Popup.errorPopup("Error", popupText);
         } else {
             // Renaming was a success and following is all business that
             // needs to be taken care of upon renaming this image.
