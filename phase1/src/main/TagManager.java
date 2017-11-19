@@ -29,6 +29,14 @@ public class TagManager implements Serializable {
         this.image = image;
     }
 
+    public Image getImage() {
+        return image;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
+    }
+
     /**
      * Adds new Tag with tagName param to this tag manager.
      *

@@ -85,6 +85,13 @@ public class Image implements Serializable {
     }
 
     /**
+     * Sets this image's TagManager
+     * @param tagManager the TagManager to set
+     */
+    public void setTagManager(TagManager tagManager) {
+        this.tagManager = tagManager;
+    }
+    /**
      * Adds a tag to the currently existing ones.
      *
      * @param tagName The name of the tag to be added.

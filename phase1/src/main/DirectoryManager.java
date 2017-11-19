@@ -105,9 +105,8 @@ public class DirectoryManager {
                                 (ImageTagManager.getInstance().getImage(file
                                         .toString())));
                     } else {
-                        images.addToDirectory(new ImageWrapper(new Image(file
-                                .toFile(), PathExtractor.getImageName(file
-                                .toString()))));
+                        images.addToDirectory(new ImageWrapper(new Image(file.toFile(),
+                                PathExtractor.getImageName(file.toString()))));
                     }
                 }
             }

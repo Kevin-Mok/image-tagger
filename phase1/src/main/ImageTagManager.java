@@ -14,7 +14,7 @@ public class ImageTagManager {
     // Singleton instance of this class.
     private static ImageTagManager instance = null;
     // HashMap of String of tag names to list of Images containing that tag.
-    private HashMap<String, ArrayList<Image>> nameToTags;
+    private HashMap<String, ArrayList<Image>> tagToImageList;
     // HashMap of String of paths to Image with that path.
     private HashMap<String, Image> pathToImages;
 
@@ -30,7 +30,7 @@ public class ImageTagManager {
     public static ImageTagManager getInstance() {
         if (instance == null) {
             instance = new ImageTagManager();
-            instance.nameToTags = new HashMap<>();
+            instance.tagToImageList = new HashMap<>();
             instance.pathToImages = new HashMap<>();
         }
         return instance;
@@ -40,7 +40,7 @@ public class ImageTagManager {
      * Returns String array of all existing tag names in alphabetical order.
      */
     public String[] getListOfTags() {
-        Set<String> setOfTagString = nameToTags.keySet();
+        Set<String> setOfTagString = tagToImageList.keySet();
         String[] listOfTags = setOfTagString.toArray(new
                 String[setOfTagString.size()]);
         Arrays.sort(listOfTags);
@@ -80,12 +80,12 @@ public class ImageTagManager {
     }
 
     /**
-     * Recreates nameToTags HashMap based on Images in pathToImages.
+     * Recreates tagToImageList HashMap based on Images in pathToImages.
      */
     void refreshNameToTags() {
         HashMap<String, ArrayList<Image>> nameToTags = new HashMap<>();
         // Iterates through all existing Images and adds all their tag names
-        // and associated images to new nameToTags map.
+        // and associated images to new tagToImageList map.
         for (Image image : pathToImages.values()) {
             ArrayList<String> imageTagNames = image.getTagManager()
                     .getTagNames();
@@ -98,13 +98,13 @@ public class ImageTagManager {
                 }
                 nameToTags.get(tagName).add(image);
             }
-            // mapBuilder(image, nameToTags);
+            // mapBuilder(image, tagToImageList);
         }
-        this.nameToTags = nameToTags;
+        this.tagToImageList = nameToTags;
     }
 
     /**
-     * Serializes the HashMaps (nameToTags, pathToImages) of this class.
+     * Serializes the HashMaps (tagToImageList, pathToImages) of this class.
      */
     public void saveToFile() {
         try {
@@ -120,7 +120,7 @@ public class ImageTagManager {
             OutputStream tagsBuffer = new BufferedOutputStream(tagsFileOutput);
             ObjectOutput tagsObjectOutput = new ObjectOutputStream(tagsBuffer);
 
-            tagsObjectOutput.writeObject(nameToTags);
+            tagsObjectOutput.writeObject(tagToImageList);
             imagesObjectOutput.writeObject(pathToImages);
 
             imagesObjectOutput.close();
@@ -146,7 +146,7 @@ public class ImageTagManager {
 
 
     /**
-     * Reads the serialization of the HashMaps (nameToTags, pathToImages) of
+     * Reads the serialization of the HashMaps (tagToImageList, pathToImages) of
      * this class.
      */
     public void readFromFile() {
@@ -163,7 +163,7 @@ public class ImageTagManager {
             Object nameToTagsObject = tagsObjectOutput.readObject();
 
             pathToImages = (HashMap<String, Image>) pathToImagesObject;
-            nameToTags = (HashMap<String, ArrayList<Image>>) nameToTagsObject;
+            tagToImageList = (HashMap<String, ArrayList<Image>>) nameToTagsObject;
 
             imagesObjectInput.close();
             tagsObjectOutput.close();
@@ -175,7 +175,7 @@ public class ImageTagManager {
         }
 
         System.out.println(pathToImages);
-        System.out.println(nameToTags);
+        System.out.println(tagToImageList);
     }
 
 }

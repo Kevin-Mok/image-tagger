@@ -7,10 +7,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
-import main.DirectoryManager;
-import main.Image;
-import main.ImageTagManager;
-import main.PathExtractor;
+import main.*;
 import main.wrapper.DirectoryWrapper;
 import main.wrapper.ImageWrapper;
 import main.wrapper.ItemWrapper;
@@ -114,13 +111,18 @@ public class Controller {
                     String imageFileName = PathExtractor.getImageFileName
                             (curSelectedImage.getPath().toString());
                     String newPathOfImage = newDirectory + "/" + imageFileName;
-
-                    Files.move(curSelectedImage.getPath(), Paths.get
-                            (newPathOfImage));
                     ImageTagManager.getInstance().removeImage
                             (curSelectedImage.getPath().toString());
-                    // curSelectedImage.setImageFile(newPathOfImage);
-                    ImageTagManager.getInstance().addImage(curSelectedImage);
+                    /* TagManager of this image, extract it before it's moved */
+                    TagManager oldTagManager = curSelectedImage.getTagManager();
+                    Files.move(curSelectedImage.getPath(), Paths.get
+                            (newPathOfImage));
+                    /* name of the image without the extension */
+                    String imageName = PathExtractor.getImageName(newPathOfImage);
+                    Image imageAfterMove = new Image(new File(newPathOfImage), imageName);
+                    /* Inject the old TagManager into the image after it's been moved, to preserve tag information */
+                    oldTagManager.setImage(imageAfterMove);
+                    imageAfterMove.setTagManager(oldTagManager);
                     // todo: select new image in TreeView afterwards?
                     curSelectedImage = null;
                     //ImageTagManager.getInstance().saveToFile();
