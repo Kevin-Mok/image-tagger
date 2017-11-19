@@ -37,6 +37,7 @@ class LogUtility {
 
     /**
      * Get the singleton instance of LogUtility
+     *
      * @return the instance
      */
     static LogUtility getInstance() {
@@ -52,9 +53,12 @@ class LogUtility {
 
     /**
      * Returns either the renameLogger or the tagLogger
+     *
      * @param getRenameLogger true if retrieving the renameLogger
-     * @return renameLogger if getRenameLogger is set to true, tagLogger if otherwise
-     * @throws IOException if any I/O errors occurred during file reading/writing
+     * @return renameLogger if getRenameLogger is set to true, tagLogger if
+     * otherwise
+     * @throws IOException if any I/O errors occurred during file
+     * reading/writing
      */
     private Logger getLogger(boolean getRenameLogger) throws IOException {
         if (getRenameLogger && this.renameLogger != null) {
@@ -96,6 +100,7 @@ class LogUtility {
         logger.addHandler(handler);
         return logger;
     }
+
     /**
      * Logs the level and the message.
      *
@@ -113,37 +118,45 @@ class LogUtility {
 
     /**
      * Logs an add or delete tag event
-     * @param tagName tag that's added or deleted
+     *
+     * @param tagName   tag that's added or deleted
      * @param imageName name of the image where the add/delete tag takes place
-     * @param addTag true if logging the addition of a tag, false if logging a deletion
+     * @param addTag    true if logging the addition of a tag, false if
+     *                  logging a deletion
      */
     void logAddOrDeleteTag(String tagName, String imageName, boolean addTag) {
         String message;
         if (addTag) {
-            message = String.format("Created new Tag %s for Image %s", tagName, imageName);
+            message = String.format("Created new Tag %s for Image %s",
+                    tagName, imageName);
         } else {
-            message = String.format("Deleted Tag %s from Image %s", tagName, imageName);
+            message = String.format("Deleted Tag %s from Image %s", tagName,
+                    imageName);
         }
         log(Level.INFO, message, false);
     }
 
     /**
      * Logs an image revert name event
+     *
      * @param oldName the name the image currently has
      * @param newName the name to revert to
      */
     void logRevertName(String oldName, String newName) {
-        String message = String.format("Reverted name from %s to %s", oldName, newName);
+        String message = String.format("Reverted name from %s to %s",
+                oldName, newName);
         log(Level.INFO, message, false);
     }
 
     /**
      * Logs an image rename event
+     *
      * @param oldName the old name of the image
      * @param newName the new name of the image
      */
     void logImageRename(String oldName, String newName) {
-        String message = String.format("Changed name from %s to %s", oldName, newName);
+        String message = String.format("Changed name from %s to %s", oldName,
+                newName);
         log(Level.INFO, message, true);
     }
 }

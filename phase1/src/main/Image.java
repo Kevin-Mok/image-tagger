@@ -72,7 +72,8 @@ public class Image implements Serializable {
             imageTagManager.removeImage(curPath);
             imageTagManager.addImage(this);
             imageTagManager.refreshNameToTags();
-            LogUtility.getInstance().logImageRename(this.getImageName(), newImageName);
+            LogUtility.getInstance().logImageRename(this.getImageName(),
+                    newImageName);
         }
 
     }
@@ -86,11 +87,13 @@ public class Image implements Serializable {
 
     /**
      * Sets this image's TagManager
+     *
      * @param tagManager the TagManager to set
      */
     public void setTagManager(TagManager tagManager) {
         this.tagManager = tagManager;
     }
+
     /**
      * Adds a tag to the currently existing ones.
      *

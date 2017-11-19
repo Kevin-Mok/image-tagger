@@ -9,8 +9,9 @@ import javafx.scene.control.Alert;
 public class Popup {
     /**
      * Displays error information in a pop-up window
+     *
      * @param title the title of the window
-     * @param text the text to display
+     * @param text  the text to display
      */
     public static void errorPopup(String title, String text) {
         Platform.runLater(() -> {

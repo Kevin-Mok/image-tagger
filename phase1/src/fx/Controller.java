@@ -117,9 +117,12 @@ public class Controller {
                     Files.move(curSelectedImage.getPath(), Paths.get
                             (newPathOfImage));
                     /* name of the image without the extension */
-                    String imageName = PathExtractor.getImageName(newPathOfImage);
-                    Image imageAfterMove = new Image(new File(newPathOfImage), imageName);
-                    /* Inject the old TagManager into the image after it's been moved, to preserve tag information */
+                    String imageName = PathExtractor.getImageName
+                            (newPathOfImage);
+                    Image imageAfterMove = new Image(new File(newPathOfImage)
+                            , imageName);
+                    /* Inject the old TagManager into the image after it's
+                    been moved, to preserve tag information */
                     oldTagManager.setImage(imageAfterMove);
                     imageAfterMove.setTagManager(oldTagManager);
                     // todo: select new image in TreeView afterwards?
@@ -147,6 +150,7 @@ public class Controller {
             }
         });
     }
+
     /* Updates the GUI if any changes were made to the selected image,
     ** e.g. reverting the name, adding/deleting a tag, etc
      */
@@ -212,6 +216,7 @@ public class Controller {
 
     /**
      * Display the OS's file selector so the user can select a directory
+     *
      * @param title the title of the file selector window
      * @return the directory that was chosen by the user
      */
@@ -286,7 +291,8 @@ public class Controller {
     }
 
     /**
-     * Updates the ListView that displays all available tags in the chosen root directory
+     * Updates the ListView that displays all available tags in the chosen
+     * root directory
      */
     private void updateAvailableTags() {
         ObservableList<String> availableTagsList = FXCollections

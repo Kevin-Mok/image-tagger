@@ -16,6 +16,7 @@ public class ImageWrapper implements ItemWrapper {
 
     /**
      * Constructs a new ImageWrapper object
+     *
      * @param image the image object that this wrapper wraps around
      */
     public ImageWrapper(Image image) {
@@ -37,7 +38,9 @@ public class ImageWrapper implements ItemWrapper {
     }
 
     /**
-     * An ImageWrapper is equal to this one only if all its fields are equal to this one's
+     * An ImageWrapper is equal to this one only if all its fields are equal
+     * to this one's
+     *
      * @param o the object to compare to
      * @return true if o is equal to this, false if otherwise
      */
@@ -54,6 +57,7 @@ public class ImageWrapper implements ItemWrapper {
 
     /**
      * Calculates the hash code for this object using its image field
+     *
      * @return the hash code for this ImageWrapper
      */
     @Override

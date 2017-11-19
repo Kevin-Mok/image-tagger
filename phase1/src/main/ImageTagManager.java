@@ -22,7 +22,8 @@ public class ImageTagManager {
      * Private constructor so that only one instance may be created through a
      * static method
      */
-    private ImageTagManager() {}
+    private ImageTagManager() {
+    }
 
     /**
      * Returns the singleton instance of this class.
@@ -129,6 +130,7 @@ public class ImageTagManager {
             System.out.println("Could not serialize ImageTagManager.");
         }
     }
+
     /*
     ** Deletes entries from pathToImages that only have a name history of
     ** size 1 (i.e. no tags were ever added to that Image). Decreases size of
@@ -164,7 +166,8 @@ public class ImageTagManager {
             Object nameToTagsObject = tagsObjectOutput.readObject();
 
             pathToImages = (HashMap<String, Image>) pathToImagesObject;
-            tagToImageList = (HashMap<String, ArrayList<Image>>) nameToTagsObject;
+            tagToImageList = (HashMap<String, ArrayList<Image>>)
+                    nameToTagsObject;
 
             imagesObjectInput.close();
             tagsObjectOutput.close();

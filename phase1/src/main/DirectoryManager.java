@@ -28,6 +28,7 @@ public class DirectoryManager {
 
     /**
      * Instantiates a new instance of DirectoryManager with a given root folder
+     *
      * @param rootFolder the root directory of this DirectoryManager
      */
     public DirectoryManager(File rootFolder) {
@@ -54,14 +55,6 @@ public class DirectoryManager {
 
     public void setRootFolder(DirectoryWrapper rootFolder) {
         this.rootFolder = rootFolder;
-    }
-
-    public ArrayList<String> getImageFormats() {
-        return imageFormats;
-    }
-
-    public void setImageFormats(ArrayList<String> imageFormats) {
-        this.imageFormats = imageFormats;
     }
 
     /**
@@ -108,7 +101,8 @@ public class DirectoryManager {
                                 (ImageTagManager.getInstance().getImage(file
                                         .toString())));
                     } else {
-                        images.addToDirectory(new ImageWrapper(new Image(file.toFile(),
+                        images.addToDirectory(new ImageWrapper(new Image(file
+                                .toFile(),
                                 PathExtractor.getImageName(file.toString()))));
                     }
                 }

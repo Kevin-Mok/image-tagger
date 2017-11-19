@@ -23,6 +23,7 @@ public class DirectoryWrapper implements ItemWrapper {
 
     /**
      * Constructor for this DirectoryWrapper
+     *
      * @param path path of the directory
      */
     public DirectoryWrapper(File path) {
@@ -36,6 +37,7 @@ public class DirectoryWrapper implements ItemWrapper {
 
     /**
      * Add a subdirectory/image to this directory
+     *
      * @param item the directory/image to be added
      */
     public void addToDirectory(ItemWrapper item) {
@@ -56,7 +58,9 @@ public class DirectoryWrapper implements ItemWrapper {
     }
 
     /**
-     * A DirectoryWrapper is equal to this one if all its fields are equal to this one's
+     * A DirectoryWrapper is equal to this one if all its fields are equal to
+     * this one's
+     *
      * @param o the object to be compared to
      * @return true if o is equal to this, false if otherwise
      */
@@ -93,6 +97,7 @@ public class DirectoryWrapper implements ItemWrapper {
 
     /**
      * Calculates the hash code for this object using its fields
+     *
      * @return the hash code for this object
      */
     @Override

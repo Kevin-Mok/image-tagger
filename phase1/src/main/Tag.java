@@ -17,8 +17,9 @@ public class Tag implements Serializable {
 
     /**
      * Constructs a new Tag
+     *
      * @param image the image the tag is on
-     * @param name the name of the tag
+     * @param name  the name of the tag
      */
     public Tag(Image image, String name) {
         this.image = image;
@@ -35,6 +36,7 @@ public class Tag implements Serializable {
 
     /**
      * A tag is equal to this one if all of its fields are equal to this one's
+     *
      * @param o the object to compare to
      * @return true if o is equal to this Tag
      */
@@ -50,6 +52,7 @@ public class Tag implements Serializable {
 
     /**
      * Calculates the hash code for this object using its fields
+     *
      * @return the hash code for this object
      */
     @Override
