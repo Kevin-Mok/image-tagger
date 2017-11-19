@@ -60,7 +60,7 @@ class LogUtility {
         if (getRenameLogger && this.renameLogger != null) {
             return this.renameLogger;
         }
-        if (this.tagLogger != null) {
+        if (this.tagLogger != null && this.renameLogger != null) {
             return this.tagLogger;
         }
 
@@ -123,7 +123,7 @@ class LogUtility {
         } else {
             message = String.format("Deleted Tag %s from Image %s", tagName, imageName);
         }
-        log(Level.INFO, message, true);
+        log(Level.INFO, message, false);
     }
 
     /**
@@ -133,7 +133,7 @@ class LogUtility {
      */
     void logRevertName(String oldName, String newName) {
         String message = String.format("Reverted name from %s to %s", oldName, newName);
-        log(Level.INFO, message, true);
+        log(Level.INFO, message, false);
     }
 
     /**
@@ -143,6 +143,6 @@ class LogUtility {
      */
     void logImageRename(String oldName, String newName) {
         String message = String.format("Changed name from %s to %s", oldName, newName);
-        log(Level.INFO, message, false);
+        log(Level.INFO, message, true);
     }
 }
