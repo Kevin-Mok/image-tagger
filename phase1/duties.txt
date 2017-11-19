@@ -1,6 +1,13 @@
 Chris(shyichin)
-
-
+- Created JavaFX application layout
+- Co-designed user interface 
+- Implemented user interface using Scene Builder and FXML
+- Implemented DirectoryManager class
+- Implemented the wrapper class hierarchy (ItemWrapper, DirectoryWrapper and ImageWrapper)
+- Created shell script for compiling and executing the application from the command line
+- Wrote most of the documentation for DirectoryManager and the wrapper classes, helped document some of the other classes as well
+- Fixed a bug when the user tries to move an image to a subdirectory under the same root 
+- Refactored parts of the code base
 
 Kevin
 
