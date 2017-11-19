@@ -16,6 +16,3 @@ test-images/
 !phase1/duties.txt
 *.lck
 */*.lck
-*.html
-*.md
-html_md_files/
