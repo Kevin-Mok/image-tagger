@@ -31,7 +31,7 @@ class PathExtractorTest {
 
     @Test
     void getDirectory() {
-        assertEquals("/h/u3/c7/05/mokkar/258/258-labs-self/l6/",
+        assertEquals("/h/u3/c7/05/mokkar/258/258-labs-self/l6",
                 PathExtractor.getDirectory(testPathString));
     }
 

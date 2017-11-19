@@ -77,7 +77,7 @@ public class ImageTagManager {
      * @param image Image to add.
      */
     public void addImage(Image image) {
-        pathToImages.put(image.getPath().toString(), image);
+        pathToImages.put(image.getPathString(), image);
     }
 
     /**

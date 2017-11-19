@@ -7,15 +7,15 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
-import main.*;
+import main.DirectoryManager;
+import main.Image;
+import main.ImageTagManager;
+import main.PathExtractor;
 import main.wrapper.DirectoryWrapper;
 import main.wrapper.ImageWrapper;
 import main.wrapper.ItemWrapper;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 public class Controller {
 
@@ -52,7 +52,6 @@ public class Controller {
      */
     private Image curSelectedImage;
 
-    // private File rootFolder = new File("/home/kevin/Documents");
     private DirectoryManager rootDirectoryManager = new DirectoryManager(null);
     /**
      * The stage this controller is associated with
@@ -105,34 +104,15 @@ public class Controller {
         moveFileBtn.setOnAction(event -> {
             if (curSelectedImage != null) {
                 try {
-                    String newDirectory = chooseDirectory("Move file to " +
-                            "directory").toString();
-                    String imageFileName = PathExtractor.getImageFileName
-                            (curSelectedImage.getPath().toString());
-                    String newPathOfImage = newDirectory + "/" + imageFileName;
-                    ImageTagManager.getInstance().removeImage
-                            (curSelectedImage.getPath().toString());
-                    /* TagManager of this image, extract it before it's moved */
-                    TagManager oldTagManager = curSelectedImage.getTagManager();
-                    Files.move(curSelectedImage.getPath(), Paths.get
-                            (newPathOfImage));
-                    /* name of the image without the extension */
-                    String imageName = PathExtractor.getImageName
-                            (newPathOfImage);
-                    Image imageAfterMove = new Image(new File(newPathOfImage)
-                            , imageName);
-                    /* Inject the old TagManager into the image after it's
-                    been moved, to preserve tag information */
-                    oldTagManager.setImage(imageAfterMove);
-                    imageAfterMove.setTagManager(oldTagManager);
-                    // todo: select new image in TreeView afterwards?
-                    curSelectedImage = null;
-                    //ImageTagManager.getInstance().saveToFile();
-                    refreshGUIElements();
-                } catch (IOException e) {
-                    String popupTitle = "Error";
-                    String popupText = "File could not be moved.";
-                    Popup.errorPopup(popupTitle, popupText);
+                    File newDirectoryFile = chooseDirectory("Move file to " +
+                            "directory");
+                    if (newDirectoryFile != null) {
+                        // todo: select new image in TreeView afterwards?
+                        curSelectedImage.move(newDirectoryFile.toString(),
+                                curSelectedImage.getImageName());
+                        curSelectedImage = null;
+                        refreshGUIElements();
+                    }
                 } catch (NullPointerException e) {
                     Popup.noDirSelectedPopup();
                 }
@@ -157,7 +137,7 @@ public class Controller {
     private void updateSelectedImageGUI() {
         if (curSelectedImage != null) {
             // Update ImageView.
-            String filePath = curSelectedImage.getPath().toString();
+            String filePath = curSelectedImage.getPathString();
             imageView.setImage(new javafx.scene.image.Image
                     ("file:" + filePath));
             // Update TreeView.

@@ -57,7 +57,7 @@ public class PathExtractor {
      */
     public static String getDirectory(String imagePath) {
         int indexOfLastSlash = imagePath.lastIndexOf(File.separatorChar);
-        return imagePath.substring(0, indexOfLastSlash + 1);
+        return imagePath.substring(0, indexOfLastSlash);
     }
 
     /**

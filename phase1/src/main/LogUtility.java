@@ -58,7 +58,7 @@ class LogUtility {
      * @return renameLogger if getRenameLogger is set to true, tagLogger if
      * otherwise
      * @throws IOException if any I/O errors occurred during file
-     * reading/writing
+     *                     reading/writing
      */
     private Logger getLogger(boolean getRenameLogger) throws IOException {
         if (getRenameLogger && this.renameLogger != null) {

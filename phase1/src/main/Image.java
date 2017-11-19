@@ -3,8 +3,11 @@ package main;
 import fx.Popup;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * Image class that stores its path and a ImageTagManager object to work with
@@ -42,6 +45,10 @@ public class Image implements Serializable {
         return imageFile.toPath();
     }
 
+    public String getPathString() {
+        return imageFile.toString();
+    }
+
     /**
      * Returns file name of image with its extension.
      */
@@ -56,26 +63,39 @@ public class Image implements Serializable {
      * @param newImageName The new name of the Image.
      */
     private void rename(String newImageName) {
-        ImageTagManager imageTagManager = ImageTagManager.getInstance();
-        String curPath = imageFile.getPath();
-        String curDir = PathExtractor.getDirectory(curPath);
-        String extension = PathExtractor.getExtension(curPath);
-        String newPathString = curDir + newImageName + extension;
-        if (!imageFile.renameTo(new File(newPathString))) {
-            String popupText = "Could not rename file.";
-            Popup.errorPopup("Error", popupText);
-        } else {
-            // Renaming was a success and following is all business that
-            // needs to be taken care of upon renaming this image.
+        String curDir = PathExtractor.getDirectory(imageFile.getPath());
+        // String newPathString = curDir + newImageName + extension;
+        String curImageName = imageName;
+        move(curDir, newImageName);
+        LogUtility.getInstance().logImageRename(curImageName,
+                newImageName);
+    }
+
+    public void move(String newDir, String newImageName) {
+        try {
+            /* Strings of all parts of this image's path. */
+            // String imageFileName = PathExtractor.getImageFileName
+            //         (imageFile.toString());
+            String extension = PathExtractor.getExtension(imageFile.getPath());
+            String newPathString = newDir + "/" + newImageName + extension;
+
+            ImageTagManager imageTagManager = ImageTagManager.getInstance();
+            imageTagManager.removeImage(imageFile.toString());
+            Files.move(imageFile.toPath(), Paths.get(newPathString));
+
+            /* Update changes to this Image's fields. */
             imageFile = new File(newPathString);
             imageName = newImageName;
-            imageTagManager.removeImage(curPath);
+            // tagManager.setImage(this);
+
+            /* Update the changes in the singleton ImageTagManager.*/
             imageTagManager.addImage(this);
             imageTagManager.refreshNameToTags();
-            LogUtility.getInstance().logImageRename(this.getImageName(),
-                    newImageName);
+        } catch (IOException e) {
+            String popupTitle = "Error";
+            String popupText = "File could not be moved or renamed.";
+            Popup.errorPopup(popupTitle, popupText);
         }
-
     }
 
     /**
@@ -83,15 +103,6 @@ public class Image implements Serializable {
      */
     public TagManager getTagManager() {
         return tagManager;
-    }
-
-    /**
-     * Sets this image's TagManager
-     *
-     * @param tagManager the TagManager to set
-     */
-    public void setTagManager(TagManager tagManager) {
-        this.tagManager = tagManager;
     }
 
     /**

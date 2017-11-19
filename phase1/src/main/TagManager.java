@@ -90,8 +90,7 @@ public class TagManager implements Serializable {
     // Returns current name of Image with its original name and current tags.
     private String getCurrentName() {
         StringBuilder result = new StringBuilder();
-        result.append(PathExtractor.getOriginalName((image.getPath().toString
-                ())));
+        result.append(PathExtractor.getOriginalName((image.getPathString())));
         for (Tag currentTag : currentTags) {
             result.append(" @").append(currentTag.getName());
         }
