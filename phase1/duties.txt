@@ -10,13 +10,14 @@ Chris(shyichin)
 - Refactored parts of the code base
 
 Kevin
-- Wrote Picture, PathExtractor, TagManager class
+- Wrote Picture, PathExtractor, TagManager, Popup class
+- Helped design user interface
 - Displayed list of images in TreeView
 - Refactored a lot of code for clarity and style
 - Implemented listener of adding new/available tags, deleting tags and displayed available tags in GUI
 - Created UML
 - Documented code periodically
-- Helped find odd bugs in GUI
+- Helped find and fix bugs in GUI
 
 Saad
 - Created ImageTagManager class

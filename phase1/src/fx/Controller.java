@@ -1,5 +1,6 @@
 package fx;
 
+import com.sun.org.apache.bcel.internal.generic.POP;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -167,9 +168,16 @@ public class Controller {
     public void addNewTag() {
         String newTagName = addNewTagField.getText();
         if (curSelectedImage != null && newTagName.length() > 0) {
-            curSelectedImage.addTag(newTagName);
-            addNewTagField.clear();
-            updateSelectedImageGUI();
+            if (!newTagName.contains("/") && !newTagName.contains("\\")) {
+                curSelectedImage.addTag(newTagName);
+                addNewTagField.clear();
+                updateSelectedImageGUI();
+            } else {
+                String invalidChars = "/, \\";
+                String popupTitle = "Invalid Tag Name";
+                String popupText = String.format("The tag name must not include the characters: %s", invalidChars);
+                Popup.errorPopup(popupTitle, popupText);
+            }
         }
     }
 
