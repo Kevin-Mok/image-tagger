@@ -162,6 +162,7 @@ class LogUtility {
 
     /**
      * Logs moving an image.
+     *
      * @param oldDir Old directory of Image.
      * @param newDir New directory of Image.
      */

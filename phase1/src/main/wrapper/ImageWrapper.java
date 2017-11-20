@@ -25,6 +25,7 @@ public class ImageWrapper implements ItemWrapper {
 
     /**
      * Gets the image wrapped by this object
+     *
      * @return the image wrapped by this wrapper
      */
     public Image getImage() {
@@ -33,6 +34,7 @@ public class ImageWrapper implements ItemWrapper {
 
     /**
      * Gets the path of the image this wrapper contains
+     *
      * @return the path of the image in this wrapper, as a Path object
      */
     @Override
@@ -42,6 +44,7 @@ public class ImageWrapper implements ItemWrapper {
 
     /**
      * Returns the string representation of the image this wrapper contains
+     *
      * @return the string representation of the image this wrapper contains
      */
     @Override

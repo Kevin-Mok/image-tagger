@@ -9,6 +9,6 @@ import java.nio.file.Path;
  */
 public interface ItemWrapper {
 
-    public abstract Path getPath();
+    Path getPath();
 
 }
