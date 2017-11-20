@@ -4,7 +4,8 @@ import javafx.application.Platform;
 import javafx.scene.control.Alert;
 
 /**
- * Class responsible for the display of error information via pop-ups
+ * Class responsible for the display of error information via pop-ups. Unused
+ * now in Phase 1 since could not get to compile through command line.
  */
 public class Popup {
     /**

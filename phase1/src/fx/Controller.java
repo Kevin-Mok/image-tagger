@@ -119,7 +119,8 @@ public class Controller {
                         refreshGUIElements();
                     }
                 } catch (NullPointerException e) {
-                    Popup.noDirSelectedPopup();
+                    // Popup.noDirSelectedPopup();
+                    System.out.println("No valid directory was selected.");
                 }
             }
         });
