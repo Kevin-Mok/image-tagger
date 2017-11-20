@@ -32,7 +32,9 @@ public class DirectoryWrapper implements ItemWrapper {
     }
 
     /**
-     * Returns a list of ItemWrapper objects representing the directories and images under this directory
+     * Returns a list of ItemWrapper objects representing the directories and
+     * images under this directory
+     *
      * @return list of directories and images under this directory
      */
     public List<ItemWrapper> getChildObjects() {
@@ -50,6 +52,7 @@ public class DirectoryWrapper implements ItemWrapper {
 
     /**
      * Returns the path of this directory as a Path object
+     *
      * @return the path of this directory as a Path object
      */
     @Override
@@ -62,6 +65,7 @@ public class DirectoryWrapper implements ItemWrapper {
 
     /**
      * Returns the path string of this directory
+     *
      * @return the path string of this directory
      */
     @Override
@@ -89,13 +93,11 @@ public class DirectoryWrapper implements ItemWrapper {
             } else {
                 for (ItemWrapper wrapper : this.childObjects) {
                     if (wrapper instanceof DirectoryWrapper) {
-                        if (!that.getChildObjects().contains(
-                                (DirectoryWrapper) wrapper)) {
+                        if (!that.getChildObjects().contains(wrapper)) {
                             return false;
                         }
                     } else {
-                        if (!that.getChildObjects().contains((ImageWrapper)
-                                wrapper)) {
+                        if (!that.getChildObjects().contains(wrapper)) {
                             return false;
                         }
                     }

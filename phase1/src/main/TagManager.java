@@ -5,6 +5,9 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+/**
+ * Manages anything related to Tags for an Image.
+ */
 public class TagManager implements Serializable {
     /**
      * The name history of the image this TagManager is associated with

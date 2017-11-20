@@ -63,6 +63,9 @@ public class Controller {
      */
     private Stage stage;
 
+    /**
+     * Constructor.
+     */
     public Controller() {
     }
 

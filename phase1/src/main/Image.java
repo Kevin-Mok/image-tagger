@@ -33,6 +33,7 @@ public class Image implements Serializable {
 
     /**
      * Gets the image name without its extension
+     *
      * @return the image name without its extension
      */
     public String getImageName() {
@@ -41,6 +42,7 @@ public class Image implements Serializable {
 
     /**
      * Gets the path of the image
+     *
      * @return the path of the image
      */
     public Path getPath() {

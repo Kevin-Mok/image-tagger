@@ -28,6 +28,7 @@ public class Tag implements Serializable {
 
     /**
      * Gets the name of the tag
+     *
      * @return the name of the tag
      */
     public String getName() {

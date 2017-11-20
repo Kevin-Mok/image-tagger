@@ -54,7 +54,7 @@ class DirectoryManagerTest {
         testwrapper.getChildObjects().add(imageOne);
         testwrapper.getChildObjects().add(imageTwo);
 
-        assertEquals(testwrapper, (DirectoryWrapper) rootDirectory);
+        assertEquals(testwrapper, rootDirectory);
         //assertion fails, suspect it's because of the way Lists are checked
         // for equality
     }

@@ -37,6 +37,9 @@ public class ResetImageFileNames {
         }
     }
 
+    /**
+     * Only for test purposes.
+     */
     public static void main(String[] args) {
         // String dirString = "/home/kevin/Pictures";
         // String dirString = "/h/u5/c6/05/khans167/Desktop/Images";

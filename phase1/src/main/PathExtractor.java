@@ -72,17 +72,17 @@ public class PathExtractor {
             return imagePath;
         }
         int indexOfLastPeriod = imagePath.lastIndexOf('.');
-        String newPathName = imagePath.substring(0, indexOfFirstTag - 1) +
-                imagePath.substring(indexOfLastPeriod);
-        return newPathName;
+        return imagePath.substring(0, indexOfFirstTag - 1) + imagePath
+                .substring(indexOfLastPeriod);
     }
 
     /**
      * Gets the original name of the image, without the tags
+     *
      * @param path path of the image
      * @return the name of the image without any tags
      */
-    public static String getOriginalName(String path) {
+    static String getOriginalName(String path) {
         return (getImageName(getPathWithoutTags(path)));
     }
 
