@@ -9,6 +9,9 @@ import main.ImageTagManager;
 
 import java.io.IOException;
 
+/**
+ * Main class from which our program runs.
+ */
 public class Main extends Application {
     private ImageTagManager imgTagManager = ImageTagManager.getInstance();
 

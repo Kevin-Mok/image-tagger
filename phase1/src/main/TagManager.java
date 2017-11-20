@@ -40,10 +40,20 @@ public class TagManager implements Serializable {
         this.image = image;
     }
 
+    /**
+     * Returns the Image associated with this TagManager.
+     *
+     * @return The Image associated with this TagManager.
+     */
     public Image getImage() {
         return image;
     }
 
+    /**
+     * Sets the Image associated with this TagManager.
+     *
+     * @param image The Image to be associated with this TagManager.
+     */
     public void setImage(Image image) {
         this.image = image;
     }

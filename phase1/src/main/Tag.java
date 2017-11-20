@@ -35,8 +35,9 @@ public class Tag implements Serializable {
     }
 
     /**
-     * Gets the image this tag is on
-     * @return the image this tag is on
+     * Returns the Image associated with this Tag.
+     *
+     * @return The Image associated with this Tag.
      */
     public Image getImage() {
         return image;
