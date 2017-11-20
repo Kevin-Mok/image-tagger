@@ -119,14 +119,14 @@ public class Controller {
                         refreshGUIElements();
                     }
                 } catch (NullPointerException e) {
-                    // Popup.noDirSelectedPopup();
+                    Popup.noDirSelectedPopup();
                     System.out.println("No valid directory was selected.");
                 }
             }
         });
 
         revertNameBtn.setOnAction(event -> {
-            if (curSelectedImage != null) {
+            if (curSelectedImage != null && nameHistoryView.getSelectionModel().getSelectedItems().get(0) != null) {
                 String chosenName = (String) nameHistoryView
                         .getSelectionModel().getSelectedItems().get(0);
                 chosenName = chosenName.substring(chosenName.indexOf("→") +
