@@ -15,6 +15,10 @@ import java.io.IOException;
 public class Main extends Application {
     private ImageTagManager imgTagManager = ImageTagManager.getInstance();
 
+    /**
+     * Launches the application
+     * @param args arguments
+     */
     public static void main(String[] args) {
         launch(args);
     }

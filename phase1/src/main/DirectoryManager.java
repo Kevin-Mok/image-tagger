@@ -15,6 +15,10 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Class responsible for searching through a given directory and its subdirectories, looking for image files
+ * Also takes care of opening that given directory using the OS's file viewer
+ */
 public class DirectoryManager {
     /**
      * The top level directory for the current instance of the Image Viewer
