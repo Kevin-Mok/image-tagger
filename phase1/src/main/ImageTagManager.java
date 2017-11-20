@@ -27,6 +27,8 @@ public class ImageTagManager {
 
     /**
      * Returns the singleton instance of this class.
+     *
+     * @return The singleton ImageTagManager instance.
      */
     public static ImageTagManager getInstance() {
         if (instance == null) {
@@ -38,7 +40,9 @@ public class ImageTagManager {
     }
 
     /**
-     * Returns String array of all existing tag names in alphabetical order.
+     * Returns all existing tag names in alphabetical order.
+     *
+     * @return String array of all existing tag names in alphabetical order.
      */
     public String[] getListOfTags() {
         Set<String> setOfTagString = tagToImageList.keySet();
@@ -59,6 +63,8 @@ public class ImageTagManager {
 
     /**
      * Returns image with path parameter in pathToImages.
+     *
+     * @return Image with path parameter in pathToImages.
      */
     Image getImage(String path) {
         return pathToImages.get(path);
@@ -66,6 +72,8 @@ public class ImageTagManager {
 
     /**
      * Returns whether pathToImages contains a key of path parameter.
+     *
+     * @return Boolean of whether pathToImages contains a key of path parameter.
      */
     boolean containsImagePath(String path) {
         return pathToImages.containsKey(path);

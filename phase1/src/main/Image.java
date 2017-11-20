@@ -33,6 +33,8 @@ public class Image implements Serializable {
 
     /**
      * Return name of image without its extension.
+     *
+     * @return String of name of image without its extension.
      */
     public String getImageName() {
         return imageName;
@@ -40,21 +42,35 @@ public class Image implements Serializable {
 
     /**
      * Return path of image.
+     *
+     * @return Path of this image's File.
      */
     public Path getPath() {
         return imageFile.toPath();
     }
 
+    /**
+     * Return this image's Path.
+     *
+     * @return String of this image's path.
+     */
     public String getPathString() {
         return imageFile.toString();
     }
 
+    /**
+     * Return this image's current directory.
+     *
+     * @return String of this image's current directory.
+     */
     public String getCurDir() {
         return PathExtractor.getDirectory(imageFile.getPath());
     }
 
     /**
      * Returns file name of image with its extension.
+     *
+     * @return String of this image's file name with its extension.
      */
     @Override
     public String toString() {
@@ -117,6 +133,8 @@ public class Image implements Serializable {
 
     /**
      * Returns this Image's TagManager.
+     *
+     * @return TagManager of this image.
      */
     public TagManager getTagManager() {
         return tagManager;

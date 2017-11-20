@@ -40,10 +40,22 @@ public class DirectoryManager {
         imageFormats.add("jpeg");
     }
 
+    /**
+     * Returns the root folder of this DirectoryManager.
+     *
+     * @return The DirectoryWrapper of this object containing the root folder
+     * path.
+     */
     public DirectoryWrapper getRootFolder() {
         return rootFolder;
     }
 
+    /**
+     * Sets the root folder of this DirectoryManager.
+     *
+     * @param rootFolder The DirectoryWrapper to set this object's root
+     *                   folder to.
+     */
     public void setRootFolder(DirectoryWrapper rootFolder) {
         this.rootFolder = rootFolder;
     }
@@ -119,7 +131,7 @@ public class DirectoryManager {
                 }).start();
             } else {
                 String popupText = "The Java awt Desktop API is not supported" +
-                         " on this machine.";
+                        " on this machine.";
                 Popup.errorPopup("Error", popupText);
 //                System.out.println("The Java awt Desktop API is not " +
 //                        "supported on this machine.");

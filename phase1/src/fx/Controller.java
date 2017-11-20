@@ -1,6 +1,5 @@
 package fx;
 
-import com.sun.org.apache.bcel.internal.generic.POP;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -17,6 +16,8 @@ import main.wrapper.ImageWrapper;
 import main.wrapper.ItemWrapper;
 
 import java.io.File;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Controller for JavaFX GUI.
@@ -127,7 +128,8 @@ public class Controller {
         });
 
         revertNameBtn.setOnAction(event -> {
-            if (curSelectedImage != null && nameHistoryView.getSelectionModel().getSelectedItems().get(0) != null) {
+            if (curSelectedImage != null && nameHistoryView.getSelectionModel
+                    ().getSelectedItems().get(0) != null) {
                 String chosenName = (String) nameHistoryView
                         .getSelectionModel().getSelectedItems().get(0);
                 chosenName = chosenName.substring(chosenName.indexOf("→") +
@@ -168,14 +170,18 @@ public class Controller {
     public void addNewTag() {
         String newTagName = addNewTagField.getText();
         if (curSelectedImage != null && newTagName.length() > 0) {
-            if (!newTagName.contains("/") && !newTagName.contains("\\")) {
+            String invalidCharRegex = ".*[/\\\\].*";
+            Pattern invalidCharPattern = Pattern.compile(invalidCharRegex);
+            Matcher invalidCharMatcher = invalidCharPattern.matcher(newTagName);
+            if (!invalidCharMatcher.matches()) {
                 curSelectedImage.addTag(newTagName);
                 addNewTagField.clear();
                 updateSelectedImageGUI();
             } else {
                 String invalidChars = "/, \\";
                 String popupTitle = "Invalid Tag Name";
-                String popupText = String.format("The tag name must not include the characters: %s", invalidChars);
+                String popupText = String.format("The tag name must not " +
+                        "include the characters: %s", invalidChars);
                 Popup.errorPopup(popupTitle, popupText);
             }
         }
