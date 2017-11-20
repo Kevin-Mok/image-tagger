@@ -16,3 +16,4 @@ test-images/
 !phase1/duties.txt
 *.lck
 */*.lck
+*/*/*/uml.*
