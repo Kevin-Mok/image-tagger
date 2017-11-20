@@ -14,3 +14,13 @@ Kevin
 
 
 Saad
+- Created ImageTagManager class
+- Implemented Serialization 
+- Fixed recursive bugs with tree view implementation 
+- Wrote the original LogUtility class whose implementation was later modified by my teammates 
+- Wrote code for reverting an image’s name and displaying the image name history in our list view 
+- Added a mouse event handler to tree view so that user can display image with an click
+- Reduced class interdependency 
+_ Fixed many edge cases with image selection, with the help of my teammates 
+- Helped make classes into singletons 
+- Fixed bugs with logging
