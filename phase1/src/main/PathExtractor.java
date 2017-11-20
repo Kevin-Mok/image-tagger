@@ -77,6 +77,11 @@ public class PathExtractor {
         return newPathName;
     }
 
+    /**
+     * Gets the original name of the image, without the tags
+     * @param path path of the image
+     * @return the name of the image without any tags
+     */
     public static String getOriginalName(String path) {
         return (getImageName(getPathWithoutTags(path)));
     }

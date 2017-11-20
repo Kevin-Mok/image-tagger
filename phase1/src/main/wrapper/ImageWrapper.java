@@ -23,15 +23,27 @@ public class ImageWrapper implements ItemWrapper {
         this.image = image;
     }
 
+    /**
+     * Gets the image wrapped by this object
+     * @return the image wrapped by this wrapper
+     */
     public Image getImage() {
         return image;
     }
 
+    /**
+     * Gets the path of the image this wrapper contains
+     * @return the path of the image in this wrapper, as a Path object
+     */
     @Override
     public Path getPath() {
         return this.image.getPath();
     }
 
+    /**
+     * Returns the string representation of the image this wrapper contains
+     * @return the string representation of the image this wrapper contains
+     */
     @Override
     public String toString() {
         return this.image.toString();

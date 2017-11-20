@@ -31,6 +31,10 @@ public class DirectoryWrapper implements ItemWrapper {
         this.childObjects = new ArrayList<>();
     }
 
+    /**
+     * Returns a list of ItemWrapper objects representing the directories and images under this directory
+     * @return list of directories and images under this directory
+     */
     public List<ItemWrapper> getChildObjects() {
         return childObjects;
     }
@@ -44,6 +48,10 @@ public class DirectoryWrapper implements ItemWrapper {
         this.childObjects.add(item);
     }
 
+    /**
+     * Returns the path of this directory as a Path object
+     * @return the path of this directory as a Path object
+     */
     @Override
     public Path getPath() {
         if (path == null) {
@@ -52,6 +60,10 @@ public class DirectoryWrapper implements ItemWrapper {
         return this.path.toPath();
     }
 
+    /**
+     * Returns the path string of this directory
+     * @return the path string of this directory
+     */
     @Override
     public String toString() {
         return this.path.getPath();

@@ -26,10 +26,18 @@ public class Tag implements Serializable {
         this.name = name;
     }
 
-    String getName() {
+    /**
+     * Gets the name of the tag
+     * @return the name of the tag
+     */
+    public String getName() {
         return name;
     }
 
+    /**
+     * Gets the image this tag is on
+     * @return the image this tag is on
+     */
     public Image getImage() {
         return image;
     }
