@@ -1,5 +1,6 @@
 package main;
 
+import fx.Popup;
 import main.wrapper.DirectoryWrapper;
 import main.wrapper.ImageWrapper;
 import main.wrapper.ItemWrapper;
@@ -111,18 +112,17 @@ public class DirectoryManager {
                         Desktop.getDesktop().open(this.rootFolder.getPath()
                                 .toFile());
                     } catch (IOException e) {
-                        // String popupText = "Unable to open directory.";
-                        // Popup.errorPopup("Error", popupText);
+                        String popupText = "Unable to open directory.";
+                        Popup.errorPopup("Error", popupText);
                         System.out.println("Unable to open directory.");
                     }
                 }).start();
             } else {
-                // String popupText = "The Java awt Desktop API is not
-                // supported" +
-                //         " on this machine.";
-                // Popup.errorPopup("Error", popupText);
-                System.out.println("The Java awt Desktop API is not " +
-                        "supported on this machine.");
+                String popupText = "The Java awt Desktop API is not supported" +
+                         " on this machine.";
+                Popup.errorPopup("Error", popupText);
+//                System.out.println("The Java awt Desktop API is not " +
+//                        "supported on this machine.");
             }
         }
     }

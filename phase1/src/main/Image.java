@@ -108,10 +108,10 @@ public class Image implements Serializable {
             imageTagManager.addImage(this);
             imageTagManager.refreshNameToTags();
         } catch (IOException e) {
-            // String popupTitle = "Error";
-            // String popupText = "File could not be moved or renamed.";
-            // Popup.errorPopup(popupTitle, popupText);
-            System.out.println("File could not be moved or renamed.");
+            String popupTitle = "Error";
+            String popupText = "File could not be moved or renamed.";
+            Popup.errorPopup(popupTitle, popupText);
+//            System.out.println("File could not be moved or renamed.");
         }
     }
 
