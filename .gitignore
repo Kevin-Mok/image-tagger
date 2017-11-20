@@ -2,7 +2,7 @@
 *.swp
 */.*
 */*.iml
-*/out
+*/out/
 */*/ignore
 */commit-msg.txt
 */*.ser
