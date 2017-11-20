@@ -15,6 +15,9 @@ import java.io.IOException;
 public class Main extends Application {
     private ImageTagManager imgTagManager = ImageTagManager.getInstance();
 
+    /**
+     * Method from which our program starts.
+     */
     public static void main(String[] args) {
         launch(args);
     }
