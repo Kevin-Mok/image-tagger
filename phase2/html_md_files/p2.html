@@ -1,0 +1,52 @@
+<h1 id="project-phase-2">Project Phase 2</h1>
+<h2 id="summary">Summary</h2>
+<p>Extend your phase 1 design with specification clarifications and prepare a group presentation.</p>
+<p>Note: Submitting a lot of code that doesn’t compile or doesn’t run is far worse than submitting well-designed code that only has some of the features implemented.</p>
+<h2 id="day-extension">3-day extension</h2>
+<p>We are extending the Phase 2 due date to 10pm on Thursday 30 November. That is a firm deadline, there is no late penalty period, not even the 1-hour grace period. We’ll mark what is in your repository as of 22:00 Thu 30 Nov.</p>
+<p>We strongly recommend that, as the date approaches, you only push working changes (although you can commit locally as you go). Just don’t push until your feature works and is integrated into the rest of the program. You might consider adopting a group rule that you don’t push broken code. We recommend that any merging be done in pairs (at least), and maybe the whole group, because it really can be a group exercise.</p>
+<h2 id="migrating-to-the-phase2-subdirectory">Migrating to the phase2 subdirectory</h2>
+<p>Before you do any more work, do a git pull and then copy your program (Java classes, JavaFX-related files, and any external jars) to the <code>phase2</code> subdirectory in your group repo, make sure it compiles and runs, and then add, commit, and push. As before, put your code in a <code>src</code> subdirectory.</p>
+<h2 id="phase-2-requirements">Phase 2 requirements</h2>
+<p>Here are updated client requirements:</p>
+<p>The user wants to be able to manage a set of tags independently from any images. This tag set should persist through a quit and restart. The user doesn’t want to type the <code>@</code> symbol, although it should appear in tagged image filenames.</p>
+<p>The user wants to be able to choose a “root” directory and see a list of images anywhere under that directory. Images in that directory may include tags that aren’t in the tag set. Any such tags should be automatically added to the tag set.</p>
+<p>The user wants to be able to select an image and view it. The absolute path to that image file should be visible in the UI.</p>
+<p>When viewing an image, the user can select multiple tags at once and apply them to the current image. The user can also remove tags from the image.</p>
+<p>Whenever an image is tagged the application will rename the image file to include the tags, each prefixed with the “@” character. For example, if the user has tagged an image with “Aunt June” and “Samantha”, then the file will be renamed to include “<span class="citation" data-cites="Aunt">@Aunt</span> June <span class="citation" data-cites="Samantha">@Samantha</span>”. The user should also be able to open (directly in their OS’s file viewer) the directory containing the current image file.</p>
+<p>The user should be able to move a file to another directory under the “root” directory. (It’s okay if your program works when the target directory is not under the “root” directory, but your program doesn’t need to be able to handle that if you prefer.)</p>
+<p>The user wants to be able to view and revert to older file names for the current image. Provided that an image has not been manually moved or renamed using the OS, the user can view all the names that a file has had. This should persist through a quit and restart.</p>
+<p>The user wants a log of all renaming ever done to all files (old name, new name, and timestamp), and this log should be viewable by the application.</p>
+<p>When the program is first run, it should create any configuration files that it needs, and if they are deleted it should recreate them the next time it is run.</p>
+<h3 id="design-requirements">Design requirements</h3>
+<p>For phase 2, you will be expected to:</p>
+<ul>
+<li>Use packages to group related classes.</li>
+<li>Include good Javadoc. See the <a href="http://www.teach.cs.toronto.ed%20u/~csc207h/winter/lectures/javadoc.pdf">How to Javadoc</a> reading from the lectures page.</li>
+<li>Create, add, commit, and push a <code>.gitignore</code> file at the root of your repo that contains a list of filenames that should not be committed to the repo. You can include both relative paths and wildcards (like <code>*.class</code> to ignore all filenames that end in <code>.class</code>).</li>
+<li>Improve your design by further reviewing the SOLID principles.</li>
+<li>Decide which design patterns are appropriate for your project design and see if they have already been implemented.</li>
+<li>Design and implement at least one new feature that makes your project unique.</li>
+<li>Choose two interesting classes and write unit tests for them. You are not responsible for creating tests for other classes, although you may find it useful.</li>
+<li>When you receive the phase 1 feedback, incorporate it into your design.</li>
+</ul>
+<h2 id="presentation">Presentation</h2>
+<p>A Software Walkthrough is “A static analysis technique in which a designer or programmer leads members of the development team and other interested parties through a software product, and the participants ask questions and make comments about possible errors, violation of development standards, and other problems. <a href="https://en.wikipedia.org/wiki/IEEE">IEEE Std. 1028-1997, IEEE Standard for Software Reviews, clause 3.8</a>.</p>
+<p>The Phase 2 marking will take place in the last two weeks of class.</p>
+<p>Please sign up your group for a presentation time at the following link by writing your group number in an empty slot:</p>
+<p>https://docs.google.com/spreadsheets/d/1sSJHHr-owbcJx9M4DTLXhk4pNCH4AtsBNPWIHnA_8as/edit?usp=sharing</p>
+<p>You and your group will present your project to 2 TAs as if it were a software walkthrough. They may ask questions while you present, or they may wait until after the presentation. Your presentation should last no more than 10 minutes. Every group member must speak for at least two minutes.</p>
+<p>After that, the TAs will ask you individual questions. Each of you may be asked about any of the code, including the test cases, design patterns, UML, and other implementation details.</p>
+<p>In this presentation, you should discuss:</p>
+<ul>
+<li>A quick demo of your project</li>
+<li>Major design decisions made by the group</li>
+<li>An overview of your design, including a brief walk-through of an accurate UML diagram of your code</li>
+<li>A discussion of any design patterns you decided to use or not use (and why or why not)</li>
+<li>A summary of any extra features you added</li>
+</ul>
+<p>You should each be aware of the basic responsibilities of each class, even the ones you did not write.</p>
+<h2 id="duties-in-duties.txt">Duties in duties.txt</h2>
+<p>In a file called <code>phase2/duties.txt</code>, each group member should describe what they contributed to phase 1 in 100 words or less. Bullet points are fine. You are encouraged to discuss this with your group. Note that all group members will be editing the same document. We will be checking git logs to make sure that each person is the one that commits a description of their contributions. Part of your individual mark will depend on how much you contribute and the quality of your contributions.</p>
+<h2 id="help-in-help.txt">Help in help.txt</h2>
+<p>In a file called <code>phase2/help.txt</code>, include instructions for compiling and running your project. Below those instructions, you should include any notes that you think are important for a reader of your program. Please limit this extra information to no more than 100 words.</p>
