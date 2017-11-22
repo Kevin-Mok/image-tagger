@@ -86,6 +86,7 @@ public class Image implements Serializable {
         // String newPathString = curDir + newImageName + extension;
         String curImageName = imageName;
         move(getCurDir(), newImageName, true);
+        // todo: log once per batch action
         LogUtility.getInstance().logImageRename(curImageName,
                 newImageName);
     }

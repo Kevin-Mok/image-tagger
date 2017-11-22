@@ -79,6 +79,10 @@ public class Controller {
      */
     @FXML
     public void initialize() {
+        availableTagsView.getSelectionModel().setSelectionMode(SelectionMode
+                .MULTIPLE);
+        currentTagsView.getSelectionModel().setSelectionMode(SelectionMode
+                .MULTIPLE);
 
         chooseDirBtn.setOnAction(event -> {
             File rootDirectory = chooseDirectory("Choose a directory to open");
@@ -155,7 +159,7 @@ public class Controller {
             // Update TreeView.
             imagesTreeView.refresh();
             // Update label.
-            imageNameLabel.setText(curSelectedImage.getImageName());
+            imageNameLabel.setText(curSelectedImage.getPathString());
             updateNameHistory();
             updateCurrentTags();
             updateAvailableTags();
@@ -196,10 +200,12 @@ public class Controller {
      */
     @FXML
     public void addAvailableTag() {
-        ObservableList<String> selectedAvailableTag = availableTagsView
+        ObservableList<String> selectedAvailableTags = availableTagsView
                 .getSelectionModel().getSelectedItems();
-        if (curSelectedImage != null && selectedAvailableTag.size() != 0) {
-            curSelectedImage.addTag(selectedAvailableTag.get(0));
+        if (curSelectedImage != null && selectedAvailableTags.size() != 0) {
+            for (String tagName : selectedAvailableTags) {
+                curSelectedImage.addTag(tagName);
+            }
             updateSelectedImageGUI();
         }
     }
@@ -209,10 +215,12 @@ public class Controller {
      */
     @FXML
     public void deleteTag() {
-        ObservableList<String> selectedCurrentTag = currentTagsView
+        ObservableList<String> selectedCurrentTags = currentTagsView
                 .getSelectionModel().getSelectedItems();
-        if (curSelectedImage != null && selectedCurrentTag.size() != 0) {
-            curSelectedImage.deleteTag(selectedCurrentTag.get(0));
+        if (curSelectedImage != null && selectedCurrentTags.size() != 0) {
+            for (String tagName : selectedCurrentTags) {
+                curSelectedImage.deleteTag(tagName);
+            }
             updateSelectedImageGUI();
         }
     }

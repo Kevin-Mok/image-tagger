@@ -61,6 +61,17 @@ public class PathExtractor {
     }
 
     /**
+     * Extract the parent directory of the image plus its file name from
+     * imagePath.
+     *
+     * @param imagePath String of path to extract from.
+     * @return String of parent directory of the image plus its file name.
+     */
+/*    public static String getDirectoryAndFileName(String imagePath) {
+        return getDirectory(imagePath) + getImageFileName(imagePath);
+    }*/
+
+    /**
      * Gets the path of an image file without any tags, given a path
      *
      * @param imagePath absolute path of an image file

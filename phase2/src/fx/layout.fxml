@@ -15,7 +15,8 @@
                AnchorPane.leftAnchor="21.0" AnchorPane.topAnchor="74.0"/>
         <Label fx:id="imageNameLabel" alignment="CENTER" layoutX="577.0"
                layoutY="39.0" prefHeight="16.0" prefWidth="751.0"
-               text="Image Name" wrapText="true" AnchorPane.rightAnchor="25.0"
+               text="Absolute Path to Image" wrapText="true"
+               AnchorPane.rightAnchor="25.0"
                AnchorPane.topAnchor="39.0"/>
         <ListView fx:id="nameHistoryView" layoutX="20.0" layoutY="522.0"
                   prefHeight="316.0" prefWidth="299.0"

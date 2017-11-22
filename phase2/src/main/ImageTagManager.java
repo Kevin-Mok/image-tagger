@@ -11,6 +11,7 @@ import java.util.Set;
  * contained within them.
  */
 public class ImageTagManager {
+    // todo: set of tags independent from image
     // Singleton instance of this class.
     private static ImageTagManager instance = null;
     // HashMap of String of tag names to list of Images containing that tag.

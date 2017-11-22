@@ -12,6 +12,7 @@ import java.util.logging.SimpleFormatter;
 /**
  * Singleton utility class used for logging user interactions with the program.
  */
+// todo: open logs in app
 class LogUtility {
     private static LogUtility logUtility;
     /**

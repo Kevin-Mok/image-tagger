@@ -23,11 +23,20 @@ public class ResetImageFileNames {
                 if (!Files.isDirectory(path)) {
                     String curPathString = path.toString();
                     File curFile = new File(curPathString);
+                    // String curDirAndFileName = PathExtractor
+                    //         .getDirectoryAndFileName(curPathString);
                     File renamedFile = new File(PathExtractor
                             .getPathWithoutTags(curPathString));
+                    // String newDirAndFileName = PathExtractor
+                    //         .getDirectoryAndFileName(renamedFile.toString());
+
                     if (!curFile.renameTo(renamedFile)) {
                         System.out.println("File renaming failed.");
                     }
+/*                    } else {
+                        System.out.println(String.format("Renamed %s → %s.",
+                                curDirAndFileName, newDirAndFileName));
+                    }*/
                 } else {
                     renameImagesInDir(path.toString());
                 }
@@ -41,21 +50,28 @@ public class ResetImageFileNames {
      * Only for test purposes.
      */
     public static void main(String[] args) {
+        /* Reset all image names. */
         // String dirString = "/home/kevin/Pictures";
         // String dirString = "/h/u5/c6/05/khans167/Desktop/Images";
-        String dirString = "/h/u3/c7/05/mokkar/Downloads";
+        // String dirString = "/h/u3/c7/05/mokkar/Downloads";
+        String dirString = "/h/u3/c7/05/mokkar/207/group_0485/test-images";
         renameImagesInDir(dirString);
 
-        File imagesSer = new File
-                ("/h/u3/c7/05/mokkar/207/group_0485/phase1/images.ser");
-        File filesSer = new File
-                ("/h/u3/c7/05/mokkar/207/group_0485/phase1/tags" +
-                        ".ser");
-        if (imagesSer.delete() && filesSer.delete()) {
-            System.out.println("Ser's deleted.");
-        } else {
-            System.out.println("Could not delete ser's.");
+        /* Delete ser files. */
+        String serPathString =
+                "/h/u3/c7/05/mokkar/207/group_0485/phase2/";
+        String[] serFileNames = {"images.ser", "tags.ser"};
+
+        boolean sersDeleted = true;
+        for (String fileName : serFileNames) {
+            File serFile = new File(serPathString + fileName);
+            if (!serFile.delete()) {
+                sersDeleted = false;
+            }
         }
+
+        System.out.println(sersDeleted ? "Ser's deleted." : "Could not delete" +
+                " ser's.");
     }
 
 }
