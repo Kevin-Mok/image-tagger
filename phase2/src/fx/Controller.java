@@ -16,6 +16,8 @@ import main.wrapper.ImageWrapper;
 import main.wrapper.ItemWrapper;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -50,6 +52,8 @@ public class Controller {
     private ListView<String> currentTagsView;
     @FXML
     private Button revertNameBtn;
+    @FXML
+    private Button filterByTagBtn;
 
     /*
      * The following three fields were used repeatedly in the button
@@ -244,18 +248,44 @@ public class Controller {
     private void refreshGUIElements() {
         currentFolderLabel.setText(rootDirectoryManager.getRootFolder()
                 .toString());
-        populateImageList();
+        /* Pass in an empty list when just refreshing (no filtering) */
+        populateImageList(new ArrayList<>());
         updateAvailableTags();
         updateSelectedImageGUI();
     }
 
-    /* Populates the TreeView with list of all images under current dir. */
-    private void populateImageList() {
+    /**
+     * Filters the images displayed in imagesTreeView based on the tags the user has
+     * selected from the availableTagsView
+     */
+    @FXML
+    public void filterImagesByTags() {
+        ObservableList<String> selectedTags
+                = availableTagsView.getSelectionModel().getSelectedItems();
+        if (selectedTags.size() != 0) {
+            List<String> tagNames = new ArrayList<>();
+            tagNames.addAll(selectedTags);
+            populateImageList(tagNames);
+        }
+    }
+
+    /**
+     * Shows all images without any tag filtering
+     */
+    @FXML
+    public void showAllImages() {
+        populateImageList(new ArrayList<>());
+    }
+    /**
+     *  Populates the TreeView with list of all images under current dir.
+     *  @param tagNames list of tag names to filter images by
+     */
+    private void populateImageList(List<String> tagNames) {
         TreeItem<ItemWrapper> rootFolderNode = new TreeItem<>(
                 rootDirectoryManager.getRootFolder());
         ItemWrapper rootImagesList = rootDirectoryManager
                 .getAllImagesUnderRoot();
-        populateParentNode(rootFolderNode, rootImagesList);
+        populateParentNode(rootFolderNode, rootImagesList, tagNames);
         rootFolderNode.setExpanded(true);
         imagesTreeView.setRoot(rootFolderNode);
         imagesTreeView.refresh();
@@ -290,21 +320,27 @@ public class Controller {
      * @param parentNode     The UI element to be populated
      * @param parentNodeList ItemWrapper containing the data needed to
      *                       populate the parent
+     * @param tags           List of tags to filter images by, images containing any tag in
+     *                       the list will be added to the parentNode
      */
     private void populateParentNode(TreeItem<ItemWrapper> parentNode,
-                                    ItemWrapper parentNodeList) {
+                                    ItemWrapper parentNodeList, List<String> tags) {
         if (parentNodeList instanceof DirectoryWrapper) {
             for (ItemWrapper wrappedItem : ((DirectoryWrapper)
                     parentNodeList).getChildObjects()) {
+                /* If the wrappedItem is a directory, recurse */
                 if (wrappedItem instanceof DirectoryWrapper) {
                     String parentPath = wrappedItem.getPath().toString();
                     TreeItem<ItemWrapper> childNode = new TreeItem<>
                             (new DirectoryWrapper(new File(PathExtractor
                                     .getImageFileName(parentPath))));
-                    populateParentNode(childNode, wrappedItem);
+                    populateParentNode(childNode, wrappedItem, tags);
                     parentNode.getChildren().add(childNode);
+                /* If the wrapped item is an image */
                 } else {
-                    parentNode.getChildren().add(new TreeItem<>(wrappedItem));
+                    if (((ImageWrapper) wrappedItem).getImage().hasTags(tags)) {
+                        parentNode.getChildren().add(new TreeItem<>(wrappedItem));
+                    }
                 }
             }
         }

@@ -83,6 +83,24 @@ public class TagManager implements Serializable {
     }
 
     /**
+     * Checks if the image this TagManager is associated with has all the tags in a list
+     * @param tagNames the tag names to check
+     * @return true if the image has at least one of the tags, false if otherwise
+     */
+    public boolean hasTags(List<String> tagNames) {
+        List<Tag> tags = new ArrayList<>();
+        for (String tagName : tagNames) {
+            tags.add(new Tag(image, tagName));
+        }
+        for (Tag tag : tags) {
+            if (this.currentTags.contains(tag)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Deletes Tag with tagName param to this tag manager.
      *
      * @param tagName Name of tag to delete.

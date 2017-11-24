@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 /**
  * Image class that stores its path and a ImageTagManager object to work with
@@ -148,7 +149,6 @@ public class Image implements Serializable {
      */
     public void addTag(String tagName) {
         rename(tagManager.addTag(tagName));
-
     }
 
     /**
@@ -158,9 +158,20 @@ public class Image implements Serializable {
      */
     public void deleteTag(String tagName) {
         rename(tagManager.deleteTag(tagName));
-
     }
 
+    /**
+     * Checks if this image has all the tags in a list of tag names
+     * @param tagNames the tag names to check
+     * @return true if the image contains at least a tag in the list, or if the list is empty (no filtering),
+     *         false if otherwise
+     */
+    public boolean hasTags(List<String> tagNames) {
+        if (tagNames.size() == 0) {
+            return true;
+        }
+        return this.tagManager.hasTags(tagNames);
+    }
     /**
      * Reverts the name of the file to a previous one in time.
      *
