@@ -52,8 +52,6 @@ public class Controller {
     private ListView<String> currentTagsView;
     @FXML
     private Button revertNameBtn;
-    @FXML
-    private Button filterByTagBtn;
 
     /*
      * The following three fields were used repeatedly in the button
@@ -335,7 +333,9 @@ public class Controller {
                             (new DirectoryWrapper(new File(PathExtractor
                                     .getImageFileName(parentPath))));
                     populateParentNode(childNode, wrappedItem, tags);
-                    parentNode.getChildren().add(childNode);
+                    if (!childNode.isLeaf()) {
+                        parentNode.getChildren().add(childNode);
+                    }
                 /* If the wrapped item is an image */
                 } else {
                     if (((ImageWrapper) wrappedItem).getImage().hasTags(tags)) {
