@@ -1,6 +1,11 @@
-//�C���ܼƦW�ٳ�������Imgur API��󤤴��Ϊ�key words
-package fx;
+package fx.imgur;
 
+/**
+ * Class representing an HTTP response from the imgur API
+ * Adapted from Johnny850807's GitHub repository
+ * https://github.com/Johnny850807/Imgur-Picture-Uploading-Example-Using-Retrofit-On-Native-Java
+ * on Nov 24th, 2017
+ */
 public class ImageResponse {
 
     public boolean success;

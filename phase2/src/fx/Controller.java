@@ -1,5 +1,7 @@
 package fx;
 
+import fx.imgur.ImageResponse;
+import fx.imgur.ImgurAPI;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -453,8 +455,7 @@ public class Controller {
         currentTagsView.setItems(currentTagsList);
     }
 
-    public void putOnImgur() throws IOException {
-        final String PATH = "Dog.jpeg";
+    private void putOnImgur() throws IOException {
         final ImgurAPI imgurApi = createImgurAPI();
         try {
             File image = new File(lastSelectedImage.getPath().toString());
@@ -463,7 +464,7 @@ public class Controller {
             Call<ImageResponse> call = imgurApi.postImage(request);
             Response<ImageResponse> res = call.execute();
 
-            System.out.println("是否成功: " + res.isSuccessful());
+            System.out.println("Successful? " + res.isSuccessful());
             String url = res.body().data.link;
 
             Runtime runtime = Runtime.getRuntime();
@@ -473,12 +474,8 @@ public class Controller {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-
-
         } catch (Exception err) {
             err.printStackTrace();
         }
     }
-
-
 }
