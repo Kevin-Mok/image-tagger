@@ -50,8 +50,20 @@ public class ImageTagManager {
         String[] listOfTags = setOfTagString.toArray(new
                 String[setOfTagString.size()]);
         Arrays.sort(listOfTags);
+        for(int i = 0; i<listOfTags.length; i++){
+            listOfTags[i] = getNumberOfImages(listOfTags[i]) + " - " + listOfTags[i];
+        }
+        Arrays.sort(listOfTags);
         return listOfTags;
     }
+
+    private String getNumberOfImages(String tagName){
+        if (tagToImageList.containsKey(tagName)){
+            return "(" + Integer.toString(tagToImageList.get(tagName).size()) + ")";
+        }
+        return "(" + Integer.toString(-1) + ")";
+    }
+
 
     /**
      * Remove Image with path of parameter from HashMap of pathToImages.
@@ -108,8 +120,13 @@ public class ImageTagManager {
                 }
                 nameToTags.get(tagName).add(image);
             }
+
+            for (String unUsed: image.getTagManager().getUnusedTags()){
+              nameToTags.put(unUsed, new ArrayList<>());
+           }
             // mapBuilder(image, tagToImageList);
         }
+
         this.tagToImageList = nameToTags;
     }
 

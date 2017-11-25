@@ -157,6 +157,23 @@ public class TagManager implements Serializable {
     }
 
     /**
+     * Returns all the tags ever associated with this image
+     *
+     * @return Alphabetically  sorted ArrayList of all Tags ever used
+     */
+    public ArrayList<String> getUnusedTags() {
+        ArrayList<String> result = new ArrayList<>();
+        for (Tag tag : tagList) {
+            if(!currentTags.contains(tag)) {
+                result.add(tag.getName());
+            }
+        }
+        Collections.sort(result);
+        return result;
+    }
+
+
+    /**
      * Reverts the Image to a previous name in nameHistory.
      *
      * @param name Name to be reverted to.

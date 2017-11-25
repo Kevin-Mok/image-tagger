@@ -84,6 +84,7 @@ public class Controller {
         currentTagsView.getSelectionModel().setSelectionMode(SelectionMode
                 .MULTIPLE);
 
+
         chooseDirBtn.setOnAction(event -> {
             File rootDirectory = chooseDirectory("Choose a directory to open");
             if (rootDirectory != null) {
@@ -168,6 +169,10 @@ public class Controller {
         }
     }
 
+    private String getSubstring(String tagName){
+        return tagName.substring(tagName.indexOf("-") + 1).trim();
+    }
+
     /**
      * Method that allows the user to add new tags by interacting with GUI
      * elements
@@ -203,7 +208,7 @@ public class Controller {
                 .getSelectionModel().getSelectedItems();
         if (curSelectedImage != null && selectedAvailableTags.size() != 0) {
             for (String tagName : selectedAvailableTags) {
-                curSelectedImage.addTag(tagName);
+                curSelectedImage.addTag(getSubstring(tagName));
             }
             updateSelectedImageGUI();
         }
@@ -260,6 +265,9 @@ public class Controller {
         if (selectedTags.size() != 0) {
             List<String> tagNames = new ArrayList<>();
             tagNames.addAll(selectedTags);
+            for(int i =0; i < tagNames.size(); i++){
+                tagNames.set(i, getSubstring(tagNames.get(i)));
+            }
             populateImageList(tagNames);
         }
     }
