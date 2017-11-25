@@ -122,7 +122,6 @@ public class Controller {
                     boolean sameDir = newDirectoryFile.toString().equals
                             (curSelectedImage.getCurDir());
                     if (!sameDir) {
-                        // todo: select new image in TreeView afterwards?
                         curSelectedImage.move(newDirectoryFile.toString(),
                                 curSelectedImage.getImageName(), false);
                         curSelectedImage = null;
@@ -189,7 +188,7 @@ public class Controller {
                 curSelectedImage.addTag(newTagName);
                 updateSelectedImageGUI();
             } else {
-                String invalidChars = "/, \\";
+                String invalidChars = "/ \\";
                 String popupTitle = "Invalid Tag Name";
                 String popupText = String.format("The tag name must not " +
                         "include the characters: %s", invalidChars);

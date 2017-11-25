@@ -14,7 +14,6 @@ public class TagManager implements Serializable {
      */
     private TreeMap<Timestamp, String> nameHistory;
 
-    // todo: can this be deleted? one usage and can recreate tags upon reverting
     /**
      * List of Tags the image has ever had
      */
@@ -75,8 +74,7 @@ public class TagManager implements Serializable {
             String currentName = nameHistory.lastEntry().getValue();
             nameHistory.put(new Timestamp(System.currentTimeMillis()),
                     currentName + " @" + tag.getName());
-            LogUtility.getInstance().logAddOrDeleteTag(tag.getName(), image
-                    .getImageName(), true);
+            LogUtility.getInstance().logAddTag(tag.getName(), image.getImageName());
         }
 
         return nameHistory.lastEntry().getValue();
@@ -112,8 +110,7 @@ public class TagManager implements Serializable {
             currentTags.remove(tag);
             nameHistory.put(new Timestamp(System.currentTimeMillis()),
                     getCurrentName());
-            LogUtility.getInstance().logAddOrDeleteTag(tagName, image
-                    .getImageName(), false);
+            LogUtility.getInstance().logDeleteTag(tagName, image.getImageName());
         }
         return nameHistory.lastEntry().getValue();
     }

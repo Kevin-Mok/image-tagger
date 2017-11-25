@@ -83,7 +83,6 @@ public class DirectoryManager {
      * @return ItemWrapper representing the subdirectories and pictures in a
      * directory
      */
-    // todo: add tags to ImageTagManager that aren't in tag set
     private ItemWrapper getImages(Path directory) {
         DirectoryWrapper images = new DirectoryWrapper(directory.toFile());
         Pattern imgFilePattern = Pattern.compile(generateImageMatchingPattern

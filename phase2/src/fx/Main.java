@@ -39,7 +39,6 @@ public class Main extends Application {
         Parent root = loader.load();
         Controller controller = loader.getController();
         controller.setStage(primaryStage);
-        // todo: not sure why taskbar icon won't show up
         // Image taskbarIcon = new Image("file:resources/icons/taskbar-icon
         // .png");
         primaryStage.setTitle("Image Renamer");
