@@ -4,18 +4,20 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
-import main.DirectoryManager;
+import main.*;
 import main.Image;
-import main.ImageTagManager;
-import main.PathExtractor;
 import main.wrapper.DirectoryWrapper;
 import main.wrapper.ImageWrapper;
 import main.wrapper.ItemWrapper;
 
+import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -88,7 +90,6 @@ public class Controller {
                 .MULTIPLE);
         imagesTreeView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-
         chooseDirBtn.setOnAction(event -> {
             File rootDirectory = chooseDirectory("Choose a directory to open");
             if (rootDirectory != null) {
@@ -106,7 +107,6 @@ public class Controller {
 
         /* For displaying the image with a mouse click. */
         imagesTreeView.setOnMouseClicked(event -> {
-            // todo: add to refactor issue
             if(imagesTreeView.getSelectionModel().getSelectedItem() != null) {
                 ItemWrapper lastItemWrapper = imagesTreeView.getSelectionModel().getSelectedItem().getValue();
 
@@ -191,7 +191,7 @@ public class Controller {
         }
     }
 
-    private String getSubstring(String tagName){
+    private String extractAvailableTagName(String tagName){
         return tagName.substring(tagName.indexOf("-") + 1).trim();
     }
 
@@ -202,7 +202,7 @@ public class Controller {
      */
     @FXML
     public void addNewTag() {
-        String newTagName = Popup.addTagPopup();
+        String newTagName = Popup.invalidTagPopup();
         if (curSelectedImages != null && newTagName.length() > 0) {
             String invalidCharRegex = ".*[/\\\\].*";
             Pattern invalidCharPattern = Pattern.compile(invalidCharRegex);
@@ -234,7 +234,7 @@ public class Controller {
         if (curSelectedImages != null && selectedAvailableTags.size() != 0) {
             for (String tagName : selectedAvailableTags) {
                 for (Image img: curSelectedImages) {
-                    img.addTag(getSubstring(tagName));
+                    img.addTag(extractAvailableTagName(tagName));
                 }
             }
             updateSelectedImageGUI();
@@ -271,6 +271,21 @@ public class Controller {
         return directoryChooser.showDialog(stage);
     }
 
+    @FXML
+    private void viewRenameLog() {
+        File renameLogFile = new File(LogUtility.RENAME_LOGGER_NAME + ".txt");
+        try {
+            // Desktop.getDesktop().edit(renameLogFile);
+            String projectDirectory = System.getProperty("user.dir");
+            Runtime.getRuntime().exec(String.format("gvim %s", renameLogFile
+                    .getAbsoluteFile().toString()));
+        } catch (IOException e) {
+            String popupText = String.format("Unable to open %s.",
+                    renameLogFile.toString());
+            Popup.errorPopup("Unable to Open File", popupText);
+        }
+    }
+
     /**
      * Refreshes all GUI elements when something is changed by the user
      */
@@ -295,7 +310,7 @@ public class Controller {
             List<String> tagNames = new ArrayList<>();
             tagNames.addAll(selectedTags);
             for(int i =0; i < tagNames.size(); i++){
-                tagNames.set(i, getSubstring(tagNames.get(i)));
+                tagNames.set(i, extractAvailableTagName(tagNames.get(i)));
             }
             populateImageList(tagNames);
         }

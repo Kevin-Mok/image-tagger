@@ -12,12 +12,14 @@ import java.util.logging.SimpleFormatter;
 /**
  * Singleton utility class used for logging user interactions with the program.
  */
-class LogUtility {
+public class LogUtility {
     private static LogUtility logUtility;
     /**
      * Logs tag related events
      */
     private Logger actionLogger;
+    public static final String ACTION_LOGGER_NAME = "actionLogger";
+    public static final String RENAME_LOGGER_NAME = "renameLogger";
     /**
      * Logs renaming events
      */
@@ -31,8 +33,8 @@ class LogUtility {
     private LogUtility() throws IOException {
         System.setProperty("java.util.logging.SimpleFormatter.format",
                 "%1$tF %1$tT [%4$-2s: %5$s] %n");
-        renameLogger = initializeLogger("renameLogger");
-        actionLogger = initializeLogger("actionLogger");
+        renameLogger = initializeLogger(RENAME_LOGGER_NAME);
+        actionLogger = initializeLogger(ACTION_LOGGER_NAME);
     }
 
     /**
@@ -120,7 +122,7 @@ class LogUtility {
     void logImageRename(String oldName, String newName) {
         String message = String.format("Changed name from %s to %s", oldName,
                 newName);
-        actionLogger.log(Level.INFO, message);
+        renameLogger.log(Level.INFO, message);
     }
 
     /**

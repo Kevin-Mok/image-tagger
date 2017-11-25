@@ -43,7 +43,7 @@ public class Popup {
      * Displays a popup that allows the user to enter a new tag to be added
      * @return the tag name that the user entered
      */
-    static String addTagPopup() {
+    static String invalidTagPopup() {
         final TextInputDialog dialog = new TextInputDialog();
         dialog.setHeaderText("Enter a new tag");
         dialog.setTitle("Add Tag");
