@@ -89,6 +89,7 @@ public class Controller {
         currentTagsView.getSelectionModel().setSelectionMode(SelectionMode
                 .MULTIPLE);
         imagesTreeView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        updateAvailableTags();
 
         chooseDirBtn.setOnAction(event -> {
             File rootDirectory = chooseDirectory("Choose a directory to open");

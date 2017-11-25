@@ -63,9 +63,6 @@ public class ImageTagManager {
         return "(" + Integer.toString(-1) + ")";
     }
 
-
-
-
     /**
      * Remove Image with path of parameter from HashMap of pathToImages.
      *
@@ -140,21 +137,13 @@ public class ImageTagManager {
             OutputStream imagesFileOutput = new FileOutputStream("images.ser");
             OutputStream imagesBuffer = new BufferedOutputStream
                     (imagesFileOutput);
-
             ObjectOutput imagesObjectOutput = new ObjectOutputStream
                     (imagesBuffer);
 
-            OutputStream tagsFileOutput = new FileOutputStream("tags.ser");
-            OutputStream tagsBuffer = new BufferedOutputStream(tagsFileOutput);
-            ObjectOutput tagsObjectOutput = new ObjectOutputStream(tagsBuffer);
-
-            tagsObjectOutput.writeObject(tagToImageList);
             imagesObjectOutput.writeObject(pathToImages);
-
             imagesObjectOutput.close();
-            tagsObjectOutput.close();
         } catch (IOException e) {
-            System.out.println("Could not serialize ImageTagManager.");
+            System.out.println("Could not serialize images.ser.");
         }
     }
 
@@ -187,7 +176,6 @@ public class ImageTagManager {
         refreshNameToTags();
     }
 
-
     /**
      * Reads the serialization of the HashMaps (tagToImageList, pathToImages) of
      * this class.
@@ -198,12 +186,7 @@ public class ImageTagManager {
             InputStream imagesBuffer = new BufferedInputStream(imagesFileInput);
             ObjectInput imagesObjectInput = new ObjectInputStream(imagesBuffer);
 
-            InputStream tagsFileInput = new FileInputStream("tags.ser");
-            InputStream tagsBuffer = new BufferedInputStream(tagsFileInput);
-            ObjectInput tagsObjectOutput = new ObjectInputStream(tagsBuffer);
-
             Object pathToImagesObject = imagesObjectInput.readObject();
-            Object nameToTagsObject = tagsObjectOutput.readObject();
 
             /* Can't find a way to fix this yellow error. In the Serializable
             code given in class, the same error occurs. Also on this answer on
@@ -211,13 +194,10 @@ public class ImageTagManager {
             says that there isn't really a good way to handle this in Java.
              */
             pathToImages = (HashMap<String, Image>) pathToImagesObject;
-            tagToImageList = (HashMap<String, ArrayList<Image>>)
-                    nameToTagsObject;
-
             imagesObjectInput.close();
-            tagsObjectOutput.close();
+            deleteNonExistentImages();
         } catch (IOException e) {
-            System.out.println("Ser files were not found and will be " +
+            System.out.println("Ser file was not found and will be " +
                     "created upon exiting the program.");
         } catch (ClassNotFoundException e) {
             System.out.println("Class not found.");
