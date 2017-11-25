@@ -12,8 +12,9 @@ phase1/myLog.txt
 phase1/nameChangeLog.txt
 test-images/
 *.txt
-!phase1/help.txt
-!phase1/duties.txt
+!*/help.txt
+!*/duties.txt
+!*/TODO.txt
 *.lck
 */*.lck
 */*/*/uml.*

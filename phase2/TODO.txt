@@ -1,0 +1,20 @@
+- Ability to delete tags from all containing images
+
+- Automatically add tags not in the tag set (?)
+
+- Ability to add tags to multiple images
+
+- Add icons to buttons (?)
+
+- Put add tag textfield in a popup (done)
+
+- Apply design patterns
+
+- Check that .ser and log files are created and accessed properly when program is compiled and executed from command line
+
+- Extra features:
+	- Filter images by tag (done)
+	- Imgur integration?
+	- Logging user interactions (done) 
+
+
