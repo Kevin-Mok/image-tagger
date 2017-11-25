@@ -142,6 +142,7 @@ public class Controller {
         );
 
         uploadBtn.setOnAction(event -> {
+
             /*
              * Adapted from ItachiUchiha's post on StackOverflow
              * https://stackoverflow.com/questions/31607656/how-to-show-and-then-hide-a-label-in-javafx-after-a-task-is-completed
