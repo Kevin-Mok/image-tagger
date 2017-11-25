@@ -132,6 +132,11 @@
             </ImageView>
          </graphic>
       </Button>
+      <Label fx:id="uploadLabel" alignment="CENTER" layoutX="633.0" layoutY="771.0" prefHeight="28.0" prefWidth="116.0" text="Uploading..." AnchorPane.bottomAnchor="92.0">
+         <font>
+            <Font name="Monaco" size="13.0" />
+         </font>
+      </Label>
 
     </children>
 </AnchorPane>

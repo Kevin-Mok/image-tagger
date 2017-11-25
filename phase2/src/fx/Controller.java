@@ -61,6 +61,8 @@ public class Controller {
     private Button deleteAllBtn;
     @FXML
     private Button uploadBtn;
+    @FXML
+    private Label uploadLabel;
 
     /*
      * The following three fields were used repeatedly in the button
@@ -106,6 +108,7 @@ public class Controller {
      */
     @FXML
     public void initialize() {
+        uploadLabel.setVisible(false);
         availableTagsView.getSelectionModel().setSelectionMode(SelectionMode
                 .MULTIPLE);
         currentTagsView.getSelectionModel().setSelectionMode(SelectionMode
@@ -124,6 +127,10 @@ public class Controller {
         });
 
         uploadBtn.setOnAction(event -> {
+            /*
+            ** Doesn't work, not sure why
+             */
+//            uploadLabel.setVisible(true);
             try {
                 putOnImgur();
             } catch (IOException e) {
@@ -333,7 +340,7 @@ public class Controller {
         currentFolderLabel.setText(rootDirectoryManager.getRootFolder()
                 .toString());
         /* Pass in an empty list when just refreshing (no filtering) */
-        populateImageList(new ArrayList<>());
+        populateImageList(new ArrayList<>(), false);
         updateAvailableTags();
         updateSelectedImageGUI();
     }
@@ -353,7 +360,7 @@ public class Controller {
             for (int i = 0; i < tagNames.size(); i++) {
                 tagNames.set(i, extractAvailableTagName(tagNames.get(i)));
             }
-            populateImageList(tagNames);
+            populateImageList(tagNames, true);
         }
     }
 
@@ -362,7 +369,7 @@ public class Controller {
      */
     @FXML
     public void showAllImages() {
-        populateImageList(new ArrayList<>());
+        populateImageList(new ArrayList<>(), false);
     }
 
     /**
@@ -370,12 +377,12 @@ public class Controller {
      *
      * @param tagNames list of tag names to filter images by
      */
-    private void populateImageList(List<String> tagNames) {
+    private void populateImageList(List<String> tagNames, boolean expandDirectortories) {
         TreeItem<ItemWrapper> rootFolderNode = new TreeItem<>(
                 rootDirectoryManager.getRootFolder());
         ItemWrapper rootImagesList = rootDirectoryManager
                 .getAllImagesUnderRoot();
-        populateParentNode(rootFolderNode, rootImagesList, tagNames);
+        populateParentNode(rootFolderNode, rootImagesList, tagNames, expandDirectortories);
         rootFolderNode.setExpanded(true);
         imagesTreeView.setRoot(rootFolderNode);
         imagesTreeView.refresh();
@@ -416,7 +423,7 @@ public class Controller {
      */
     private void populateParentNode(TreeItem<ItemWrapper> parentNode,
                                     ItemWrapper parentNodeList, List<String>
-                                            tags) {
+                                            tags, boolean expandDirectories) {
         if (parentNodeList instanceof DirectoryWrapper) {
             for (ItemWrapper wrappedItem : ((DirectoryWrapper)
                     parentNodeList).getChildObjects()) {
@@ -426,9 +433,10 @@ public class Controller {
                     TreeItem<ItemWrapper> childNode = new TreeItem<>
                             (new DirectoryWrapper(new File(PathExtractor
                                     .getImageFileName(parentPath))));
-                    populateParentNode(childNode, wrappedItem, tags);
+                    populateParentNode(childNode, wrappedItem, tags, expandDirectories);
                     if (!childNode.isLeaf()) {
                         parentNode.getChildren().add(childNode);
+                        childNode.setExpanded(expandDirectories);
                     }
                 /* If the wrapped item is an image */
                 } else {
@@ -488,6 +496,8 @@ public class Controller {
             }
         } catch (Exception err) {
             err.printStackTrace();
+        } finally {
+            uploadLabel.setVisible(false);
         }
     }
 }
