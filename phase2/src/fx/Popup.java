@@ -2,6 +2,12 @@ package fx;
 
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
+
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 /**
  * Class responsible for the display of error information via pop-ups. Unused
@@ -31,5 +37,25 @@ public class Popup {
         String popupTitle = "No Directory Selected";
         String popupText = "Please select a valid directory and try again.";
         errorPopup(popupTitle, popupText);
+    }
+
+    /**
+     * Displays a popup that allows the user to enter a new tag to be added
+     * @return the tag name that the user entered
+     */
+    static String addTagPopup() {
+        final TextInputDialog dialog = new TextInputDialog();
+        dialog.setHeaderText("Enter a new tag");
+        dialog.setTitle("Add Tag");
+        String tagName = "";
+        Optional<String> result = dialog.showAndWait();
+        if (result.isPresent()) {
+            try {
+                tagName = result.get();
+            } catch (NoSuchElementException e) {
+                e.printStackTrace();
+            }
+        }
+        return tagName;
     }
 }

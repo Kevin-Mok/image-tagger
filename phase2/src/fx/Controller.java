@@ -41,8 +41,6 @@ public class Controller {
     @FXML
     private ImageView imageView;
     @FXML
-    private TextField addNewTagField;
-    @FXML
     private Label imageNameLabel;
     @FXML
     private ListView<String> availableTagsView;
@@ -177,14 +175,13 @@ public class Controller {
      */
     @FXML
     public void addNewTag() {
-        String newTagName = addNewTagField.getText();
+        String newTagName = Popup.addTagPopup();
         if (curSelectedImage != null && newTagName.length() > 0) {
             String invalidCharRegex = ".*[/\\\\].*";
             Pattern invalidCharPattern = Pattern.compile(invalidCharRegex);
             Matcher invalidCharMatcher = invalidCharPattern.matcher(newTagName);
             if (!invalidCharMatcher.matches()) {
                 curSelectedImage.addTag(newTagName);
-                addNewTagField.clear();
                 updateSelectedImageGUI();
             } else {
                 String invalidChars = "/, \\";

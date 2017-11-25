@@ -3,7 +3,6 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.control.TreeView?>
 <?import javafx.scene.image.Image?>
@@ -23,12 +22,12 @@
                 <Font name="Monaco" size="13.0" />
             </font></Label>
         <ListView fx:id="nameHistoryView" layoutX="20.0" layoutY="522.0" prefHeight="316.0" prefWidth="299.0" AnchorPane.bottomAnchor="53.0" AnchorPane.leftAnchor="20.0" />
-        <ListView fx:id="currentTagsView" layoutX="774.0" layoutY="588.0" prefHeight="250.0" prefWidth="200.0" AnchorPane.bottomAnchor="53.0" AnchorPane.rightAnchor="138.0" />
+        <ListView fx:id="currentTagsView" layoutX="774.0" layoutY="588.0" prefHeight="250.0" prefWidth="215.0" AnchorPane.bottomAnchor="53.0" AnchorPane.rightAnchor="123.0" />
         <Label alignment="CENTER" layoutX="19.0" layoutY="501.0" prefHeight="16.0" prefWidth="299.0" text="Name History" AnchorPane.bottomAnchor="374.0" AnchorPane.leftAnchor="19.0">
         <font>
             <Font name="Monaco" size="13.0" />
         </font></Label>
-        <Label alignment="CENTER" layoutX="774.0" layoutY="565.0" prefHeight="16.0" prefWidth="200.0" text="Current Tags" AnchorPane.bottomAnchor="310.0" AnchorPane.rightAnchor="138.0">
+        <Label alignment="CENTER" layoutX="774.0" layoutY="565.0" prefHeight="18.0" prefWidth="215.0" text="Current Tags" AnchorPane.bottomAnchor="308.0" AnchorPane.rightAnchor="123.0">
          <font>
             <Font name="Monaco" size="13.0" />
          </font></Label>
@@ -69,18 +68,16 @@
                 <Tooltip text="Open Current Directory" />
             </tooltip>
         </Button>
-
-        <TextField fx:id="addNewTagField" layoutX="774.0" layoutY="839.0" onAction="#addNewTag" prefHeight="28.0" prefWidth="124.0" AnchorPane.bottomAnchor="25.0" AnchorPane.rightAnchor="214.0" />
-        <Button fx:id="addNewTagBtn" layoutX="898.0" layoutY="838.0" mnemonicParsing="false" onAction="#addNewTag" prefHeight="28.0" prefWidth="79.0" text="Add Tag" AnchorPane.bottomAnchor="25.0" AnchorPane.rightAnchor="138.0">
+        <Button fx:id="addNewTagBtn" layoutX="775.0" layoutY="839.0" mnemonicParsing="false" onAction="#addNewTag" prefHeight="28.0" prefWidth="97.0" text="Add Tag" AnchorPane.bottomAnchor="23.0" AnchorPane.rightAnchor="240.0">
          <font>
             <Font name="Monaco" size="13.0" />
          </font></Button>
-        <ListView fx:id="availableTagsView" layoutX="395.0" layoutY="588.0" prefHeight="250.0" prefWidth="215.0" AnchorPane.bottomAnchor="53.0" AnchorPane.rightAnchor="502.0" />
+        <ListView fx:id="availableTagsView" layoutX="395.0" layoutY="588.0" prefHeight="218.0" prefWidth="215.0" AnchorPane.bottomAnchor="85.0" AnchorPane.rightAnchor="502.0" />
         <Label alignment="CENTER" layoutX="395.0" layoutY="565.0" prefHeight="16.0" prefWidth="215.0" text="Available Tags" AnchorPane.rightAnchor="502.0" AnchorPane.topAnchor="565.0">
          <font>
             <Font name="Monaco" size="13.0" />
          </font></Label>
-        <Button fx:id="deleteTagBtn" layoutX="661.0" layoutY="700.0" mnemonicParsing="false" onAction="#deleteTag" text="Delete" AnchorPane.bottomAnchor="165.0" AnchorPane.rightAnchor="388.0">
+        <Button fx:id="deleteTagBtn" layoutX="924.0" layoutY="839.0" mnemonicParsing="false" onAction="#deleteTag" prefHeight="28.0" prefWidth="97.0" text="Delete" AnchorPane.bottomAnchor="23.0" AnchorPane.rightAnchor="123.0">
          <font>
             <Font name="Monaco" size="13.0" />
          </font></Button>
@@ -88,7 +85,7 @@
          <font>
             <Font name="Monaco" size="13.0" />
          </font></Button>
-        <Button fx:id="revertNameBtn" alignment="CENTER" layoutX="20.0" layoutY="839.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="299.0" text="Revert Name" AnchorPane.bottomAnchor="25.0">
+        <Button fx:id="revertNameBtn" alignment="CENTER" layoutX="20.0" layoutY="839.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="299.0" text="Revert Name" AnchorPane.bottomAnchor="23.0">
          <font>
             <Font name="Monaco" size="13.0" />
          </font></Button>
@@ -97,12 +94,17 @@
                 <ImageView fx:id="imageView" fitHeight="418.0" fitWidth="658.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
             </center>
         </BorderPane>
-      <Button fx:id="filterByTagBtn" alignment="CENTER" layoutX="395.0" layoutY="838.0" mnemonicParsing="false" onMouseClicked="#filterImagesByTags" prefHeight="28.0" prefWidth="97.0" text="Filter" AnchorPane.bottomAnchor="25.0">
+      <Button fx:id="filterByTagBtn" alignment="CENTER" layoutX="395.0" layoutY="810.0" mnemonicParsing="false" onMouseClicked="#filterImagesByTags" prefHeight="28.0" prefWidth="97.0" text="Filter" AnchorPane.bottomAnchor="53.0">
          <font>
             <Font name="Monaco" size="13.0" />
          </font>
       </Button>
-      <Button layoutX="513.0" layoutY="838.0" mnemonicParsing="false" onMouseClicked="#showAllImages" prefHeight="28.0" prefWidth="97.0" text="Show All" AnchorPane.bottomAnchor="25.0">
+      <Button layoutX="513.0" layoutY="810.0" mnemonicParsing="false" onMouseClicked="#showAllImages" prefHeight="28.0" prefWidth="97.0" text="Show All" AnchorPane.bottomAnchor="53.0">
+         <font>
+            <Font name="Monaco" size="13.0" />
+         </font>
+      </Button>
+      <Button layoutX="394.0" layoutY="840.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="215.0" text="Delete From All" AnchorPane.bottomAnchor="23.0">
          <font>
             <Font name="Monaco" size="13.0" />
          </font>
