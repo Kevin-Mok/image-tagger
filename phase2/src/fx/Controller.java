@@ -1,5 +1,15 @@
 package fx;
+import java.awt.*;
+import java.io.File;
 
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -14,14 +24,20 @@ import main.Image;
 import main.wrapper.DirectoryWrapper;
 import main.wrapper.ImageWrapper;
 import main.wrapper.ItemWrapper;
-
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLConnection;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import retrofit2.GsonConverterFactory;
 
 
 /**
@@ -53,6 +69,8 @@ public class Controller {
     private ListView<String> currentTagsView;
     @FXML
     private Button revertNameBtn;
+    @FXML
+    private Button deleteAll;
 
     /*
      * The following three fields were used repeatedly in the button
@@ -67,6 +85,7 @@ public class Controller {
     private Stage stage;
     
     private Image lastSelectedImage;
+
 
     /**
      * Constructor.
@@ -97,6 +116,14 @@ public class Controller {
                 rootDirectoryManager.setRootFolder(new DirectoryWrapper
                         (rootDirectory));
                 refreshGUIElements();
+            }
+        });
+
+        deleteAll.setOnAction(event -> {
+            try {
+                putOnImgur();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         });
 
@@ -416,5 +443,40 @@ public class Controller {
         currentTagsList.setAll(lastSelectedImage.getTagManager().getTagNames());
         currentTagsView.setItems(currentTagsList);
     }
+
+    public void putOnImgur() throws IOException {
+         final String PATH = "Dog.jpeg";
+        final ImgurAPI imgurApi = createImgurAPI();
+        try{
+            File image = new File(lastSelectedImage.getPath().toString());
+            RequestBody request = RequestBody.create(MediaType.parse("image/*"), image);
+            Call<ImageResponse> call =  imgurApi.postImage(request);
+            Response<ImageResponse> res = call.execute();
+
+            System.out.println("是否成功: " + res.isSuccessful());
+            String url = res.body().data.link;
+
+                Runtime runtime = Runtime.getRuntime();
+                try {
+                    runtime.exec("firefox " + url);
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
+
+        }catch(Exception err){
+            err.printStackTrace();
+        }
+    }
+
+    static ImgurAPI createImgurAPI(){
+        Retrofit retrofit = new Retrofit.Builder()
+                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl(ImgurAPI.SERVER)
+                .build();
+        return retrofit.create(ImgurAPI.class);
+    }
+
 
 }

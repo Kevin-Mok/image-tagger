@@ -104,7 +104,7 @@
             <Font name="Monaco" size="13.0" />
          </font>
       </Button>
-      <Button layoutX="394.0" layoutY="840.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="215.0" text="Delete From All" AnchorPane.bottomAnchor="23.0">
+      <Button fx:id= "deleteAll" layoutX="394.0" layoutY="840.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="215.0" text="Delete From All" AnchorPane.bottomAnchor="23.0">
          <font>
             <Font name="Monaco" size="13.0" />
          </font>

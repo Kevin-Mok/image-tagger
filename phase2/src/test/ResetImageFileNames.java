@@ -48,14 +48,16 @@ public class ResetImageFileNames {
     public static void main(String[] args) {
         /* Reset all image names. */
         // String dirString = "/home/kevin/Pictures";
-        // String dirString = "/h/u5/c6/05/khans167/Desktop/Images";
+         String dirString = "/h/u5/c6/05/khans167/Desktop/Images";
         // String dirString = "/h/u3/c7/05/mokkar/Downloads";
-        String dirString = "/h/u3/c7/05/mokkar/207/group_0485/test-images";
+//        String dirString = "/h/u3/c7/05/mokkar/207/group_0485/test-images";
         renameImagesInDir(dirString);
 
         /* Delete ser files. */
+//        String serPathString =
+//                "/h/u3/c7/05/mokkar/207/group_0485/phase2/";
         String serPathString =
-                "/h/u3/c7/05/mokkar/207/group_0485/phase2/";
+                "/h/u5/c6/05/khans167/group_0485";
         String[] serFileNames = {"images.ser", "tags.ser"};
 
         boolean sersDeleted = true;
