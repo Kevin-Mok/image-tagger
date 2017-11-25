@@ -69,16 +69,13 @@ public class TagManager implements Serializable {
      */
     public String addTag(String tagName) {
         Tag tag = new Tag(image, tagName);
-        if (!currentTags.contains(tag)) {
-            currentTags.add(tag);
-            tagList.add(tag);
-            String currentName = nameHistory.lastEntry().getValue();
-            nameHistory.put(new Timestamp(System.currentTimeMillis()),
-                    currentName + " @" + tag.getName());
-            LogUtility.getInstance().logAddOrDeleteTag(tag.getName(), image
-                    .getImageName(), true);
-        }
-
+        currentTags.add(tag);
+        tagList.add(tag);
+        String currentName = nameHistory.lastEntry().getValue();
+        nameHistory.put(new Timestamp(System.currentTimeMillis()),
+                currentName + " @" + tag.getName());
+        LogUtility.getInstance().logAddOrDeleteTag(tag.getName(), image
+                .getImageName(), true);
         return nameHistory.lastEntry().getValue();
     }
 
@@ -87,7 +84,7 @@ public class TagManager implements Serializable {
      * @param tagNames the tag names to check
      * @return true if the image has at least one of the tags, false if otherwise
      */
-    public boolean hasTags(List<String> tagNames) {
+    boolean hasTags(List<String> tagNames) {
         List<Tag> tags = new ArrayList<>();
         for (String tagName : tagNames) {
             tags.add(new Tag(image, tagName));
@@ -98,6 +95,16 @@ public class TagManager implements Serializable {
             }
         }
         return false;
+    }
+
+    /**
+     * Checks if the image this TagManager is associated with has the given tag
+     * @param tagName the name of the tag to check
+     * @return true if the image has the aforementioned tag
+     */
+    boolean hasTag(String tagName) {
+        Tag tag = new Tag(image, tagName);
+        return this.currentTags.contains(tag);
     }
 
     /**

@@ -1,0 +1,32 @@
+Chris(shyichin)
+- Created JavaFX application layout
+- Co-designed user interface 
+- Implemented user interface using Scene Builder and FXML
+- Implemented DirectoryManager class
+- Implemented the wrapper class hierarchy (ItemWrapper, DirectoryWrapper and ImageWrapper)
+- Created shell script for compiling and executing the application from the command line
+- Wrote most of the documentation for DirectoryManager and the wrapper classes, helped document some of the other classes as well
+- Fixed a bug when the user tries to move an image to a subdirectory under the same root 
+- Refactored parts of the code base
+
+Kevin
+- Wrote Picture, PathExtractor, TagManager, Popup class
+- Helped design user interface
+- Displayed list of images in TreeView
+- Refactored a lot of code for clarity and style
+- Implemented listener of adding new/available tags, deleting tags and displayed available tags in GUI
+- Created UML
+- Documented code periodically
+- Helped find and fix bugs in GUI
+
+Saad
+- Created ImageTagManager class
+- Implemented Serialization 
+- Fixed recursive bugs with tree view implementation 
+- Wrote the original LogUtility class whose implementation was later modified by my teammates 
+- Wrote code for reverting an image’s name and displaying the image name history in our list view 
+- Added a mouse event handler to tree view so that user can display image with an click
+- Reduced class interdependency 
+_ Fixed many edge cases with image selection, with the help of my teammates 
+- Helped make classes into singletons 
+- Fixed bugs with logging
