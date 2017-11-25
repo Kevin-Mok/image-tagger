@@ -58,7 +58,9 @@ public class Controller {
     @FXML
     private Button revertNameBtn;
     @FXML
-    private Button deleteAll;
+    private Button deleteAllBtn;
+    @FXML
+    private Button uploadBtn;
 
     /*
      * The following three fields were used repeatedly in the button
@@ -81,6 +83,11 @@ public class Controller {
     public Controller() {
     }
 
+    /**
+     * Adapted from Johnny850807's GitHub repository
+     * https://github.com/Johnny850807/Imgur-Picture-Uploading-Example-Using-Retrofit-On-Native-Java
+     * on Nov 24th, 2017
+     */
     static ImgurAPI createImgurAPI() {
         Retrofit retrofit = new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
@@ -116,7 +123,7 @@ public class Controller {
             }
         });
 
-        deleteAll.setOnAction(event -> {
+        uploadBtn.setOnAction(event -> {
             try {
                 putOnImgur();
             } catch (IOException e) {
@@ -455,6 +462,11 @@ public class Controller {
         currentTagsView.setItems(currentTagsList);
     }
 
+    /**
+     * Adapted from Johnny850807's GitHub repository
+     * https://github.com/Johnny850807/Imgur-Picture-Uploading-Example-Using-Retrofit-On-Native-Java
+     * on Nov 24th, 2017
+     */
     private void putOnImgur() throws IOException {
         final ImgurAPI imgurApi = createImgurAPI();
         try {
