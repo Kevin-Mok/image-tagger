@@ -4,6 +4,8 @@ import fx.imgur.ImageResponse;
 import fx.imgur.ImgurAPI;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
@@ -78,6 +80,8 @@ public class Controller {
 
     private Image lastSelectedImage;
 
+    private Service service = new ImgurService();
+
 
     /**
      * Constructor.
@@ -127,15 +131,21 @@ public class Controller {
         });
 
         uploadBtn.setOnAction(event -> {
-            /*
-            ** Doesn't work, not sure why
+            /**
+             * Adapted from ItachiUchiha's post on StackOverflow
+             * https://stackoverflow.com/questions/31607656/how-to-show-and-then-hide-a-label-in-javafx-after-a-task-is-completed
+             * retrieved Nov 25, 2017
              */
-//            uploadLabel.setVisible(true);
-            try {
-                putOnImgur();
-            } catch (IOException e) {
-                e.printStackTrace();
+            uploadLabel.setVisible(true);
+            if (!service.isRunning()) {
+                /* Service will take care of uploading the image */
+                service.start();
             }
+
+            service.setOnSucceeded(event1 -> {
+                uploadLabel.setVisible(false);
+                service.reset();
+            });
         });
 
         openCurDirBtn.setOnAction(event -> {
@@ -471,33 +481,46 @@ public class Controller {
     }
 
     /**
-     * Adapted from Johnny850807's GitHub repository
-     * https://github.com/Johnny850807/Imgur-Picture-Uploading-Example-Using-Retrofit-On-Native-Java
-     * on Nov 24th, 2017
+     * Inner class that takes care of uploading an image to Imgur
+     *
+     * Adapted from ItachiUchiha's post on StackOverflow
+     * https://stackoverflow.com/questions/31607656/how-to-show-and-then-hide-a-label-in-javafx-after-a-task-is-completed
+     * retrieved Nov 25, 2017
      */
-    private void putOnImgur() throws IOException {
-        final ImgurAPI imgurApi = createImgurAPI();
-        try {
-            File image = new File(lastSelectedImage.getPath().toString());
-            RequestBody request = RequestBody.create(MediaType.parse
-                    ("image/*"), image);
-            Call<ImageResponse> call = imgurApi.postImage(request);
-            Response<ImageResponse> res = call.execute();
+    class ImgurService extends Service<Void> {
+        protected Task<Void> createTask() {
+            return new Task<Void>() {
+                @Override
+                protected Void call() throws Exception {
+                    /**
+                     * Adapted from Johnny850807's GitHub repository
+                     * https://github.com/Johnny850807/Imgur-Picture-Uploading-Example-Using-Retrofit-On-Native-Java
+                     * on Nov 24th, 2017
+                     */
+                    final ImgurAPI imgurApi = createImgurAPI();
+                    try {
+                        File image = new File(lastSelectedImage.getPath().toString());
+                        RequestBody request = RequestBody.create(MediaType.parse
+                                ("image/*"), image);
+                        Call<ImageResponse> call = imgurApi.postImage(request);
+                        Response<ImageResponse> res = call.execute();
 
-            System.out.println("Successful? " + res.isSuccessful());
-            String url = res.body().data.link;
+                        System.out.println("Successful? " + res.isSuccessful());
+                        String url = res.body().data.link;
 
-            Runtime runtime = Runtime.getRuntime();
-            try {
-                runtime.exec("firefox " + url);
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        } catch (Exception err) {
-            err.printStackTrace();
-        } finally {
-            uploadLabel.setVisible(false);
+                        Runtime runtime = Runtime.getRuntime();
+                        try {
+                            runtime.exec("firefox " + url);
+                        } catch (IOException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    } catch (Exception err) {
+                        err.printStackTrace();
+                    }
+                    return null;
+                }
+            };
         }
     }
 }
