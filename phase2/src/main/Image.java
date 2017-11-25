@@ -148,7 +148,18 @@ public class Image implements Serializable {
      * @param tagName The name of the tag to be added.
      */
     public void addTag(String tagName) {
-        rename(tagManager.addTag(tagName));
+        if (!this.hasTag(tagName)) {
+            rename(tagManager.addTag(tagName));
+        }
+    }
+
+    /**
+     * Checks whether this image has a given tag
+     * @param tagName the tag to check
+     * @return true if this image has the tag
+     */
+    private boolean hasTag(String tagName) {
+        return this.tagManager.hasTag(tagName);
     }
 
     /**
