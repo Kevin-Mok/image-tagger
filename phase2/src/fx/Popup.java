@@ -47,6 +47,8 @@ public class Popup {
         final TextInputDialog dialog = new TextInputDialog();
         dialog.setHeaderText("Enter a new tag");
         dialog.setTitle("Add Tag");
+        dialog.setContentText(String.format("The tag name must not include the characters: %s",
+                "/, \\"));
         String tagName = "";
         Optional<String> result = dialog.showAndWait();
         if (result.isPresent()) {
