@@ -62,6 +62,8 @@ public class Controller {
     @FXML
     private Button deleteAllBtn;
     @FXML
+    private Button deleteTagBtn;
+    @FXML
     private Button uploadBtn;
     @FXML
     private Label uploadLabel;
@@ -70,7 +72,7 @@ public class Controller {
      * The following three fields were used repeatedly in the button
      * EventHandlers, made sense to factor them out
      */
-    private ArrayList<Image> curSelectedImages;
+    private List<Image> curSelectedImages;
 
     private DirectoryManager rootDirectoryManager = new DirectoryManager(null);
     /**
@@ -94,7 +96,7 @@ public class Controller {
      * https://github.com/Johnny850807/Imgur-Picture-Uploading-Example-Using-Retrofit-On-Native-Java
      * on Nov 24th, 2017
      */
-    static ImgurAPI createImgurAPI() {
+    private static ImgurAPI createImgurAPI() {
         Retrofit retrofit = new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl(ImgurAPI.SERVER)
@@ -130,8 +132,17 @@ public class Controller {
             }
         });
 
+        deleteAllBtn.setOnMouseClicked(event -> {
+            curSelectedImages = rootDirectoryManager.getAllImagesUnderRoot();
+            deleteTag(availableTagsView.getSelectionModel().getSelectedItems());
+        });
+
+        deleteTagBtn.setOnMouseClicked(event ->
+            deleteTag(currentTagsView.getSelectionModel().getSelectedItems())
+        );
+
         uploadBtn.setOnAction(event -> {
-            /**
+            /*
              * Adapted from ItachiUchiha's post on StackOverflow
              * https://stackoverflow.com/questions/31607656/how-to-show-and-then-hide-a-label-in-javafx-after-a-task-is-completed
              * retrieved Nov 25, 2017
@@ -259,9 +270,9 @@ public class Controller {
      */
     @FXML
     public void addNewTag() {
-        String newTagName = Popup.invalidTagPopup();
+        String newTagName = Popup.addTagPopup();
         if (curSelectedImages != null && newTagName.length() > 0) {
-            String invalidCharRegex = ".*[/\\\\].*";
+            String invalidCharRegex = ".*[/\\\\-].*";
             Pattern invalidCharPattern = Pattern.compile(invalidCharRegex);
             Matcher invalidCharMatcher = invalidCharPattern.matcher(newTagName);
             if (!invalidCharMatcher.matches()) {
@@ -271,7 +282,7 @@ public class Controller {
                 updateSelectedImageGUI();
 
             } else {
-                String invalidChars = "/ \\";
+                String invalidChars = "/ \\ -";
                 String popupTitle = "Invalid Tag Name";
                 String popupText = String.format("The tag name must not " +
                         "include the characters: %s", invalidChars);
@@ -298,15 +309,13 @@ public class Controller {
         }
     }
 
-    /**
-     * Allows user to delete a tag by interacting with a GUI element
-     */
-    @FXML
-    public void deleteTag() {
-        ObservableList<String> selectedCurrentTags = currentTagsView
-                .getSelectionModel().getSelectedItems();
-        if (curSelectedImages != null && selectedCurrentTags.size() != 0) {
-            for (String tagName : selectedCurrentTags) {
+    private void deleteTag(ObservableList<String> selectedTags) {
+        if (curSelectedImages != null && selectedTags.size() != 0) {
+            for (String tagName : selectedTags) {
+                int indexOfDash = tagName.indexOf('-');
+                if (indexOfDash != -1) {
+                    tagName = tagName.substring(indexOfDash + 2);
+                }
                 for (Image img : curSelectedImages) {
                     img.deleteTag(tagName);
                 }
@@ -387,12 +396,12 @@ public class Controller {
      *
      * @param tagNames list of tag names to filter images by
      */
-    private void populateImageList(List<String> tagNames, boolean expandDirectortories) {
+    private void populateImageList(List<String> tagNames, boolean expandDirectories) {
         TreeItem<ItemWrapper> rootFolderNode = new TreeItem<>(
                 rootDirectoryManager.getRootFolder());
         ItemWrapper rootImagesList = rootDirectoryManager
-                .getAllImagesUnderRoot();
-        populateParentNode(rootFolderNode, rootImagesList, tagNames, expandDirectortories);
+                .getRootDirectory();
+        populateParentNode(rootFolderNode, rootImagesList, tagNames, expandDirectories);
         rootFolderNode.setExpanded(true);
         imagesTreeView.setRoot(rootFolderNode);
         imagesTreeView.refresh();
@@ -492,7 +501,7 @@ public class Controller {
             return new Task<Void>() {
                 @Override
                 protected Void call() throws Exception {
-                    /**
+                    /*
                      * Adapted from Johnny850807's GitHub repository
                      * https://github.com/Johnny850807/Imgur-Picture-Uploading-Example-Using-Retrofit-On-Native-Java
                      * on Nov 24th, 2017

@@ -1,10 +1,7 @@
 package main;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Singleton manager class to keep track of all the existing Images and Tags
@@ -37,6 +34,14 @@ public class ImageTagManager {
             instance.pathToImages = new HashMap<>();
         }
         return instance;
+    }
+
+    public void deleteTagsFromAll(List<String> tagsToDelete) {
+        for (String tag : tagsToDelete) {
+            for (Image image : this.tagToImageList.get(tag)) {
+                image.deleteTag(tag);
+            }
+        }
     }
 
     /**

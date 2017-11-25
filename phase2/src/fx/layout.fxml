@@ -83,7 +83,7 @@
                 <Font name="Monaco" size="13.0" />
             </font>
         </Label>
-        <Button fx:id="deleteTagBtn" layoutX="924.0" layoutY="839.0" mnemonicParsing="false" onAction="#deleteTag" prefHeight="28.0" prefWidth="97.0" text="Delete" AnchorPane.bottomAnchor="23.0" AnchorPane.rightAnchor="123.0">
+        <Button fx:id="deleteTagBtn" layoutX="924.0" layoutY="839.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="97.0" text="Delete" AnchorPane.bottomAnchor="23.0" AnchorPane.rightAnchor="123.0">
             <font>
                 <Font name="Monaco" size="13.0" />
             </font>

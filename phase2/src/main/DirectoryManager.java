@@ -5,7 +5,9 @@ import main.wrapper.DirectoryWrapper;
 import main.wrapper.ImageWrapper;
 import main.wrapper.ItemWrapper;
 
-import java.awt.*;
+import java.awt.Desktop;
+import java.util.List;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
@@ -31,6 +33,8 @@ public class DirectoryManager {
      */
     private ArrayList<String> imageFormats;
 
+    private List<Image> allImagesUnderRoot;
+
     /**
      * Instantiates a new instance of DirectoryManager with a given root folder
      *
@@ -39,6 +43,7 @@ public class DirectoryManager {
     public DirectoryManager(File rootFolder) {
         this.rootFolder = new DirectoryWrapper(rootFolder);
         this.imageFormats = new ArrayList<>();
+        this.allImagesUnderRoot = new ArrayList<>();
         // temporarily adding in desired formats
         imageFormats.add("jpg");
         imageFormats.add("png");
@@ -66,14 +71,21 @@ public class DirectoryManager {
     }
 
     /**
-     * Returns ItemWrapper representing all images under the root folder,
-     * including those in subdirectories
+     * Returns ItemWrapper representing the root directory, encapsulating all its
+     * subdirectories and images
      *
-     * @return List of image paths under the root directory, including those
-     * in subdirectories
+     * @return ItemWrapper representing the root directory
      */
-    public ItemWrapper getAllImagesUnderRoot() {
+    public ItemWrapper getRootDirectory() {
         return getImages(rootFolder.getPath());
+    }
+
+    /**
+     * Returns the list of all images under the root folder
+     * @return the list of all images under the root folder
+     */
+    public List<Image> getAllImagesUnderRoot() {
+        return allImagesUnderRoot;
     }
 
     /**
@@ -85,7 +97,7 @@ public class DirectoryManager {
      * directory
      */
     private ItemWrapper getImages(Path directory) {
-        DirectoryWrapper images = new DirectoryWrapper(directory.toFile());
+        DirectoryWrapper directoryWrapper = new DirectoryWrapper(directory.toFile());
         Pattern imgFilePattern = Pattern.compile(generateImageMatchingPattern
                 ());
         try (DirectoryStream<Path> stream = Files.newDirectoryStream
@@ -95,29 +107,31 @@ public class DirectoryManager {
                     ItemWrapper subImages = getImages(file);
                     if (((DirectoryWrapper) subImages).getChildObjects()
                             .size() != 0) {
-                        images.addToDirectory(subImages);
+                        directoryWrapper.addToDirectory(subImages);
                     }
                 }
                 Matcher matcher = imgFilePattern.matcher(file.toString());
                 if (matcher.matches()) {
                     if (ImageTagManager.getInstance().containsImagePath(file
                             .toString())) {
-                        images.addToDirectory(new ImageWrapper
-                                (ImageTagManager.getInstance().getImage(file
-                                        .toString())));
+                        Image img = ImageTagManager.getInstance().getImage(file.toString());
+                        directoryWrapper
+                                .addToDirectory(new ImageWrapper(img));
+                        this.allImagesUnderRoot.add(img);
                     } else {
                         Image img = new Image(file.toFile(), PathExtractor
                                 .getImageName(file.toString()));
+                        this.allImagesUnderRoot.add(img);
                         img.getTagManager().addAllTags(img.getImageName()
                                 .split("@"));
-                        images.addToDirectory(new ImageWrapper(img));
+                        directoryWrapper.addToDirectory(new ImageWrapper(img));
                     }
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return images;
+        return directoryWrapper;
     }
 
     /**

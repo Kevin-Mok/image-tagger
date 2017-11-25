@@ -42,13 +42,12 @@ public class Popup {
      *
      * @return the tag name that the user entered
      */
-    static String invalidTagPopup() {
+    static String addTagPopup() {
         final TextInputDialog dialog = new TextInputDialog();
         dialog.setHeaderText("Enter a new tag");
         dialog.setTitle("Add Tag");
         dialog.setContentText(String.format("The tag name must not include " +
-                        "the characters: %s",
-                "/, \\"));
+                        "the characters: %s", "/, \\, -"));
         String tagName = "";
         Optional<String> result = dialog.showAndWait();
         if (result.isPresent()) {
