@@ -65,6 +65,8 @@ public class ImageTagManager {
     }
 
 
+
+
     /**
      * Remove Image with path of parameter from HashMap of pathToImages.
      *
