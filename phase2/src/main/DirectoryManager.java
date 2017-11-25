@@ -16,7 +16,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Class responsible for searching through a given directory and its subdirectories, looking for image files
+ * Class responsible for searching through a given directory and its
+ * subdirectories, looking for image files
  * Also takes care of opening that given directory using the OS's file viewer
  */
 public class DirectoryManager {
@@ -105,8 +106,10 @@ public class DirectoryManager {
                                 (ImageTagManager.getInstance().getImage(file
                                         .toString())));
                     } else {
-                        Image img = new Image(file.toFile(), PathExtractor.getImageName(file.toString()));
-                        img.getTagManager().addAllTags(img.getImageName().split("@"));
+                        Image img = new Image(file.toFile(), PathExtractor
+                                .getImageName(file.toString()));
+                        img.getTagManager().addAllTags(img.getImageName()
+                                .split("@"));
                         images.addToDirectory(new ImageWrapper(img));
                     }
                 }

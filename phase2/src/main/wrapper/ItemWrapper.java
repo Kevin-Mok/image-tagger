@@ -10,8 +10,9 @@ import java.nio.file.Path;
 public interface ItemWrapper {
     /**
      * Should return the Path of whatever this wrapper wraps
+     *
      * @return the path of the item within this wrapper
      */
-    public abstract Path getPath();
+    Path getPath();
 
 }

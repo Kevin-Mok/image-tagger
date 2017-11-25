@@ -155,6 +155,7 @@ public class Image implements Serializable {
 
     /**
      * Checks whether this image has a given tag
+     *
      * @param tagName the tag to check
      * @return true if this image has the tag
      */
@@ -173,9 +174,11 @@ public class Image implements Serializable {
 
     /**
      * Checks if this image has all the tags in a list of tag names
+     *
      * @param tagNames the tag names to check
-     * @return true if the image contains at least a tag in the list, or if the list is empty (no filtering),
-     *         false if otherwise
+     * @return true if the image contains at least a tag in the list, or if
+     * the list is empty (no filtering),
+     * false if otherwise
      */
     public boolean hasTags(List<String> tagNames) {
         if (tagNames.size() == 0) {
@@ -183,6 +186,7 @@ public class Image implements Serializable {
         }
         return this.tagManager.hasTags(tagNames);
     }
+
     /**
      * Reverts the name of the file to a previous one in time.
      *

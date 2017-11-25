@@ -2,8 +2,6 @@ package main;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,13 +11,13 @@ import java.util.logging.SimpleFormatter;
  * Singleton utility class used for logging user interactions with the program.
  */
 public class LogUtility {
+    public static final String ACTION_LOGGER_NAME = "actionLogger";
+    public static final String RENAME_LOGGER_NAME = "renameLogger";
     private static LogUtility logUtility;
     /**
      * Logs tag related events
      */
     private Logger actionLogger;
-    public static final String ACTION_LOGGER_NAME = "actionLogger";
-    public static final String RENAME_LOGGER_NAME = "renameLogger";
     /**
      * Logs renaming events
      */
@@ -96,7 +94,7 @@ public class LogUtility {
      */
     void logDeleteTag(String tagName, String imageName) {
         String message = String.format("Deleted Tag %s from Image %s",
-                    tagName, imageName);
+                tagName, imageName);
         actionLogger.log(Level.INFO, message);
     }
 

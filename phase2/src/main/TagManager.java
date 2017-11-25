@@ -1,7 +1,6 @@
 package main;
 
 import java.io.Serializable;
-import java.sql.Array;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -75,15 +74,16 @@ public class TagManager implements Serializable {
             String currentName = nameHistory.lastEntry().getValue();
             nameHistory.put(new Timestamp(System.currentTimeMillis()),
                     currentName + " @" + tag.getName());
-            LogUtility.getInstance().logAddTag(tag.getName(), image.getImageName());
+            LogUtility.getInstance().logAddTag(tag.getName(), image
+                    .getImageName());
         }
         return nameHistory.lastEntry().getValue();
     }
 
-    public void addAllTags(String [] tags){
+    public void addAllTags(String[] tags) {
         ArrayList<String> clone = new ArrayList<>(Arrays.asList(tags));
         clone.remove(0);
-        for (String tagNames: clone){
+        for (String tagNames : clone) {
             Tag toAdd = new Tag(image, tagNames.trim());
             currentTags.add(toAdd);
             tagList.add(toAdd);
@@ -92,9 +92,12 @@ public class TagManager implements Serializable {
     }
 
     /**
-     * Checks if the image this TagManager is associated with has all the tags in a list
+     * Checks if the image this TagManager is associated with has all the
+     * tags in a list
+     *
      * @param tagNames the tag names to check
-     * @return true if the image has at least one of the tags, false if otherwise
+     * @return true if the image has at least one of the tags, false if
+     * otherwise
      */
     boolean hasTags(List<String> tagNames) {
         List<Tag> tags = new ArrayList<>();
@@ -109,16 +112,18 @@ public class TagManager implements Serializable {
         return true;
     }
 
-    public Tag getTag(String tagName){
-        for (Tag tag: tagList){
-            if (tagName.equals(tag.getName())){
+    public Tag getTag(String tagName) {
+        for (Tag tag : tagList) {
+            if (tagName.equals(tag.getName())) {
                 return tag;
             }
         }
         return null;
     }
+
     /**
      * Checks if the image this TagManager is associated with has the given tag
+     *
      * @param tagName the name of the tag to check
      * @return true if the image has the aforementioned tag
      */
@@ -139,7 +144,8 @@ public class TagManager implements Serializable {
             currentTags.remove(tag);
             nameHistory.put(new Timestamp(System.currentTimeMillis()),
                     getCurrentName());
-            LogUtility.getInstance().logDeleteTag(tagName, image.getImageName());
+            LogUtility.getInstance().logDeleteTag(tagName, image.getImageName
+                    ());
         }
         return nameHistory.lastEntry().getValue();
     }
@@ -190,7 +196,7 @@ public class TagManager implements Serializable {
     public ArrayList<String> getUnusedTags() {
         ArrayList<String> result = new ArrayList<>();
         for (Tag tag : tagList) {
-            if(!currentTags.contains(tag)) {
+            if (!currentTags.contains(tag)) {
                 result.add(tag.getName());
             }
         }

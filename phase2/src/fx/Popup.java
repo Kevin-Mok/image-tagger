@@ -2,8 +2,6 @@ package fx;
 
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 
 import java.util.NoSuchElementException;
@@ -41,13 +39,15 @@ public class Popup {
 
     /**
      * Displays a popup that allows the user to enter a new tag to be added
+     *
      * @return the tag name that the user entered
      */
     static String invalidTagPopup() {
         final TextInputDialog dialog = new TextInputDialog();
         dialog.setHeaderText("Enter a new tag");
         dialog.setTitle("Add Tag");
-        dialog.setContentText(String.format("The tag name must not include the characters: %s",
+        dialog.setContentText(String.format("The tag name must not include " +
+                        "the characters: %s",
                 "/, \\"));
         String tagName = "";
         Optional<String> result = dialog.showAndWait();

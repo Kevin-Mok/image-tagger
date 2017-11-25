@@ -1,43 +1,29 @@
 package fx;
-import java.awt.*;
-import java.io.File;
 
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
-import retrofit2.Call;
-import retrofit2.Response;
-import retrofit2.Retrofit;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import main.*;
-import main.Image;
 import main.wrapper.DirectoryWrapper;
 import main.wrapper.ImageWrapper;
 import main.wrapper.ItemWrapper;
-import java.awt.*;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.GsonConverterFactory;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+
 import java.io.File;
 import java.io.IOException;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLConnection;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import retrofit2.GsonConverterFactory;
 
 
 /**
@@ -83,7 +69,7 @@ public class Controller {
      * The stage this controller is associated with
      */
     private Stage stage;
-    
+
     private Image lastSelectedImage;
 
 
@@ -91,6 +77,14 @@ public class Controller {
      * Constructor.
      */
     public Controller() {
+    }
+
+    static ImgurAPI createImgurAPI() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl(ImgurAPI.SERVER)
+                .build();
+        return retrofit.create(ImgurAPI.class);
     }
 
     void setStage(Stage stage) {
@@ -107,7 +101,8 @@ public class Controller {
                 .MULTIPLE);
         currentTagsView.getSelectionModel().setSelectionMode(SelectionMode
                 .MULTIPLE);
-        imagesTreeView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        imagesTreeView.getSelectionModel().setSelectionMode(SelectionMode
+                .MULTIPLE);
         updateAvailableTags();
 
         chooseDirBtn.setOnAction(event -> {
@@ -135,11 +130,13 @@ public class Controller {
 
         /* For displaying the image with a mouse click. */
         imagesTreeView.setOnMouseClicked(event -> {
-            if(imagesTreeView.getSelectionModel().getSelectedItem() != null) {
-                ItemWrapper lastItemWrapper = imagesTreeView.getSelectionModel().getSelectedItem().getValue();
+            if (imagesTreeView.getSelectionModel().getSelectedItem() != null) {
+                ItemWrapper lastItemWrapper = imagesTreeView
+                        .getSelectionModel().getSelectedItem().getValue();
 
                 if (lastItemWrapper instanceof ImageWrapper) {
-                    lastSelectedImage = ((ImageWrapper) lastItemWrapper).getImage();
+                    lastSelectedImage = ((ImageWrapper) lastItemWrapper)
+                            .getImage();
                 }
 
                 ObservableList<TreeItem<ItemWrapper>> selectedTreeItems =
@@ -148,14 +145,20 @@ public class Controller {
                     ArrayList<Image> curSelectedImages = new ArrayList<>();
 
                     if (selectedTreeItems.size() == 1) {
-                        if (selectedTreeItems.get(0).getValue() instanceof ImageWrapper) {
-                            curSelectedImages.add(((ImageWrapper) selectedTreeItems.get(0).getValue()).getImage());
-                            lastSelectedImage = ((ImageWrapper) selectedTreeItems.get(0).getValue()).getImage();
+                        if (selectedTreeItems.get(0).getValue() instanceof
+                                ImageWrapper) {
+                            curSelectedImages.add(((ImageWrapper)
+                                    selectedTreeItems.get(0).getValue())
+                                    .getImage());
+                            lastSelectedImage = ((ImageWrapper)
+                                    selectedTreeItems.get(0).getValue())
+                                    .getImage();
                         }
                     } else {
                         for (TreeItem<ItemWrapper> items : selectedTreeItems) {
                             if (items.getValue() instanceof ImageWrapper) {
-                                curSelectedImages.add(((ImageWrapper) items.getValue()).getImage());
+                                curSelectedImages.add(((ImageWrapper) items
+                                        .getValue()).getImage());
                             }
                         }
                     }
@@ -219,7 +222,7 @@ public class Controller {
         }
     }
 
-    private String extractAvailableTagName(String tagName){
+    private String extractAvailableTagName(String tagName) {
         return tagName.substring(tagName.indexOf("-") + 1).trim();
     }
 
@@ -236,10 +239,10 @@ public class Controller {
             Pattern invalidCharPattern = Pattern.compile(invalidCharRegex);
             Matcher invalidCharMatcher = invalidCharPattern.matcher(newTagName);
             if (!invalidCharMatcher.matches()) {
-                for (Image img: curSelectedImages) {
+                for (Image img : curSelectedImages) {
                     img.addTag(newTagName);
                 }
-                    updateSelectedImageGUI();
+                updateSelectedImageGUI();
 
             } else {
                 String invalidChars = "/ \\";
@@ -261,7 +264,7 @@ public class Controller {
                 .getSelectionModel().getSelectedItems();
         if (curSelectedImages != null && selectedAvailableTags.size() != 0) {
             for (String tagName : selectedAvailableTags) {
-                for (Image img: curSelectedImages) {
+                for (Image img : curSelectedImages) {
                     img.addTag(extractAvailableTagName(tagName));
                 }
             }
@@ -278,7 +281,7 @@ public class Controller {
                 .getSelectionModel().getSelectedItems();
         if (curSelectedImages != null && selectedCurrentTags.size() != 0) {
             for (String tagName : selectedCurrentTags) {
-                for(Image img: curSelectedImages) {
+                for (Image img : curSelectedImages) {
                     img.deleteTag(tagName);
                 }
             }
@@ -327,7 +330,8 @@ public class Controller {
     }
 
     /**
-     * Filters the images displayed in imagesTreeView based on the tags the user has
+     * Filters the images displayed in imagesTreeView based on the tags the
+     * user has
      * selected from the availableTagsView
      */
     @FXML
@@ -337,7 +341,7 @@ public class Controller {
         if (selectedTags.size() != 0) {
             List<String> tagNames = new ArrayList<>();
             tagNames.addAll(selectedTags);
-            for(int i =0; i < tagNames.size(); i++){
+            for (int i = 0; i < tagNames.size(); i++) {
                 tagNames.set(i, extractAvailableTagName(tagNames.get(i)));
             }
             populateImageList(tagNames);
@@ -351,9 +355,11 @@ public class Controller {
     public void showAllImages() {
         populateImageList(new ArrayList<>());
     }
+
     /**
-     *  Populates the TreeView with list of all images under current dir.
-     *  @param tagNames list of tag names to filter images by
+     * Populates the TreeView with list of all images under current dir.
+     *
+     * @param tagNames list of tag names to filter images by
      */
     private void populateImageList(List<String> tagNames) {
         TreeItem<ItemWrapper> rootFolderNode = new TreeItem<>(
@@ -395,11 +401,13 @@ public class Controller {
      * @param parentNode     The UI element to be populated
      * @param parentNodeList ItemWrapper containing the data needed to
      *                       populate the parent
-     * @param tags           List of tags to filter images by, images containing any tag in
+     * @param tags           List of tags to filter images by, images
+     *                       containing any tag in
      *                       the list will be added to the parentNode
      */
     private void populateParentNode(TreeItem<ItemWrapper> parentNode,
-                                    ItemWrapper parentNodeList, List<String> tags) {
+                                    ItemWrapper parentNodeList, List<String>
+                                            tags) {
         if (parentNodeList instanceof DirectoryWrapper) {
             for (ItemWrapper wrappedItem : ((DirectoryWrapper)
                     parentNodeList).getChildObjects()) {
@@ -416,7 +424,8 @@ public class Controller {
                 /* If the wrapped item is an image */
                 } else {
                     if (((ImageWrapper) wrappedItem).getImage().hasTags(tags)) {
-                        parentNode.getChildren().add(new TreeItem<>(wrappedItem));
+                        parentNode.getChildren().add(new TreeItem<>
+                                (wrappedItem));
                     }
                 }
             }
@@ -445,37 +454,30 @@ public class Controller {
     }
 
     public void putOnImgur() throws IOException {
-         final String PATH = "Dog.jpeg";
+        final String PATH = "Dog.jpeg";
         final ImgurAPI imgurApi = createImgurAPI();
-        try{
+        try {
             File image = new File(lastSelectedImage.getPath().toString());
-            RequestBody request = RequestBody.create(MediaType.parse("image/*"), image);
-            Call<ImageResponse> call =  imgurApi.postImage(request);
+            RequestBody request = RequestBody.create(MediaType.parse
+                    ("image/*"), image);
+            Call<ImageResponse> call = imgurApi.postImage(request);
             Response<ImageResponse> res = call.execute();
 
             System.out.println("是否成功: " + res.isSuccessful());
             String url = res.body().data.link;
 
-                Runtime runtime = Runtime.getRuntime();
-                try {
-                    runtime.exec("firefox " + url);
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
+            Runtime runtime = Runtime.getRuntime();
+            try {
+                runtime.exec("firefox " + url);
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
 
 
-        }catch(Exception err){
+        } catch (Exception err) {
             err.printStackTrace();
         }
-    }
-
-    static ImgurAPI createImgurAPI(){
-        Retrofit retrofit = new Retrofit.Builder()
-                .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(ImgurAPI.SERVER)
-                .build();
-        return retrofit.create(ImgurAPI.class);
     }
 
 
