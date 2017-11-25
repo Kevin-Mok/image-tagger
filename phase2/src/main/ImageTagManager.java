@@ -64,6 +64,8 @@ public class ImageTagManager {
     }
 
 
+
+
     /**
      * Remove Image with path of parameter from HashMap of pathToImages.
      *
@@ -172,6 +174,19 @@ public class ImageTagManager {
         pathToImages = rebuild;
     }
 
+    public void deleteNonExistentImages(){
+        ArrayList<String> toDelete = new ArrayList<>();
+        for (String path: pathToImages.keySet()){
+            if (!new File(path).exists()){
+                toDelete.add(path);
+            }
+        }
+        for (String deleteItem: toDelete){
+            pathToImages.remove(deleteItem);
+        }
+        refreshNameToTags();
+    }
+
 
     /**
      * Reads the serialization of the HashMaps (tagToImageList, pathToImages) of
@@ -207,9 +222,6 @@ public class ImageTagManager {
         } catch (ClassNotFoundException e) {
             System.out.println("Class not found.");
         }
-
-        // System.out.println(pathToImages);
-        // System.out.println(tagToImageList);
     }
 
 }

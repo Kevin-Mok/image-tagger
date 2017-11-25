@@ -1,6 +1,7 @@
 package main;
 
 import java.io.Serializable;
+import java.sql.Array;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -76,8 +77,18 @@ public class TagManager implements Serializable {
                     currentName + " @" + tag.getName());
             LogUtility.getInstance().logAddTag(tag.getName(), image.getImageName());
         }
-
         return nameHistory.lastEntry().getValue();
+    }
+
+    public void addAllTags(String [] tags){
+        ArrayList<String> clone = new ArrayList<>(Arrays.asList(tags));
+        clone.remove(0);
+        for (String tagNames: clone){
+            Tag toAdd = new Tag(image, tagNames.trim());
+            currentTags.add(toAdd);
+            tagList.add(toAdd);
+        }
+        ImageTagManager.getInstance().refreshNameToTags();
     }
 
     /**
@@ -85,17 +96,35 @@ public class TagManager implements Serializable {
      * @param tagNames the tag names to check
      * @return true if the image has at least one of the tags, false if otherwise
      */
-    public boolean hasTags(List<String> tagNames) {
+    boolean hasTags(List<String> tagNames) {
         List<Tag> tags = new ArrayList<>();
         for (String tagName : tagNames) {
             tags.add(new Tag(image, tagName));
         }
         for (Tag tag : tags) {
-            if (this.currentTags.contains(tag)) {
-                return true;
+            if (!this.currentTags.contains(tag)) {
+                return false;
             }
         }
-        return false;
+        return true;
+    }
+
+    public Tag getTag(String tagName){
+        for (Tag tag: tagList){
+            if (tagName.equals(tag.getName())){
+                return tag;
+            }
+        }
+        return null;
+    }
+    /**
+     * Checks if the image this TagManager is associated with has the given tag
+     * @param tagName the name of the tag to check
+     * @return true if the image has the aforementioned tag
+     */
+    boolean hasTag(String tagName) {
+        Tag tag = new Tag(image, tagName);
+        return this.currentTags.contains(tag);
     }
 
     /**

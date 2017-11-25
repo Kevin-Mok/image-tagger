@@ -105,9 +105,9 @@ public class DirectoryManager {
                                 (ImageTagManager.getInstance().getImage(file
                                         .toString())));
                     } else {
-                        images.addToDirectory(new ImageWrapper(new Image(file
-                                .toFile(),
-                                PathExtractor.getImageName(file.toString()))));
+                        Image img = new Image(file.toFile(), PathExtractor.getImageName(file.toString()));
+                        img.getTagManager().addAllTags(img.getImageName().split("@"));
+                        images.addToDirectory(new ImageWrapper(img));
                     }
                 }
             }
@@ -137,8 +137,6 @@ public class DirectoryManager {
                 String popupText = "The Java awt Desktop API is not supported" +
                         " on this machine.";
                 Popup.errorPopup("Error", popupText);
-//                System.out.println("The Java awt Desktop API is not " +
-//                        "supported on this machine.");
             }
         }
     }

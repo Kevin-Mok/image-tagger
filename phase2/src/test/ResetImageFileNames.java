@@ -33,10 +33,6 @@ public class ResetImageFileNames {
                     if (!curFile.renameTo(renamedFile)) {
                         System.out.println("File renaming failed.");
                     }
-/*                    } else {
-                        System.out.println(String.format("Renamed %s → %s.",
-                                curDirAndFileName, newDirAndFileName));
-                    }*/
                 } else {
                     renameImagesInDir(path.toString());
                 }

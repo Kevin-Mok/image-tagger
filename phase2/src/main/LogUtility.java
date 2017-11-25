@@ -56,11 +56,17 @@ class LogUtility {
         Logger logger = Logger.getLogger(loggerName);
         String filePath = System.getProperty("user.dir") + File.separator
                 + loggerFileName;
-        try {
+        File loggerFile = new File(loggerFileName);
+        if (!loggerFile.createNewFile()) {
+            System.out.println(String.format("Appending to existing %s.",
+                    loggerFileName));
+        }
+/*        try {
             Files.createFile(Paths.get(filePath));
         } catch (IOException e1) {
-            System.out.printf("Could not create %s.", loggerFileName);
-        }
+            System.out.println(String.format("Could not create %s.",
+                    loggerFileName));
+        }*/
         FileHandler handler = new FileHandler(loggerFileName, true);
         SimpleFormatter formatter = new SimpleFormatter();
         handler.setFormatter(formatter);
