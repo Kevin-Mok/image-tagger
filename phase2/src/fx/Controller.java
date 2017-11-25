@@ -17,7 +17,6 @@ import main.wrapper.ItemWrapper;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -57,13 +56,15 @@ public class Controller {
      * The following three fields were used repeatedly in the button
      * EventHandlers, made sense to factor them out
      */
-    private Image curSelectedImage;
+    private ArrayList<Image> curSelectedImages;
 
     private DirectoryManager rootDirectoryManager = new DirectoryManager(null);
     /**
      * The stage this controller is associated with
      */
     private Stage stage;
+    
+    private Image lastSelectedImage;
 
     /**
      * Constructor.
@@ -85,6 +86,7 @@ public class Controller {
                 .MULTIPLE);
         currentTagsView.getSelectionModel().setSelectionMode(SelectionMode
                 .MULTIPLE);
+        imagesTreeView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
 
         chooseDirBtn.setOnAction(event -> {
@@ -104,30 +106,62 @@ public class Controller {
 
         /* For displaying the image with a mouse click. */
         imagesTreeView.setOnMouseClicked(event -> {
-            ObservableList<TreeItem<ItemWrapper>> selectedTreeItems =
-                    imagesTreeView.getSelectionModel().getSelectedItems();
-            if (selectedTreeItems.size() != 0) {
-                ItemWrapper clickedObject = selectedTreeItems.get(0).getValue();
-                if (clickedObject instanceof ImageWrapper) {
-                    curSelectedImage = ((ImageWrapper) clickedObject)
-                            .getImage();
+            if(imagesTreeView.getSelectionModel().getSelectedItem() != null) {
+                ItemWrapper lastItemWrapper = imagesTreeView.getSelectionModel().getSelectedItem().getValue();
+
+                if (lastItemWrapper instanceof ImageWrapper) {
+                    lastSelectedImage = ((ImageWrapper) lastItemWrapper).getImage();
+                }
+
+                ObservableList<TreeItem<ItemWrapper>> selectedTreeItems =
+                        imagesTreeView.getSelectionModel().getSelectedItems();
+                System.out.println(selectedTreeItems);
+                if (selectedTreeItems.size() != 0) {
+//                if(selectedTreeItems.get(0) == null){
+//                    lastItemWrapper = imagesTreeView.getSelectionModel().getSelectedItem().getValue();
+//                    if (lastItemWrapper instanceof ImageWrapper) {
+//                        lastSelectedImage = ((ImageWrapper) lastItemWrapper).getImage();
+//                        ArrayList<Image> a = new ArrayList<>();
+//                        a.add(lastSelectedImage);
+//                        curSelectedImages = a;
+//                        System.out.println("equiv " + lastSelectedImage);
+//                    }
+//                }
+                    System.out.println(selectedTreeItems.get(0));
+                    ArrayList<Image> theImages = new ArrayList<>();
+
+                    if (selectedTreeItems.size() == 1) {
+                        if (selectedTreeItems.get(0).getValue() instanceof ImageWrapper) {
+                            theImages.add(((ImageWrapper) selectedTreeItems.get(0).getValue()).getImage());
+                            lastSelectedImage = ((ImageWrapper) selectedTreeItems.get(0).getValue()).getImage();
+                        }
+                    } else {
+                        for (TreeItem<ItemWrapper> items : selectedTreeItems) {
+                            if (items.getValue() instanceof ImageWrapper) {
+                                theImages.add(((ImageWrapper) items.getValue()).getImage());
+                            }
+                        }
+                    }
+                    curSelectedImages = theImages;
+                    System.out.println(curSelectedImages);
+
                     updateSelectedImageGUI();
                 }
             }
         });
 
         moveFileBtn.setOnAction(event -> {
-            if (curSelectedImage != null) {
+            if (curSelectedImages != null) {
                 try {
                     File newDirectoryFile = chooseDirectory("Move file to " +
                             "directory");
                     boolean sameDir = newDirectoryFile.toString().equals
-                            (curSelectedImage.getCurDir());
+                            (lastSelectedImage.getCurDir());
                     if (!sameDir) {
                         // todo: select new image in TreeView afterwards?
-                        curSelectedImage.move(newDirectoryFile.toString(),
-                                curSelectedImage.getImageName(), false);
-                        curSelectedImage = null;
+                        lastSelectedImage.move(newDirectoryFile.toString(),
+                                lastSelectedImage.getImageName(), false);
+                        curSelectedImages = null;
                         refreshGUIElements();
                     }
                 } catch (NullPointerException e) {
@@ -138,13 +172,13 @@ public class Controller {
         });
 
         revertNameBtn.setOnAction(event -> {
-            if (curSelectedImage != null && nameHistoryView.getSelectionModel
+            if (curSelectedImages != null && nameHistoryView.getSelectionModel
                     ().getSelectedItems().get(0) != null) {
                 String chosenName = (String) nameHistoryView
                         .getSelectionModel().getSelectedItems().get(0);
                 chosenName = chosenName.substring(chosenName.indexOf("→") +
                         1).trim();
-                curSelectedImage.revertName(chosenName);
+                lastSelectedImage.revertName(chosenName);
                 updateSelectedImageGUI();
             }
         });
@@ -154,15 +188,15 @@ public class Controller {
     ** e.g. reverting the name, adding/deleting a tag, etc
      */
     private void updateSelectedImageGUI() {
-        if (curSelectedImage != null) {
+        if (curSelectedImages != null) {
             // Update ImageView.
-            String filePath = curSelectedImage.getPathString();
+            String filePath = lastSelectedImage.getPathString();
             imageView.setImage(new javafx.scene.image.Image
                     ("file:" + filePath));
             // Update TreeView.
             imagesTreeView.refresh();
             // Update label.
-            imageNameLabel.setText(curSelectedImage.getPathString());
+            imageNameLabel.setText(lastSelectedImage.getPathString());
             updateNameHistory();
             updateCurrentTags();
             updateAvailableTags();
@@ -183,13 +217,16 @@ public class Controller {
     @FXML
     public void addNewTag() {
         String newTagName = Popup.addTagPopup();
-        if (curSelectedImage != null && newTagName.length() > 0) {
+        if (curSelectedImages != null && newTagName.length() > 0) {
             String invalidCharRegex = ".*[/\\\\].*";
             Pattern invalidCharPattern = Pattern.compile(invalidCharRegex);
             Matcher invalidCharMatcher = invalidCharPattern.matcher(newTagName);
             if (!invalidCharMatcher.matches()) {
-                curSelectedImage.addTag(newTagName);
-                updateSelectedImageGUI();
+                for (Image img: curSelectedImages) {
+                    img.addTag(newTagName);
+                }
+                    updateSelectedImageGUI();
+
             } else {
                 String invalidChars = "/, \\";
                 String popupTitle = "Invalid Tag Name";
@@ -208,9 +245,11 @@ public class Controller {
     public void addAvailableTag() {
         ObservableList<String> selectedAvailableTags = availableTagsView
                 .getSelectionModel().getSelectedItems();
-        if (curSelectedImage != null && selectedAvailableTags.size() != 0) {
+        if (curSelectedImages != null && selectedAvailableTags.size() != 0) {
             for (String tagName : selectedAvailableTags) {
-                curSelectedImage.addTag(getSubstring(tagName));
+                for (Image img: curSelectedImages) {
+                    img.addTag(getSubstring(tagName));
+                }
             }
             updateSelectedImageGUI();
         }
@@ -223,9 +262,11 @@ public class Controller {
     public void deleteTag() {
         ObservableList<String> selectedCurrentTags = currentTagsView
                 .getSelectionModel().getSelectedItems();
-        if (curSelectedImage != null && selectedCurrentTags.size() != 0) {
+        if (curSelectedImages != null && selectedCurrentTags.size() != 0) {
             for (String tagName : selectedCurrentTags) {
-                curSelectedImage.deleteTag(tagName);
+                for(Image img: curSelectedImages) {
+                    img.deleteTag(tagName);
+                }
             }
             updateSelectedImageGUI();
         }
@@ -302,10 +343,10 @@ public class Controller {
      * image's TagManager
      */
     private void updateNameHistory() {
-        if (curSelectedImage != null) {
+        if (curSelectedImages != null) {
             ObservableList<String> nameHistoryList = FXCollections
                     .observableArrayList();
-            nameHistoryList.setAll(curSelectedImage.getTagManager()
+            nameHistoryList.setAll(lastSelectedImage.getTagManager()
                     .getNameHistory());
             /* Don't know how to fix this yellow error. The suggested fix
             fort this is the same as the fix for casting from an unknown
@@ -370,7 +411,7 @@ public class Controller {
     private void updateCurrentTags() {
         ObservableList<String> currentTagsList = FXCollections
                 .observableArrayList();
-        currentTagsList.setAll(curSelectedImage.getTagManager().getTagNames());
+        currentTagsList.setAll(lastSelectedImage.getTagManager().getTagNames());
         currentTagsView.setItems(currentTagsList);
     }
 

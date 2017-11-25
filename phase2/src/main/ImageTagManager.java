@@ -175,6 +175,19 @@ public class ImageTagManager {
         pathToImages = rebuild;
     }
 
+    public void deleteNonExistentImages(){
+        ArrayList<String> toDelete = new ArrayList<>();
+        for (String path: pathToImages.keySet()){
+            if (!new File(path).exists()){
+                toDelete.add(path);
+            }
+        }
+        for (String deleteItem: toDelete){
+            pathToImages.remove(deleteItem);
+        }
+        refreshNameToTags();
+    }
+
 
     /**
      * Reads the serialization of the HashMaps (tagToImageList, pathToImages) of
