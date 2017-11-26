@@ -134,7 +134,10 @@ public class Controller {
 
         deleteAllBtn.setOnMouseClicked(event -> {
             curSelectedImages = rootDirectoryManager.getAllImagesUnderRoot();
-            deleteTag(availableTagsView.getSelectionModel().getSelectedItems());
+            ObservableList<String> selectedTags = availableTagsView.getSelectionModel().getSelectedItems();
+            if (Popup.confirmDeleteAll(selectedTags)) {
+                deleteTag(selectedTags);
+            }
         });
 
         deleteTagBtn.setOnMouseClicked(event ->

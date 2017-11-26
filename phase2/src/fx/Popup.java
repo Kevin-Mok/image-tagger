@@ -2,8 +2,10 @@ package fx;
 
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextInputDialog;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -58,5 +60,25 @@ public class Popup {
             }
         }
         return tagName;
+    }
+
+    static boolean confirmDeleteAll(List<String> tagNames) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.getDialogPane().setPrefHeight(200.0);
+        alert.getDialogPane().setPrefWidth(320.0);
+        alert.setResizable(true);
+        alert.setTitle("Delete All?");
+        StringBuilder sb = new StringBuilder("Are you sure you want to delete ");
+        String firstTag = tagNames.get(0);
+        sb.append(firstTag.substring(firstTag.indexOf('-') + 2));
+        for (int index = 1; index < tagNames.size(); index++) {
+            String tag = tagNames.get(index);
+            tag = tag.substring(tag.indexOf('-') + 2);
+            sb.append(", ").append(tag);
+        }
+        sb.append(" from all images?");
+        alert.setContentText(sb.toString());
+        Optional<ButtonType> result = alert.showAndWait();
+        return result.isPresent() && result.get() == ButtonType.OK;
     }
 }
