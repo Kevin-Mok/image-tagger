@@ -73,15 +73,12 @@ public class Controller {
      * EventHandlers, made sense to factor them out
      */
     private List<Image> curSelectedImages;
-
     private DirectoryManager rootDirectoryManager = new DirectoryManager(null);
     /**
      * The stage this controller is associated with
      */
     private Stage stage;
-
     private Image lastSelectedImage;
-
     private Service service = new ImgurService();
 
 
@@ -184,16 +181,19 @@ public class Controller {
                         imagesTreeView.getSelectionModel().getSelectedItems();
                 if (selectedTreeItems.size() != 0) {
                     ArrayList<Image> curSelectedImages = new ArrayList<>();
-
                     if (selectedTreeItems.size() == 1) {
-                        if (selectedTreeItems.get(0).getValue() instanceof
-                                ImageWrapper) {
-                            curSelectedImages.add(((ImageWrapper)
-                                    selectedTreeItems.get(0).getValue())
-                                    .getImage());
-                            lastSelectedImage = ((ImageWrapper)
-                                    selectedTreeItems.get(0).getValue())
-                                    .getImage();
+                        TreeItem<ItemWrapper> firstSelectedTreeItem;
+                        try {
+                            firstSelectedTreeItem = selectedTreeItems.get(0);
+                        } catch (NullPointerException e) {
+                            firstSelectedTreeItem = selectedTreeItems.get(0);
+                        }
+                        ItemWrapper firstSelectedItem = firstSelectedTreeItem
+                                .getValue();
+                        if (firstSelectedItem instanceof ImageWrapper) {
+                            Image firstSelectedImage = ((ImageWrapper) firstSelectedItem).getImage();
+                            curSelectedImages.add(firstSelectedImage);
+                            lastSelectedImage = firstSelectedImage;
                         }
                     } else {
                         for (TreeItem<ItemWrapper> items : selectedTreeItems) {
