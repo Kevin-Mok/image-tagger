@@ -182,14 +182,14 @@ public class Controller {
                 if (selectedTreeItems.size() != 0) {
                     ArrayList<Image> curSelectedImages = new ArrayList<>();
                     if (selectedTreeItems.size() == 1) {
-                        TreeItem<ItemWrapper> firstSelectedTreeItem;
+                        ItemWrapper firstSelectedItem;
+                        /* Following try-catch block to address strange JavaFX
+                        behavior described in #21. */
                         try {
-                            firstSelectedTreeItem = selectedTreeItems.get(0);
+                            firstSelectedItem = selectedTreeItems.get(0).getValue();
                         } catch (NullPointerException e) {
-                            firstSelectedTreeItem = selectedTreeItems.get(0);
+                            firstSelectedItem = selectedTreeItems.get(0).getValue();
                         }
-                        ItemWrapper firstSelectedItem = firstSelectedTreeItem
-                                .getValue();
                         if (firstSelectedItem instanceof ImageWrapper) {
                             Image firstSelectedImage = ((ImageWrapper) firstSelectedItem).getImage();
                             curSelectedImages.add(firstSelectedImage);

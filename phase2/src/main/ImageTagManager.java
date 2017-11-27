@@ -36,6 +36,10 @@ public class ImageTagManager {
         return instance;
     }
 
+    /**
+     * Takes in a list of tags and deletes all of them from containing images
+     * @param tagsToDelete the list of tags to delete
+     */
     public void deleteTagsFromAll(List<String> tagsToDelete) {
         for (String tag : tagsToDelete) {
             for (Image image : this.tagToImageList.get(tag)) {
@@ -170,7 +174,7 @@ public class ImageTagManager {
         pathToImages = rebuild;
     }
 
-    public void deleteNonExistentImages() {
+    private void deleteNonExistentImages() {
         ArrayList<String> toDelete = new ArrayList<>();
         for (String path : pathToImages.keySet()) {
             if (!new File(path).exists()) {
