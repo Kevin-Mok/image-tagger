@@ -184,9 +184,14 @@ public class Controller {
                         imagesTreeView.getSelectionModel().getSelectedItems();
                 if (selectedTreeItems.size() != 0) {
                     ArrayList<Image> curSelectedImages = new ArrayList<>();
-
+                    ItemWrapper selectedItem;
                     if (selectedTreeItems.size() == 1) {
-                        if (selectedTreeItems.get(0).getValue() instanceof
+                        try {
+                            selectedItem = selectedTreeItems.get(0).getValue();
+                        } catch (NullPointerException e) {
+                            selectedItem = selectedTreeItems.get(0).getValue();
+                        }
+                        if (selectedItem instanceof
                                 ImageWrapper) {
                             curSelectedImages.add(((ImageWrapper)
                                     selectedTreeItems.get(0).getValue())

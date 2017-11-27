@@ -80,6 +80,10 @@ public class TagManager implements Serializable {
         return nameHistory.lastEntry().getValue();
     }
 
+    /**
+     * Adds multiple tags to the image this TagManager is associated with
+     * @param tags an array of tags to be added
+     */
     public void addAllTags(String[] tags) {
         ArrayList<String> clone = new ArrayList<>(Arrays.asList(tags));
         clone.remove(0);
@@ -112,6 +116,11 @@ public class TagManager implements Serializable {
         return true;
     }
 
+    /**
+     * Returns a Tag object based on the tag name
+     * @param tagName the name of the tag to look for
+     * @return the Tag object, if it exists in the list of tags the image has ever had
+     */
     public Tag getTag(String tagName) {
         for (Tag tag : tagList) {
             if (tagName.equals(tag.getName())) {
