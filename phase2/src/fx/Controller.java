@@ -165,16 +165,21 @@ public class Controller {
              * -javafx-after-a-task-is-completed
              * retrieved Nov 25, 2017
              */
-            uploadLabel.setVisible(true);
-            if (!service.isRunning()) {
-                /* Service will take care of uploading the image */
-                service.start();
-            }
+            /* Only allow the user to upload one picture at a time */
+            if (imagesTreeView.getSelectionModel().getSelectedItems().size() == 1) {
+                if (Popup.confirmUpload()) {
+                    uploadLabel.setVisible(true);
+                    if (!service.isRunning()) {
+                    /* Service will take care of uploading the image */
+                        service.start();
+                    }
 
-            service.setOnSucceeded(event1 -> {
-                uploadLabel.setVisible(false);
-                service.reset();
-            });
+                    service.setOnSucceeded(event1 -> {
+                        uploadLabel.setVisible(false);
+                        service.reset();
+                    });
+                }
+            }
         });
 
         openCurDirBtn.setOnAction(event -> {

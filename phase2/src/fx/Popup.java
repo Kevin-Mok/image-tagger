@@ -1,5 +1,6 @@
 package fx;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -62,6 +63,11 @@ public class Popup {
         return tagName;
     }
 
+    /**
+     * Shows a popup asking the user to confirm the deletion of a list of tags
+     * @param tagNames the list of tags to be deleted
+     * @return true if the user clicks the OK button, false if otherwise
+     */
     static boolean confirmDeleteAll(List<String> tagNames) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.getDialogPane().setPrefHeight(200.0);
@@ -79,6 +85,21 @@ public class Popup {
         }
         sb.append(" from all images?");
         alert.setContentText(sb.toString());
+        Optional<ButtonType> result = alert.showAndWait();
+        return result.isPresent() && result.get() == ButtonType.OK;
+    }
+
+    /**
+     * Shows a popup asking the user to confirm the upload of the currently selected image
+     * @return true if the user clicks the OK button, false if otherwise
+     */
+    static boolean confirmUpload() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.getDialogPane().setPrefHeight(200.0);
+        alert.getDialogPane().setPrefWidth(320.0);
+        alert.setResizable(true);
+        alert.setTitle("Upload?");
+        alert.setContentText("Upload the selected image to Imgur?");
         Optional<ButtonType> result = alert.showAndWait();
         return result.isPresent() && result.get() == ButtonType.OK;
     }
