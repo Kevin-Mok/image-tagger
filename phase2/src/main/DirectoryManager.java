@@ -5,15 +5,14 @@ import main.wrapper.DirectoryWrapper;
 import main.wrapper.ImageWrapper;
 import main.wrapper.ItemWrapper;
 
-import java.awt.Desktop;
-import java.util.List;
-
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -71,7 +70,8 @@ public class DirectoryManager {
     }
 
     /**
-     * Returns ItemWrapper representing the root directory, encapsulating all its
+     * Returns ItemWrapper representing the root directory, encapsulating all
+     * its
      * subdirectories and images
      *
      * @return ItemWrapper representing the root directory
@@ -82,6 +82,7 @@ public class DirectoryManager {
 
     /**
      * Returns the list of all images under the root folder
+     *
      * @return the list of all images under the root folder
      */
     public List<Image> getAllImagesUnderRoot() {
@@ -97,7 +98,8 @@ public class DirectoryManager {
      * directory
      */
     private ItemWrapper getImages(Path directory) {
-        DirectoryWrapper directoryWrapper = new DirectoryWrapper(directory.toFile());
+        DirectoryWrapper directoryWrapper = new DirectoryWrapper(directory
+                .toFile());
         Pattern imgFilePattern = Pattern.compile(generateImageMatchingPattern
                 ());
         try (DirectoryStream<Path> stream = Files.newDirectoryStream
@@ -114,7 +116,8 @@ public class DirectoryManager {
                 if (matcher.matches()) {
                     if (ImageTagManager.getInstance().containsImagePath(file
                             .toString())) {
-                        Image img = ImageTagManager.getInstance().getImage(file.toString());
+                        Image img = ImageTagManager.getInstance().getImage
+                                (file.toString());
                         directoryWrapper
                                 .addToDirectory(new ImageWrapper(img));
                         this.allImagesUnderRoot.add(img);

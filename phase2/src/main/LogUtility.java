@@ -11,8 +11,8 @@ import java.util.logging.SimpleFormatter;
  * Singleton utility class used for logging user interactions with the program.
  */
 public class LogUtility {
-    private static final String ACTION_LOGGER_NAME = "actionLogger";
     public static final String RENAME_LOGGER_NAME = "renameLogger";
+    private static final String ACTION_LOGGER_NAME = "actionLogger";
     private static LogUtility logUtility;
     /**
      * Logs tag related events

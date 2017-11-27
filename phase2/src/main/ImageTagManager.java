@@ -38,6 +38,7 @@ public class ImageTagManager {
 
     /**
      * Takes in a list of tags and deletes all of them from containing images
+     *
      * @param tagsToDelete the list of tags to delete
      */
     public void deleteTagsFromAll(List<String> tagsToDelete) {
@@ -49,29 +50,24 @@ public class ImageTagManager {
     }
 
     /**
-     * Returns all existing tag names in alphabetical order.
+     * Return all existing tags with how many times they are currently being
+     * used.
      *
-     * @return String array of all existing tag names in alphabetical order.
+     * @return String array of all existing tags with how many times they are
+     * currently being used.
      */
-    public String[] getListOfTags() {
-        Set<String> setOfTagString = tagToImageList.keySet();
-        String[] listOfTags = setOfTagString.toArray(new
-                String[setOfTagString.size()]);
-        Arrays.sort(listOfTags);
-        for (int i = 0; i < listOfTags.length; i++) {
-            listOfTags[i] = getNumberOfImages(listOfTags[i]) + " - " +
-                    listOfTags[i];
+    public String[] getAvailableTagsWithCount() {
+        String[] availableTagsWithCount = tagToImageList.keySet().toArray(new
+                String[0]);
+        for (int i = 0; i < availableTagsWithCount.length; i++) {
+            String curTagName = availableTagsWithCount[i];
+            int imageCount = (tagToImageList.containsKey(curTagName)) ?
+                    tagToImageList.get(curTagName).size() : -1;
+            availableTagsWithCount[i] = String.format("(%d) - %s", imageCount,
+                    curTagName);
         }
-        Arrays.sort(listOfTags);
-        return listOfTags;
-    }
-
-    private String getNumberOfImages(String tagName) {
-        if (tagToImageList.containsKey(tagName)) {
-            return "(" + Integer.toString(tagToImageList.get(tagName).size())
-                    + ")";
-        }
-        return "(" + Integer.toString(-1) + ")";
+        Arrays.sort(availableTagsWithCount, Collections.reverseOrder());
+        return availableTagsWithCount;
     }
 
     /**

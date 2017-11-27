@@ -49,7 +49,7 @@ public class Popup {
         dialog.setHeaderText("Enter a new tag");
         dialog.setTitle("Add Tag");
         dialog.setContentText(String.format("The tag name must not include " +
-                        "the characters: %s", "/, \\, -"));
+                "the characters: %s", "/, \\, -"));
         String tagName = "";
         Optional<String> result = dialog.showAndWait();
         if (result.isPresent()) {
@@ -68,7 +68,8 @@ public class Popup {
         alert.getDialogPane().setPrefWidth(320.0);
         alert.setResizable(true);
         alert.setTitle("Delete All?");
-        StringBuilder sb = new StringBuilder("Are you sure you want to delete ");
+        StringBuilder sb = new StringBuilder("Are you sure you want to delete" +
+                " ");
         String firstTag = tagNames.get(0);
         sb.append(firstTag.substring(firstTag.indexOf('-') + 2));
         for (int index = 1; index < tagNames.size(); index++) {

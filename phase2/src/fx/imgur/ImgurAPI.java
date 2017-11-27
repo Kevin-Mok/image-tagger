@@ -8,7 +8,8 @@ import retrofit2.http.POST;
 
 /**
  * Adapted from Johnny850807's GitHub repository
- * https://github.com/Johnny850807/Imgur-Picture-Uploading-Example-Using-Retrofit-On-Native-Java
+ * https://github.com/Johnny850807/Imgur-Picture-Uploading-Example-Using
+ * -Retrofit-On-Native-Java
  * on Nov 24th, 2017
  */
 public interface ImgurAPI {

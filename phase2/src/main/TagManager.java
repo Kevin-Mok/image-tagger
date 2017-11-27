@@ -82,6 +82,7 @@ public class TagManager implements Serializable {
 
     /**
      * Adds multiple tags to the image this TagManager is associated with
+     *
      * @param tags an array of tags to be added
      */
     public void addAllTags(String[] tags) {
@@ -118,8 +119,10 @@ public class TagManager implements Serializable {
 
     /**
      * Returns a Tag object based on the tag name
+     *
      * @param tagName the name of the tag to look for
-     * @return the Tag object, if it exists in the list of tags the image has ever had
+     * @return the Tag object, if it exists in the list of tags the image has
+     * ever had
      */
     public Tag getTag(String tagName) {
         for (Tag tag : tagList) {
@@ -180,6 +183,7 @@ public class TagManager implements Serializable {
             String s = new SimpleDateFormat("MM/dd HH:mm:ss").format(keys);
             result.add(s + "  →  " + nameHistory.get(keys));
         }
+        result.sort(Collections.reverseOrder());
         return result;
     }
 

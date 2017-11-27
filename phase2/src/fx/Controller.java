@@ -60,27 +60,27 @@ public class Controller {
     @FXML
     private Button revertNameBtn;
     @FXML
-    private Button deleteAllBtn;
-    @FXML
     private Button deleteTagBtn;
+    @FXML
+    private Button deleteAllBtn;
     @FXML
     private Button uploadBtn;
     @FXML
     private Label uploadLabel;
 
-    /*
-     * The following three fields were used repeatedly in the button
-     * EventHandlers, made sense to factor them out
-     */
-    private List<Image> curSelectedImages;
     private DirectoryManager rootDirectoryManager = new DirectoryManager(null);
-    /**
-     * The stage this controller is associated with
-     */
     private Stage stage;
     private Image lastSelectedImage;
+    private List<Image> curSelectedImages;
     private Service service = new ImgurService();
 
+    private ObservableList<String> availableTagsList = FXCollections
+            .observableArrayList();
+    private ObservableList<String> currentTagsList = FXCollections
+            .observableArrayList();
+    private ObservableList<String> nameHistoryList = FXCollections
+            .observableArrayList();
+    private ObservableList<String> selectedAvailableTags;
 
     /**
      * Constructor.
@@ -90,7 +90,8 @@ public class Controller {
 
     /**
      * Adapted from Johnny850807's GitHub repository
-     * https://github.com/Johnny850807/Imgur-Picture-Uploading-Example-Using-Retrofit-On-Native-Java
+     * https://github.com/Johnny850807/Imgur-Picture-Uploading-Example-Using
+     * -Retrofit-On-Native-Java
      * on Nov 24th, 2017
      */
     private static ImgurAPI createImgurAPI() {
@@ -105,20 +106,37 @@ public class Controller {
         this.stage = stage;
     }
 
+/*    private <T extends SelectionModel> void setMultipleSelection(T view) {
+        view.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+    }*/
+
     /**
      * This method is automatically called after the FXML file is loaded
      * Used to bind UI elements to event listeners
      */
     @FXML
     public void initialize() {
-        uploadLabel.setVisible(false);
+        /* Set ListView's for multiple selection. */
+        // todo: refactor into setMultipleSelection method
         availableTagsView.getSelectionModel().setSelectionMode(SelectionMode
                 .MULTIPLE);
         currentTagsView.getSelectionModel().setSelectionMode(SelectionMode
                 .MULTIPLE);
         imagesTreeView.getSelectionModel().setSelectionMode(SelectionMode
                 .MULTIPLE);
+        /* Only visible when an Image is in the process of being uploaded to
+        Imgur. */
+        uploadLabel.setVisible(false);
+
         updateAvailableTags();
+        availableTagsView.setItems(availableTagsList);
+        currentTagsView.setItems(currentTagsList);
+        /* Don't know how to fix this yellow error. The suggested fix
+        fort this is the same as the fix for casting from an unknown
+        Serialized object (see ImageTagManager's yellow errors for more
+        clarification).
+         */
+        nameHistoryView.setItems(nameHistoryList);
 
         chooseDirBtn.setOnAction(event -> {
             File rootDirectory = chooseDirectory("Choose a directory to open");
@@ -129,23 +147,22 @@ public class Controller {
             }
         });
 
+        deleteTagBtn.setOnAction(event -> deleteTag(currentTagsView
+                .getSelectionModel().getSelectedItems()));
+
         deleteAllBtn.setOnMouseClicked(event -> {
             curSelectedImages = rootDirectoryManager.getAllImagesUnderRoot();
-            ObservableList<String> selectedTags = availableTagsView.getSelectionModel().getSelectedItems();
-            if (Popup.confirmDeleteAll(selectedTags)) {
-                deleteTag(selectedTags);
+            if (Popup.confirmDeleteAll(selectedAvailableTags)) {
+                deleteTag(selectedAvailableTags);
             }
         });
 
-        deleteTagBtn.setOnMouseClicked(event ->
-            deleteTag(currentTagsView.getSelectionModel().getSelectedItems())
-        );
-
         uploadBtn.setOnAction(event -> {
-
             /*
              * Adapted from ItachiUchiha's post on StackOverflow
-             * https://stackoverflow.com/questions/31607656/how-to-show-and-then-hide-a-label-in-javafx-after-a-task-is-completed
+             * https://stackoverflow
+             * .com/questions/31607656/how-to-show-and-then-hide-a-label-in
+             * -javafx-after-a-task-is-completed
              * retrieved Nov 25, 2017
              */
             uploadLabel.setVisible(true);
@@ -168,45 +185,9 @@ public class Controller {
 
         /* For displaying the image with a mouse click. */
         imagesTreeView.setOnMouseClicked(event -> {
-            if (imagesTreeView.getSelectionModel().getSelectedItem() != null) {
-                ItemWrapper lastItemWrapper = imagesTreeView
-                        .getSelectionModel().getSelectedItem().getValue();
-
-                if (lastItemWrapper instanceof ImageWrapper) {
-                    lastSelectedImage = ((ImageWrapper) lastItemWrapper)
-                            .getImage();
-                }
-
-                ObservableList<TreeItem<ItemWrapper>> selectedTreeItems =
-                        imagesTreeView.getSelectionModel().getSelectedItems();
-                if (selectedTreeItems.size() != 0) {
-                    ArrayList<Image> curSelectedImages = new ArrayList<>();
-                    if (selectedTreeItems.size() == 1) {
-                        ItemWrapper firstSelectedItem;
-                        /* Following try-catch block to address strange JavaFX
-                        behavior described in #21. */
-                        try {
-                            firstSelectedItem = selectedTreeItems.get(0).getValue();
-                        } catch (NullPointerException e) {
-                            firstSelectedItem = selectedTreeItems.get(0).getValue();
-                        }
-                        if (firstSelectedItem instanceof ImageWrapper) {
-                            Image firstSelectedImage = ((ImageWrapper) firstSelectedItem).getImage();
-                            curSelectedImages.add(firstSelectedImage);
-                            lastSelectedImage = firstSelectedImage;
-                        }
-                    } else {
-                        for (TreeItem<ItemWrapper> items : selectedTreeItems) {
-                            if (items.getValue() instanceof ImageWrapper) {
-                                curSelectedImages.add(((ImageWrapper) items
-                                        .getValue()).getImage());
-                            }
-                        }
-                    }
-                    this.curSelectedImages = curSelectedImages;
-                    updateSelectedImageGUI();
-                }
-            }
+            updateLastSelectedImage();
+            updateSelectedImageGUI();
+            updateCurSelectedImages();
         });
 
         moveFileBtn.setOnAction(event -> {
@@ -242,11 +223,58 @@ public class Controller {
         });
     }
 
+    private void updateLastSelectedImage() {
+        TreeItem<ItemWrapper> lastSelectedTreeItem = imagesTreeView
+                .getSelectionModel().getSelectedItem();
+        if (lastSelectedTreeItem != null) {
+            ItemWrapper lastSelectedItemWrapper = lastSelectedTreeItem
+                    .getValue();
+            if (lastSelectedItemWrapper instanceof ImageWrapper) {
+                lastSelectedImage = ((ImageWrapper) lastSelectedItemWrapper)
+                        .getImage();
+                currentTagsList.setAll(lastSelectedImage.getTagManager()
+                        .getTagNames());
+            }
+        }
+    }
+
+    private void updateCurSelectedImages() {
+        ObservableList<TreeItem<ItemWrapper>> selectedTreeItems =
+                imagesTreeView.getSelectionModel().getSelectedItems();
+        if (selectedTreeItems.size() != 0) {
+            ArrayList<Image> curSelectedImages = new ArrayList<>();
+            if (selectedTreeItems.size() == 1) {
+                ItemWrapper firstSelectedItem;
+                        /* Following try-catch block to address strange JavaFX
+                        behavior described in #21. */
+                try {
+                    firstSelectedItem = selectedTreeItems.get(0).getValue();
+                } catch (NullPointerException e) {
+                    firstSelectedItem = selectedTreeItems.get(0).getValue();
+                }
+                if (firstSelectedItem instanceof ImageWrapper) {
+                    Image firstSelectedImage = ((ImageWrapper)
+                            firstSelectedItem).getImage();
+                    curSelectedImages.add(firstSelectedImage);
+                    lastSelectedImage = firstSelectedImage;
+                }
+            } else {
+                for (TreeItem<ItemWrapper> items : selectedTreeItems) {
+                    if (items.getValue() instanceof ImageWrapper) {
+                        curSelectedImages.add(((ImageWrapper) items
+                                .getValue()).getImage());
+                    }
+                }
+            }
+            this.curSelectedImages = curSelectedImages;
+        }
+    }
+
     /* Updates the GUI if any changes were made to the selected image,
     ** e.g. reverting the name, adding/deleting a tag, etc
      */
     private void updateSelectedImageGUI() {
-        if (curSelectedImages != null) {
+        if (lastSelectedImage != null) {
             // Update ImageView.
             String filePath = lastSelectedImage.getPathString();
             imageView.setImage(new javafx.scene.image.Image
@@ -256,7 +284,6 @@ public class Controller {
             // Update label.
             imageNameLabel.setText(lastSelectedImage.getPathString());
             updateNameHistory();
-            updateCurrentTags();
             updateAvailableTags();
         } else {
             imageView.setImage(null);
@@ -295,14 +322,18 @@ public class Controller {
         }
     }
 
+    @FXML
+    public void updateSelectedAvailableTags() {
+        selectedAvailableTags = availableTagsView.getSelectionModel()
+                .getSelectedItems();
+    }
+
     /**
      * Allows the user to add a tag from the ListView of available tags by
      * interacting with a GUI element
      */
     @FXML
     public void addAvailableTag() {
-        ObservableList<String> selectedAvailableTags = availableTagsView
-                .getSelectionModel().getSelectedItems();
         if (curSelectedImages != null && selectedAvailableTags.size() != 0) {
             for (String tagName : selectedAvailableTags) {
                 for (Image img : curSelectedImages) {
@@ -313,9 +344,10 @@ public class Controller {
         }
     }
 
-    private void deleteTag(ObservableList<String> selectedTags) {
-        if (curSelectedImages != null && selectedTags.size() != 0) {
-            for (String tagName : selectedTags) {
+    @FXML
+    private void deleteTag(ObservableList<String> tagNamesToDelete) {
+        if (curSelectedImages != null && tagNamesToDelete.size() != 0) {
+            for (String tagName : tagNamesToDelete) {
                 int indexOfDash = tagName.indexOf('-');
                 if (indexOfDash != -1) {
                     tagName = tagName.substring(indexOfDash + 2);
@@ -345,8 +377,6 @@ public class Controller {
     private void viewRenameLog() {
         File renameLogFile = new File(LogUtility.RENAME_LOGGER_NAME + ".txt");
         try {
-            // Desktop.getDesktop().edit(renameLogFile);
-            String projectDirectory = System.getProperty("user.dir");
             Runtime.getRuntime().exec(String.format("gvim %s", renameLogFile
                     .getAbsoluteFile().toString()));
         } catch (IOException e) {
@@ -375,11 +405,9 @@ public class Controller {
      */
     @FXML
     public void filterImagesByTags() {
-        ObservableList<String> selectedTags
-                = availableTagsView.getSelectionModel().getSelectedItems();
-        if (selectedTags.size() != 0) {
+        if (selectedAvailableTags.size() != 0) {
             List<String> tagNames = new ArrayList<>();
-            tagNames.addAll(selectedTags);
+            tagNames.addAll(selectedAvailableTags);
             for (int i = 0; i < tagNames.size(); i++) {
                 tagNames.set(i, extractAvailableTagName(tagNames.get(i)));
             }
@@ -400,12 +428,14 @@ public class Controller {
      *
      * @param tagNames list of tag names to filter images by
      */
-    private void populateImageList(List<String> tagNames, boolean expandDirectories) {
+    private void populateImageList(List<String> tagNames, boolean
+            expandDirectories) {
         TreeItem<ItemWrapper> rootFolderNode = new TreeItem<>(
                 rootDirectoryManager.getRootFolder());
         ItemWrapper rootImagesList = rootDirectoryManager
                 .getRootDirectory();
-        populateParentNode(rootFolderNode, rootImagesList, tagNames, expandDirectories);
+        populateParentNode(rootFolderNode, rootImagesList, tagNames,
+                expandDirectories);
         rootFolderNode.setExpanded(true);
         imagesTreeView.setRoot(rootFolderNode);
         imagesTreeView.refresh();
@@ -417,17 +447,9 @@ public class Controller {
      * image's TagManager
      */
     private void updateNameHistory() {
-        if (curSelectedImages != null) {
-            ObservableList<String> nameHistoryList = FXCollections
-                    .observableArrayList();
+        if (lastSelectedImage != null) {
             nameHistoryList.setAll(lastSelectedImage.getTagManager()
                     .getNameHistory());
-            /* Don't know how to fix this yellow error. The suggested fix
-            fort this is the same as the fix for casting from an unknown
-            Serialized object (see ImageTagManager's yellow errors for more
-            clarification).
-             */
-            nameHistoryView.setItems(nameHistoryList);
         } else {
             nameHistoryView.getItems().clear();
         }
@@ -456,7 +478,8 @@ public class Controller {
                     TreeItem<ItemWrapper> childNode = new TreeItem<>
                             (new DirectoryWrapper(new File(PathExtractor
                                     .getImageFileName(parentPath))));
-                    populateParentNode(childNode, wrappedItem, tags, expandDirectories);
+                    populateParentNode(childNode, wrappedItem, tags,
+                            expandDirectories);
                     if (!childNode.isLeaf()) {
                         parentNode.getChildren().add(childNode);
                         childNode.setExpanded(expandDirectories);
@@ -477,27 +500,16 @@ public class Controller {
      * root directory
      */
     private void updateAvailableTags() {
-        ObservableList<String> availableTagsList = FXCollections
-                .observableArrayList();
-        availableTagsList.setAll(ImageTagManager.getInstance().getListOfTags());
-        availableTagsView.setItems(availableTagsList);
-    }
-
-    /**
-     * Updates the ListView that displays all current tags on the selected image
-     */
-    private void updateCurrentTags() {
-        ObservableList<String> currentTagsList = FXCollections
-                .observableArrayList();
-        currentTagsList.setAll(lastSelectedImage.getTagManager().getTagNames());
-        currentTagsView.setItems(currentTagsList);
+        availableTagsList.setAll(ImageTagManager.getInstance()
+                .getAvailableTagsWithCount());
     }
 
     /**
      * Inner class that takes care of uploading an image to Imgur
-     *
+     * <p>
      * Adapted from ItachiUchiha's post on StackOverflow
-     * https://stackoverflow.com/questions/31607656/how-to-show-and-then-hide-a-label-in-javafx-after-a-task-is-completed
+     * https://stackoverflow.com/questions/31607656/how-to-show-and-then-hide
+     * -a-label-in-javafx-after-a-task-is-completed
      * retrieved Nov 25, 2017
      */
     class ImgurService extends Service<Void> {
@@ -507,12 +519,15 @@ public class Controller {
                 protected Void call() throws Exception {
                     /*
                      * Adapted from Johnny850807's GitHub repository
-                     * https://github.com/Johnny850807/Imgur-Picture-Uploading-Example-Using-Retrofit-On-Native-Java
+                     * https://github
+                     * .com/Johnny850807/Imgur-Picture-Uploading-Example
+                     * -Using-Retrofit-On-Native-Java
                      * on Nov 24th, 2017
                      */
                     final ImgurAPI imgurApi = createImgurAPI();
                     try {
-                        File image = new File(lastSelectedImage.getPath().toString());
+                        File image = new File(lastSelectedImage.getPath()
+                                .toString());
                         RequestBody request = RequestBody.create(MediaType.parse
                                 ("image/*"), image);
                         Call<ImageResponse> call = imgurApi.postImage(request);
@@ -525,7 +540,6 @@ public class Controller {
                         try {
                             runtime.exec("firefox " + url);
                         } catch (IOException e) {
-                            // TODO Auto-generated catch block
                             e.printStackTrace();
                         }
                     } catch (Exception err) {
