@@ -15,24 +15,24 @@
     <children>
         <Label fx:id="currentFolderLabel" alignment="CENTER" contentDisplay="RIGHT" layoutX="21.0" layoutY="74.0" prefHeight="16.0" prefWidth="299.0" text="Current Folder" AnchorPane.leftAnchor="21.0" AnchorPane.topAnchor="74.0">
             <font>
-                <Font name="Monaco" size="13.0" />
+                <Font name="DejaVu Sans Bold" size="14.0" />
             </font>
         </Label>
         <Label fx:id="imageNameLabel" alignment="CENTER" layoutX="577.0" layoutY="39.0" prefHeight="16.0" prefWidth="751.0" text="Absolute Path to Image" wrapText="true" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="39.0">
             <font>
-                <Font name="Monaco" size="13.0" />
+                <Font name="DejaVu Sans Bold" size="16.0" />
             </font>
         </Label>
         <ListView fx:id="nameHistoryView" layoutX="20.0" layoutY="522.0" prefHeight="299.0" prefWidth="299.0" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="20.0" />
         <ListView fx:id="currentTagsView" layoutX="774.0" layoutY="588.0" prefHeight="250.0" prefWidth="215.0" AnchorPane.bottomAnchor="53.0" AnchorPane.rightAnchor="123.0" />
         <Label alignment="CENTER" layoutX="19.0" layoutY="501.0" prefHeight="16.0" prefWidth="299.0" text="Name History" AnchorPane.bottomAnchor="374.0" AnchorPane.leftAnchor="19.0">
             <font>
-                <Font name="Monaco" size="13.0" />
+                <Font name="DejaVu Sans Bold" size="14.0" />
             </font>
         </Label>
         <Label alignment="CENTER" layoutX="774.0" layoutY="565.0" prefHeight="18.0" prefWidth="215.0" text="Current Tags" AnchorPane.bottomAnchor="308.0" AnchorPane.rightAnchor="123.0">
             <font>
-                <Font name="Monaco" size="13.0" />
+                <Font name="DejaVu Sans Bold" size="14.0" />
             </font>
         </Label>
         <TreeView fx:id="imagesTreeView" editable="true" layoutX="20.0" layoutY="95.0" onKeyReleased="#changeImageDisplayed" onMouseClicked="#changeImageDisplayed" prefHeight="398.0" prefWidth="299.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="95.0" />
@@ -96,7 +96,7 @@
         <ListView fx:id="availableTagsView" layoutX="395.0" layoutY="588.0" onMouseClicked="#updateSelectedAvailableTags" prefHeight="218.0" prefWidth="215.0" AnchorPane.bottomAnchor="85.0" AnchorPane.rightAnchor="502.0" />
         <Label alignment="CENTER" layoutX="395.0" layoutY="565.0" prefHeight="16.0" prefWidth="215.0" text="Available Tags" AnchorPane.rightAnchor="502.0" AnchorPane.topAnchor="565.0">
             <font>
-                <Font name="Monaco" size="13.0" />
+                <Font name="DejaVu Sans Bold" size="14.0" />
             </font>
         </Label>
         <Button fx:id="deleteTagBtn" layoutX="924.0" layoutY="839.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="97.0" text="Tag" AnchorPane.bottomAnchor="23.0" AnchorPane.rightAnchor="123.0">
@@ -220,7 +220,7 @@
         </Button>
         <Label fx:id="uploadLabel" alignment="CENTER" layoutX="997.0" layoutY="840.0" prefHeight="28.0" prefWidth="106.0" text="Uploading..." AnchorPane.bottomAnchor="23.0">
             <font>
-                <Font name="Monaco" size="13.0" />
+                <Font name="DejaVu Sans Bold" size="13.0" />
             </font>
         </Label>
 
