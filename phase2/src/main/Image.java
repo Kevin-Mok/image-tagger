@@ -173,7 +173,9 @@ public class Image implements Serializable {
      * @param tagName The name of the tag to be removed.
      */
     public void deleteTag(String tagName) {
-        rename(tagManager.deleteTag(tagName));
+        if (this.hasTag(tagName)) {
+            rename(tagManager.deleteTag(tagName));
+        }
     }
 
     /**
