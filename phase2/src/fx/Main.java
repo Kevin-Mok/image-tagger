@@ -45,6 +45,7 @@ public class Main extends Application {
         primaryStage.setTitle("Image Renamer");
         // primaryStage.getIcons().add(taskbarIcon);
         primaryStage.setScene(new Scene(root));
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 
