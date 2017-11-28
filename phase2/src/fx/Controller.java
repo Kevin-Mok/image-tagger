@@ -339,7 +339,7 @@ public class Controller {
                     img.addTag(newTagName);
                 }
                 updateSelectedImageGUI();
-
+                updateLastSelectedImage();
             } else {
                 String invalidChars = "/ \\ -";
                 String popupTitle = "Invalid Tag Name";
@@ -369,6 +369,7 @@ public class Controller {
                 }
             }
             updateSelectedImageGUI();
+            updateLastSelectedImage();
         }
     }
 
@@ -385,6 +386,7 @@ public class Controller {
                 }
             }
             updateSelectedImageGUI();
+            updateLastSelectedImage();
         }
     }
 
