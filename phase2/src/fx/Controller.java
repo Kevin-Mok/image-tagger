@@ -89,20 +89,6 @@ public class Controller {
     public Controller() {
     }
 
-    /**
-     * Adapted from Johnny850807's GitHub repository
-     * https://github.com/Johnny850807/Imgur-Picture-Uploading-Example-Using
-     * -Retrofit-On-Native-Java
-     * on Nov 24th, 2017
-     */
-    private static ImgurAPI createImgurAPI() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(ImgurAPI.SERVER)
-                .build();
-        return retrofit.create(ImgurAPI.class);
-    }
-
     void setStage(Stage stage) {
         this.stage = stage;
     }
@@ -189,13 +175,6 @@ public class Controller {
             }
         });
 
-        /* For displaying the image with a mouse click. */
-        imagesTreeView.setOnMouseClicked(event -> {
-            updateLastSelectedImage();
-            updateSelectedImageGUI();
-            updateCurSelectedImages();
-        });
-
         moveFileBtn.setOnAction(event -> {
             if (curSelectedImages != null) {
                 try {
@@ -254,6 +233,15 @@ public class Controller {
             }
         }
         return null;
+    }
+
+    /* Want image to change on mouse click or key press so refactored the
+    actions required into a separate function. */
+    @FXML
+    public void changeImageDisplayed() {
+        updateLastSelectedImage();
+        updateSelectedImageGUI();
+        updateCurSelectedImages();
     }
 
     /**
@@ -542,6 +530,20 @@ public class Controller {
     private void updateAvailableTags() {
         availableTagsList.setAll(ImageTagManager.getInstance()
                 .getAvailableTagsWithCount());
+    }
+
+    /**
+     * Adapted from Johnny850807's GitHub repository
+     * https://github.com/Johnny850807/Imgur-Picture-Uploading-Example-Using
+     * -Retrofit-On-Native-Java
+     * on Nov 24th, 2017
+     */
+    private static ImgurAPI createImgurAPI() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl(ImgurAPI.SERVER)
+                .build();
+        return retrofit.create(ImgurAPI.class);
     }
 
     /**
