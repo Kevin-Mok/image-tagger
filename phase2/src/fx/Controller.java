@@ -206,6 +206,7 @@ public class Controller {
                     if (!sameDir) {
                         lastSelectedImage.move(newDirectoryFile.toString(),
                                 lastSelectedImage.getImageName(), false);
+                        /* If the moved image is still under the root directory, find it */
                         if (rootDirectoryManager.isUnderRootDirectory(newDirectoryFile)) {
                             TreeItem<ItemWrapper> movedImage = selectMovedImage(lastSelectedImage.getImageFile()
                                     , imagesTreeView.getRoot());
@@ -233,15 +234,21 @@ public class Controller {
         });
     }
 
-    private TreeItem<ItemWrapper> selectMovedImage(File newImagePath, TreeItem<ItemWrapper> directory) {
+    /**
+     * Returns the TreeItem representing an image in a directory
+     * @param imagePath the path of the image file
+     * @param directory the directory in which to look for this image
+     * @return the TreeItem representing the image, if found. Null if otherwise.
+     */
+    private TreeItem<ItemWrapper> selectMovedImage(File imagePath, TreeItem<ItemWrapper> directory) {
         for (TreeItem<ItemWrapper> child : directory.getChildren()) {
             ItemWrapper wrappedVal = child.getValue();
             if (wrappedVal instanceof DirectoryWrapper) {
-                selectMovedImage(newImagePath, child);
+                selectMovedImage(imagePath, child);
                 /* child wraps an Image object */
             } else {
                 ImageWrapper imageWrapper = (ImageWrapper) wrappedVal;
-                if (newImagePath.equals(imageWrapper.getImage().getImageFile())) {
+                if (imagePath.equals(imageWrapper.getImage().getImageFile())) {
                     return child;
                 }
             }
@@ -249,6 +256,9 @@ public class Controller {
         return null;
     }
 
+    /**
+     * Updates the last selected image based on what's selected in the imagesTreeView
+     */
     private void updateLastSelectedImage() {
         TreeItem<ItemWrapper> lastSelectedTreeItem = imagesTreeView
                 .getSelectionModel().getSelectedItem();
@@ -264,6 +274,9 @@ public class Controller {
         }
     }
 
+    /**
+     * Updates the list of currently selected images based on what's selected in the imagesTreeView
+     */
     private void updateCurSelectedImages() {
         ObservableList<TreeItem<ItemWrapper>> selectedTreeItems =
                 imagesTreeView.getSelectionModel().getSelectedItems();
@@ -296,8 +309,9 @@ public class Controller {
         }
     }
 
-    /* Updates the GUI if any changes were made to the selected image,
-    ** e.g. reverting the name, adding/deleting a tag, etc
+    /**
+     * Updates the GUI if any changes were made to the selected image,
+     * e.g. reverting the name, adding/deleting a tag, etc
      */
     private void updateSelectedImageGUI() {
         if (lastSelectedImage != null) {
