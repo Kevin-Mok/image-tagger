@@ -27,7 +27,7 @@ class DirectoryManagerTest {
                 .separator + "test";
         testDirPath = Paths.get(testDirectory);
 
-        manager = new DirectoryManager(null);
+        manager = DirectoryManager.getInstance();
         manager.setRootFolder(new DirectoryWrapper(testDirPath.toFile()));
     }
 

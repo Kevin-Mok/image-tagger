@@ -17,11 +17,16 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Class responsible for searching through a given directory and its
+ * Singleton class responsible for searching through a given directory and its
  * subdirectories, looking for image files
  * Also takes care of opening that given directory using the OS's file viewer
  */
 public class DirectoryManager {
+
+    /**
+     * The singleton instance of DirectoryManager
+     */
+    private static DirectoryManager instance;
     /**
      * The top level directory for the current instance of the Image Viewer
      * program
@@ -35,18 +40,21 @@ public class DirectoryManager {
     private List<Image> allImagesUnderRoot;
 
     /**
-     * Instantiates a new instance of DirectoryManager with a given root folder
-     *
-     * @param rootFolder the root directory of this DirectoryManager
+     * Private constructor for singleton use
      */
-    public DirectoryManager(File rootFolder) {
-        this.rootFolder = new DirectoryWrapper(rootFolder);
-        this.imageFormats = new ArrayList<>();
-        this.allImagesUnderRoot = new ArrayList<>();
-        // temporarily adding in desired formats
-        imageFormats.add("jpg");
-        imageFormats.add("png");
-        imageFormats.add("jpeg");
+    private DirectoryManager() {}
+
+    public static DirectoryManager getInstance() {
+        if (instance == null) {
+            instance = new DirectoryManager();
+            instance.imageFormats = new ArrayList<>();
+            instance.allImagesUnderRoot = new ArrayList<>();
+            // temporarily adding in desired formats
+            instance.imageFormats.add("jpg");
+            instance.imageFormats.add("png");
+            instance.imageFormats.add("jpeg");
+        }
+        return instance;
     }
 
     /**

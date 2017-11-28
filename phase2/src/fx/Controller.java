@@ -55,7 +55,7 @@ public class Controller {
     @FXML
     private ListView<String> availableTagsView;
     @FXML
-    private ListView nameHistoryView;
+    private ListView<String> nameHistoryView;
     @FXML
     private ListView<String> currentTagsView;
     @FXML
@@ -69,7 +69,7 @@ public class Controller {
     @FXML
     private Label uploadLabel;
 
-    private DirectoryManager rootDirectoryManager = new DirectoryManager(null);
+    private DirectoryManager rootDirectoryManager = DirectoryManager.getInstance();
     private Stage stage;
     private Image lastSelectedImage;
     private List<Image> curSelectedImages;
