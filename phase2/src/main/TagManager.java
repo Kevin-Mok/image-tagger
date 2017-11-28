@@ -85,7 +85,7 @@ public class TagManager implements Serializable {
      *
      * @param tags an array of tags to be added
      */
-    public void addAllTags(String[] tags) {
+    void addAllTags(String[] tags) {
         ArrayList<String> clone = new ArrayList<>(Arrays.asList(tags));
         clone.remove(0);
         for (String tagNames : clone) {
@@ -117,21 +117,21 @@ public class TagManager implements Serializable {
         return true;
     }
 
-    /**
+    /*
      * Returns a Tag object based on the tag name
      *
      * @param tagName the name of the tag to look for
      * @return the Tag object, if it exists in the list of tags the image has
      * ever had
      */
-    public Tag getTag(String tagName) {
-        for (Tag tag : tagList) {
-            if (tagName.equals(tag.getName())) {
-                return tag;
-            }
-        }
-        return null;
-    }
+//    public Tag getTag(String tagName) {
+//        for (Tag tag : tagList) {
+//            if (tagName.equals(tag.getName())) {
+//                return tag;
+//            }
+//        }
+//        return null;
+//    }
 
     /**
      * Checks if the image this TagManager is associated with has the given tag
@@ -206,7 +206,7 @@ public class TagManager implements Serializable {
      *
      * @return Alphabetically  sorted ArrayList of all Tags ever used
      */
-    public ArrayList<String> getUnusedTags() {
+    ArrayList<String> getUnusedTags() {
         ArrayList<String> result = new ArrayList<>();
         for (Tag tag : tagList) {
             if (!currentTags.contains(tag)) {

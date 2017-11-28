@@ -24,7 +24,6 @@ import retrofit2.Retrofit;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.Wrapper;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -203,7 +202,7 @@ public class Controller {
         revertNameBtn.setOnAction(event -> {
             if (curSelectedImages != null && nameHistoryView.getSelectionModel
                     ().getSelectedItems().get(0) != null) {
-                String chosenName = (String) nameHistoryView
+                String chosenName = nameHistoryView
                         .getSelectionModel().getSelectedItems().get(0);
                 chosenName = chosenName.substring(chosenName.indexOf("→") +
                         1).trim();

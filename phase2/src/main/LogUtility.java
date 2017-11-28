@@ -54,8 +54,6 @@ public class LogUtility {
     private Logger initializeLogger(String loggerName) throws IOException {
         String loggerFileName = loggerName + ".txt";
         Logger logger = Logger.getLogger(loggerName);
-        String filePath = System.getProperty("user.dir") + File.separator
-                + loggerFileName;
         File loggerFile = new File(loggerFileName);
         if (!loggerFile.createNewFile()) {
             System.out.println(String.format("Appending to existing %s.",

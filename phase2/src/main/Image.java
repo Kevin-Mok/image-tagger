@@ -187,10 +187,7 @@ public class Image implements Serializable {
      * false if otherwise
      */
     public boolean hasTags(List<String> tagNames) {
-        if (tagNames.size() == 0) {
-            return true;
-        }
-        return this.tagManager.hasTags(tagNames);
+        return tagNames.size() == 0 || this.tagManager.hasTags(tagNames);
     }
 
     /**

@@ -60,7 +60,7 @@ public class PathExtractor {
         return imagePath.substring(0, indexOfLastSlash);
     }
 
-    /**
+    /*
      * Extract the parent directory of the image plus its file name from
      * imagePath.
      *
