@@ -32,6 +32,10 @@ public class Image implements Serializable {
         ImageTagManager.getInstance().addImage(this);
     }
 
+    public File getImageFile() {
+        return imageFile;
+    }
+
     /**
      * Gets the image name without its extension
      *

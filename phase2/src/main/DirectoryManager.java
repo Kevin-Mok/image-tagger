@@ -177,4 +177,12 @@ public class DirectoryManager {
         return sb.toString();
     }
 
+    /**
+     * Checks if a file/directory is under the root directory
+     * @param path path of the file/directory
+     * @return true if the file/directory is under the root directory
+     */
+    public boolean isUnderRootDirectory(File path) {
+        return this.getRootFolder().getPath().toString().contains(path.getPath());
+    }
 }

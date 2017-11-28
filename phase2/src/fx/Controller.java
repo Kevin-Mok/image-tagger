@@ -24,6 +24,7 @@ import retrofit2.Retrofit;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Wrapper;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -205,7 +206,11 @@ public class Controller {
                     if (!sameDir) {
                         lastSelectedImage.move(newDirectoryFile.toString(),
                                 lastSelectedImage.getImageName(), false);
-                        curSelectedImages = null;
+                        if (rootDirectoryManager.isUnderRootDirectory(newDirectoryFile)) {
+                            TreeItem<ItemWrapper> movedImage = selectMovedImage(lastSelectedImage.getImageFile()
+                                    , imagesTreeView.getRoot());
+                            imagesTreeView.getSelectionModel().select(movedImage);
+                        }
                         refreshGUIElements();
                     }
                 } catch (NullPointerException e) {
@@ -226,6 +231,22 @@ public class Controller {
                 updateSelectedImageGUI();
             }
         });
+    }
+
+    private TreeItem<ItemWrapper> selectMovedImage(File newImagePath, TreeItem<ItemWrapper> directory) {
+        for (TreeItem<ItemWrapper> child : directory.getChildren()) {
+            ItemWrapper wrappedVal = child.getValue();
+            if (wrappedVal instanceof DirectoryWrapper) {
+                selectMovedImage(newImagePath, child);
+                /* child wraps an Image object */
+            } else {
+                ImageWrapper imageWrapper = (ImageWrapper) wrappedVal;
+                if (newImagePath.equals(imageWrapper.getImage().getImageFile())) {
+                    return child;
+                }
+            }
+        }
+        return null;
     }
 
     private void updateLastSelectedImage() {
