@@ -37,6 +37,14 @@ public class ImageTagManager {
     }
 
     /**
+     * Adds a tag to the available tags list, without adding it to any images
+     * @param tagName the tag to be added
+     */
+    public static void addTagToAvailableOnly(String tagName) {
+        instance.tagToImageList.put(tagName, new ArrayList<>());
+    }
+
+    /**
      * Takes in a list of tags and deletes all of them from containing images
      *
      * @param tagsToDelete the list of tags to delete

@@ -67,6 +67,8 @@ public class Controller {
     private Button uploadBtn;
     @FXML
     private Label uploadLabel;
+    @FXML
+    private Button addToAvailableTagsBtn;
 
     private DirectoryManager rootDirectoryManager = DirectoryManager.getInstance();
     private Stage stage;
@@ -360,7 +362,7 @@ public class Controller {
      * interacting with a GUI element
      */
     @FXML
-    public void addAvailableTag() {
+    public void addFromAvailableTag() {
         if (curSelectedImages != null && selectedAvailableTags.size() != 0) {
             for (String tagName : selectedAvailableTags) {
                 for (Image img : curSelectedImages) {
@@ -369,6 +371,16 @@ public class Controller {
             }
             updateSelectedImageGUI();
             updateLastSelectedImage();
+        }
+    }
+
+    @FXML
+    public void addToAvailableTags() {
+        String userChoice = Popup.addToAvailableTags();
+        if (userChoice.equals("add to available tags, but not to any images")) {
+
+        } else {
+
         }
     }
 
