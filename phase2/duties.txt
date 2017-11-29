@@ -1,13 +1,12 @@
 Chris(shyichin)
-- Created JavaFX application layout
-- Co-designed user interface 
-- Implemented user interface using Scene Builder and FXML
-- Implemented DirectoryManager class
-- Implemented the wrapper class hierarchy (ItemWrapper, DirectoryWrapper and ImageWrapper)
-- Created shell script for compiling and executing the application from the command line
-- Wrote most of the documentation for DirectoryManager and the wrapper classes, helped document some of the other classes as well
-- Fixed a bug when the user tries to move an image to a subdirectory under the same root 
-- Refactored parts of the code base
+- Added buttons and icons to UI
+- Modified shell script to incorporate additional .jar files for upload functionality 
+- Added several pop-ups that ask for user input when adding a tag, deleting tags from multiple images, and when uploading an image
+- Reviewed code to identify which design patterns had been/can be incorporated 
+- Fixed a bug where a renaming event is logged even when the image wasn't actually renamed, during tag deletion.
+- Added the functionality to filter images by a list of tags
+- Added functionality to delete tags from all the images in the root directory
+
 
 Kevin
 - Wrote Picture, PathExtractor, TagManager, Popup class
