@@ -1,7 +1,5 @@
-package test;
+package main;
 
-import main.Image;
-import main.Tag;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

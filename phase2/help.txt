@@ -1,1 +1,3 @@
 ./src/compile_project.sh
+
+- image count beside available tag is based on # of images stored with that tag and not just under the current directory

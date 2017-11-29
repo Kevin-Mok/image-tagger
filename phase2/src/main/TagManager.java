@@ -43,30 +43,12 @@ public class TagManager implements Serializable {
     }
 
     /**
-     * Returns the Image associated with this TagManager.
-     *
-     * @return The Image associated with this TagManager.
-     */
-    public Image getImage() {
-        return image;
-    }
-
-    /**
-     * Sets the Image associated with this TagManager.
-     *
-     * @param image The Image to be associated with this TagManager.
-     */
-    public void setImage(Image image) {
-        this.image = image;
-    }
-
-    /**
      * Adds new Tag with tagName param to this tag manager.
      *
      * @param tagName Name of tag to add.
      * @return What the new name of the file should be.
      */
-    public String addTag(String tagName) {
+    String addTag(String tagName) {
         Tag tag = new Tag(image, tagName);
         if (!currentTags.contains(tag)) {
             currentTags.add(tag);
@@ -77,6 +59,12 @@ public class TagManager implements Serializable {
             LogUtility.getInstance().logAddTag(tag.getName(), image
                     .getImageName());
         }
+        /* Was getting weird name history errors without this delay. */
+/*        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            System.out.println("Delay between adding tags failed.");
+        }*/
         return nameHistory.lastEntry().getValue();
     }
 
@@ -85,7 +73,7 @@ public class TagManager implements Serializable {
      *
      * @param tags an array of tags to be added
      */
-    void addAllTags(String[] tags) {
+    void addAllExistingTags(String[] tags) {
         ArrayList<String> clone = new ArrayList<>(Arrays.asList(tags));
         clone.remove(0);
         for (String tagNames : clone) {
@@ -117,22 +105,6 @@ public class TagManager implements Serializable {
         return true;
     }
 
-    /*
-     * Returns a Tag object based on the tag name
-     *
-     * @param tagName the name of the tag to look for
-     * @return the Tag object, if it exists in the list of tags the image has
-     * ever had
-     */
-//    public Tag getTag(String tagName) {
-//        for (Tag tag : tagList) {
-//            if (tagName.equals(tag.getName())) {
-//                return tag;
-//            }
-//        }
-//        return null;
-//    }
-
     /**
      * Checks if the image this TagManager is associated with has the given tag
      *
@@ -150,7 +122,7 @@ public class TagManager implements Serializable {
      * @param tagName Name of tag to delete.
      * @return What the new name of the file should be.
      */
-    public String deleteTag(String tagName) {
+    String deleteTag(String tagName) {
         Tag tag = new Tag(image, tagName);
         if (currentTags.contains(tag)) {
             currentTags.remove(tag);
@@ -179,9 +151,9 @@ public class TagManager implements Serializable {
      */
     public ArrayList<String> getNameHistory() {
         ArrayList<String> result = new ArrayList<>();
-        for (Timestamp keys : nameHistory.keySet()) {
-            String s = new SimpleDateFormat("MM/dd HH:mm:ss").format(keys);
-            result.add(s + "  →  " + nameHistory.get(keys));
+        for (Timestamp timestamp : nameHistory.keySet()) {
+            String s = new SimpleDateFormat("MM/dd HH:mm:ss").format(timestamp);
+            result.add(s + "  →  " + nameHistory.get(timestamp));
         }
         result.sort(Collections.reverseOrder());
         return result;
@@ -202,9 +174,11 @@ public class TagManager implements Serializable {
     }
 
     /**
-     * Returns all the tags ever associated with this image
+     * Returns all the tags that were once used with this Image but not any
+     * more.
      *
-     * @return Alphabetically  sorted ArrayList of all Tags ever used
+     * @return Alphabetically sorted ArrayList of Strings that contain all
+     * the tag names that were once used but not any more.
      */
     ArrayList<String> getUnusedTags() {
         ArrayList<String> result = new ArrayList<>();
@@ -216,7 +190,6 @@ public class TagManager implements Serializable {
         Collections.sort(result);
         return result;
     }
-
 
     /**
      * Reverts the Image to a previous name in nameHistory.

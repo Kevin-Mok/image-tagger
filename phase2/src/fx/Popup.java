@@ -64,6 +64,7 @@ public class Popup {
 
     /**
      * Shows a popup asking the user to confirm the deletion of a list of tags
+     *
      * @param tagNames the list of tags to be deleted
      * @return true if the user clicks the OK button, false if otherwise
      */
@@ -89,7 +90,9 @@ public class Popup {
     }
 
     /**
-     * Shows a popup asking the user to confirm the upload of the currently selected image
+     * Shows a popup asking the user to confirm the upload of the currently
+     * selected image
+     *
      * @return true if the user clicks the OK button, false if otherwise
      */
     static boolean confirmUpload() {

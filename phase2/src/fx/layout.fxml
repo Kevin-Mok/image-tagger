@@ -1,226 +1,294 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.Tooltip?>
-<?import javafx.scene.control.TreeView?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.text.Font?>
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="891.0" prefWidth="1112.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fx.Controller">
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity"
+            prefHeight="891.0" prefWidth="1112.0"
+            xmlns="http://javafx.com/javafx/8.0.141" fx:controller="fx.Controller">
     <children>
-        <Label fx:id="currentFolderLabel" alignment="CENTER" contentDisplay="RIGHT" layoutX="21.0" layoutY="74.0" prefHeight="16.0" prefWidth="299.0" text="Current Folder" AnchorPane.leftAnchor="21.0" AnchorPane.topAnchor="74.0">
+        <Label fx:id="currentFolderLabel" alignment="CENTER"
+               contentDisplay="RIGHT" layoutX="21.0" layoutY="74.0"
+               prefHeight="16.0" prefWidth="299.0" text="Current Folder"
+               AnchorPane.leftAnchor="21.0" AnchorPane.topAnchor="74.0">
             <font>
-                <Font name="DejaVu Sans Bold" size="14.0" />
+                <Font name="DejaVu Sans Bold" size="14.0"/>
             </font>
         </Label>
-        <Label fx:id="imageNameLabel" alignment="CENTER" layoutX="577.0" layoutY="39.0" prefHeight="16.0" prefWidth="751.0" text="Absolute Path to Image" wrapText="true" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="39.0">
+        <Label fx:id="imageNameLabel" alignment="CENTER" layoutX="577.0"
+               layoutY="39.0" prefHeight="16.0" prefWidth="751.0"
+               text="Absolute Path to Image" wrapText="true"
+               AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="39.0">
             <font>
-                <Font name="DejaVu Sans Bold" size="16.0" />
+                <Font name="DejaVu Sans Bold" size="16.0"/>
             </font>
         </Label>
-        <ListView fx:id="nameHistoryView" layoutX="20.0" layoutY="522.0" prefHeight="299.0" prefWidth="299.0" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="20.0" />
-        <ListView fx:id="currentTagsView" layoutX="774.0" layoutY="588.0" prefHeight="250.0" prefWidth="215.0" AnchorPane.bottomAnchor="53.0" AnchorPane.rightAnchor="123.0" />
-        <Label alignment="CENTER" layoutX="19.0" layoutY="501.0" prefHeight="16.0" prefWidth="299.0" text="Name History" AnchorPane.bottomAnchor="374.0" AnchorPane.leftAnchor="19.0">
+        <ListView fx:id="nameHistoryView" layoutX="20.0" layoutY="522.0"
+                  prefHeight="299.0" prefWidth="299.0"
+                  AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="20.0"/>
+        <ListView fx:id="currentTagsView" layoutX="774.0" layoutY="588.0"
+                  prefHeight="250.0" prefWidth="215.0"
+                  AnchorPane.bottomAnchor="53.0"
+                  AnchorPane.rightAnchor="123.0"/>
+        <Label alignment="CENTER" layoutX="19.0" layoutY="501.0"
+               prefHeight="16.0" prefWidth="299.0" text="Name History"
+               AnchorPane.bottomAnchor="374.0" AnchorPane.leftAnchor="19.0">
             <font>
-                <Font name="DejaVu Sans Bold" size="14.0" />
+                <Font name="DejaVu Sans Bold" size="14.0"/>
             </font>
         </Label>
-        <Label alignment="CENTER" layoutX="774.0" layoutY="565.0" prefHeight="18.0" prefWidth="215.0" text="Current Tags" AnchorPane.bottomAnchor="308.0" AnchorPane.rightAnchor="123.0">
+        <Label alignment="CENTER" layoutX="774.0" layoutY="565.0"
+               prefHeight="18.0" prefWidth="215.0" text="Current Tags"
+               AnchorPane.bottomAnchor="308.0" AnchorPane.rightAnchor="123.0">
             <font>
-                <Font name="DejaVu Sans Bold" size="14.0" />
+                <Font name="DejaVu Sans Bold" size="14.0"/>
             </font>
         </Label>
-        <TreeView fx:id="imagesTreeView" editable="true" layoutX="20.0" layoutY="95.0" onKeyReleased="#changeImageDisplayed" onMouseClicked="#changeImageDisplayed" prefHeight="398.0" prefWidth="299.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="95.0" />
-        <Button fx:id="chooseDirBtn" layoutX="20.0" layoutY="23.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="50.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="23.0">
+        <TreeView fx:id="imagesTreeView" editable="true" layoutX="20.0"
+                  layoutY="95.0" onKeyReleased="#changeImageDisplayed"
+                  onMouseClicked="#changeImageDisplayed" prefHeight="398.0"
+                  prefWidth="299.0" AnchorPane.leftAnchor="20.0"
+                  AnchorPane.topAnchor="95.0"/>
+        <Button fx:id="chooseDirBtn" layoutX="20.0" layoutY="23.0"
+                mnemonicParsing="false" prefHeight="48.0" prefWidth="50.0"
+                AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="23.0">
             <graphic>
-                <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true"
+                           preserveRatio="true">
                     <image>
-                        <Image url="@resources/icons/select_dir.png" />
+                        <Image url="@resources/icons/select_dir.png"/>
                     </image>
                 </ImageView>
             </graphic>
             <tooltip>
                 <Tooltip text="Choose Directory">
-               <font>
-                  <Font size="15.0" />
-               </font></Tooltip>
+                    <font>
+                        <Font size="15.0"/>
+                    </font>
+                </Tooltip>
             </tooltip>
         </Button>
-        <Button fx:id="moveFileBtn" layoutX="269.0" layoutY="23.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="50.0" AnchorPane.leftAnchor="268.0" AnchorPane.topAnchor="23.0">
+        <Button fx:id="moveFileBtn" layoutX="269.0" layoutY="23.0"
+                mnemonicParsing="false" prefHeight="48.0" prefWidth="50.0"
+                AnchorPane.leftAnchor="268.0" AnchorPane.topAnchor="23.0">
             <graphic>
-                <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true"
+                           preserveRatio="true">
                     <image>
-                        <Image url="@resources/icons/move_file.png" />
+                        <Image url="@resources/icons/move_file.png"/>
                     </image>
                 </ImageView>
             </graphic>
             <tooltip>
                 <Tooltip text="Move Current File">
-               <font>
-                  <Font size="15.0" />
-               </font></Tooltip>
+                    <font>
+                        <Font size="15.0"/>
+                    </font>
+                </Tooltip>
             </tooltip>
         </Button>
-        <Button fx:id="openCurDirBtn" layoutX="145.0" layoutY="23.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="50.0" AnchorPane.leftAnchor="145.0" AnchorPane.topAnchor="23.0">
+        <Button fx:id="openCurDirBtn" layoutX="145.0" layoutY="23.0"
+                mnemonicParsing="false" prefHeight="48.0" prefWidth="50.0"
+                AnchorPane.leftAnchor="145.0" AnchorPane.topAnchor="23.0">
             <graphic>
-                <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true"
+                           preserveRatio="true">
                     <image>
-                        <Image url="@resources/icons/open_dir.png" />
+                        <Image url="@resources/icons/open_dir.png"/>
                     </image>
                 </ImageView>
             </graphic>
             <tooltip>
                 <Tooltip text="Open Current Directory">
-               <font>
-                  <Font size="15.0" />
-               </font></Tooltip>
+                    <font>
+                        <Font size="15.0"/>
+                    </font>
+                </Tooltip>
             </tooltip>
         </Button>
-        <Button fx:id="addNewTagBtn" layoutX="775.0" layoutY="839.0" mnemonicParsing="false" onAction="#addNewTag" prefHeight="28.0" prefWidth="97.0" text="Tag" AnchorPane.bottomAnchor="23.0" AnchorPane.rightAnchor="240.0">
+        <Button fx:id="addNewTagBtn" layoutX="775.0" layoutY="839.0"
+                mnemonicParsing="false" onAction="#addNewTag" prefHeight="28.0"
+                prefWidth="97.0" text="Tag" AnchorPane.bottomAnchor="23.0"
+                AnchorPane.rightAnchor="240.0">
             <font>
-                <Font name="Monaco" size="13.0" />
+                <Font name="Monaco" size="13.0"/>
             </font>
-         <graphic>
-            <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@resources/icons/add.png" />
-               </image>
-            </ImageView>
-         </graphic>
-        </Button>
-        <ListView fx:id="availableTagsView" layoutX="395.0" layoutY="588.0" onMouseClicked="#updateSelectedAvailableTags" prefHeight="218.0" prefWidth="215.0" AnchorPane.bottomAnchor="85.0" AnchorPane.rightAnchor="502.0" />
-        <Label alignment="CENTER" layoutX="395.0" layoutY="565.0" prefHeight="16.0" prefWidth="215.0" text="Available Tags" AnchorPane.rightAnchor="502.0" AnchorPane.topAnchor="565.0">
-            <font>
-                <Font name="DejaVu Sans Bold" size="14.0" />
-            </font>
-        </Label>
-        <Button fx:id="deleteTagBtn" layoutX="924.0" layoutY="839.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="97.0" text="Tag" AnchorPane.bottomAnchor="23.0" AnchorPane.rightAnchor="123.0">
-            <font>
-                <Font name="Monaco" size="13.0" />
-            </font>
-         <graphic>
-            <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@resources/icons/delete.png" />
-               </image>
-            </ImageView>
-         </graphic>
-        </Button>
-        <Button fx:id="addTagFromAvailBtn" layoutX="633.0" layoutY="654.0" mnemonicParsing="false" onAction="#addAvailableTag" prefHeight="28.0" prefWidth="116.0" AnchorPane.bottomAnchor="210.0" AnchorPane.rightAnchor="363.0">
-            <font>
-                <Font name="Monaco" size="13.0" />
-            </font>
-         <graphic>
-            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@resources/icons/right%20arrow.png" />
-               </image>
-            </ImageView>
-         </graphic>
-         <tooltip>
-            <Tooltip text="Add a tag from the pool">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Tooltip>
-         </tooltip>
-        </Button>
-        <Button fx:id="revertNameBtn" alignment="CENTER" layoutX="70.0" layoutY="826.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="50.0" AnchorPane.bottomAnchor="23.0">
-            <font>
-                <Font name="Monaco" size="13.0" />
-            </font>
-         <graphic>
-            <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@resources/icons/revert.png" />
-               </image>
-            </ImageView>
-         </graphic>
-         <tooltip>
-            <Tooltip text="Revert back to an earlier name">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Tooltip>
-         </tooltip>
-        </Button>
-        <BorderPane layoutX="336.0" layoutY="90.0" prefHeight="455.0" prefWidth="751.0">
-            <center>
-                <ImageView fx:id="imageView" fitHeight="418.0" fitWidth="658.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
-            </center>
-        </BorderPane>
-        <Button fx:id="filterByTagBtn" alignment="CENTER" layoutX="395.0" layoutY="810.0" mnemonicParsing="false" onMouseClicked="#filterImagesByTags" prefHeight="28.0" prefWidth="97.0" text="Filter" AnchorPane.bottomAnchor="53.0">
-            <font>
-                <Font name="Monaco" size="13.0" />
-            </font>
-         <graphic>
-            <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@resources/icons/filter.png" />
-               </image>
-            </ImageView>
-         </graphic>
-        </Button>
-        <Button layoutX="513.0" layoutY="810.0" mnemonicParsing="false" onMouseClicked="#showAllImages" prefHeight="28.0" prefWidth="97.0" text="Show All" AnchorPane.bottomAnchor="53.0">
-            <font>
-                <Font name="Monaco" size="13.0" />
-            </font>
-        </Button>
-        <Button fx:id="deleteAllBtn" layoutX="394.0" layoutY="840.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="215.0" text="Delete From All" AnchorPane.bottomAnchor="23.0">
-            <font>
-                <Font name="Monaco" size="13.0" />
-            </font>
-         <graphic>
-            <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@resources/icons/delete.png" />
-               </image>
-            </ImageView>
-         </graphic>
-        </Button>
-        <Button fx:id="viewLogBtn" layoutX="218.0" layoutY="826.0" mnemonicParsing="false" onAction="#viewRenameLog" prefHeight="42.0" prefWidth="50.0" AnchorPane.bottomAnchor="23.0">
-            <font>
-                <Font name="Monaco" size="13.0" />
-            </font>
-         <graphic>
-            <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@resources/icons/log.png" />
-               </image>
-            </ImageView>
-         </graphic>
-         <tooltip>
-            <Tooltip text="View the log of the renaming history">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Tooltip>
-         </tooltip>
-        </Button>
-        <Button fx:id="uploadBtn" layoutX="1025.0" layoutY="801.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="35.0" AnchorPane.bottomAnchor="53.0">
             <graphic>
-                <ImageView fitHeight="29.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true"
+                           preserveRatio="true">
                     <image>
-                        <Image url="@resources/icons/imgur.png" />
+                        <Image url="@resources/icons/add.png"/>
                     </image>
                 </ImageView>
             </graphic>
-         <tooltip>
-            <Tooltip text="Upload this image to Imgur">
-               <font>
-                  <Font name="Monaco" size="15.0" />
-               </font>
-            </Tooltip>
-         </tooltip>
         </Button>
-        <Label fx:id="uploadLabel" alignment="CENTER" layoutX="997.0" layoutY="840.0" prefHeight="28.0" prefWidth="106.0" text="Uploading..." AnchorPane.bottomAnchor="23.0">
+        <ListView fx:id="availableTagsView" layoutX="395.0" layoutY="588.0"
+                  onMouseClicked="#updateSelectedAvailableTags"
+                  prefHeight="218.0" prefWidth="215.0"
+                  AnchorPane.bottomAnchor="85.0"
+                  AnchorPane.rightAnchor="502.0"/>
+        <Label alignment="CENTER" layoutX="395.0" layoutY="565.0"
+               prefHeight="16.0" prefWidth="215.0" text="Available Tags"
+               AnchorPane.rightAnchor="502.0" AnchorPane.topAnchor="565.0">
             <font>
-                <Font name="DejaVu Sans Bold" size="13.0" />
+                <Font name="DejaVu Sans Bold" size="14.0"/>
+            </font>
+        </Label>
+        <Button fx:id="deleteTagBtn" layoutX="924.0" layoutY="839.0"
+                mnemonicParsing="false" prefHeight="28.0" prefWidth="97.0"
+                text="Tag" AnchorPane.bottomAnchor="23.0"
+                AnchorPane.rightAnchor="123.0">
+            <font>
+                <Font name="Monaco" size="13.0"/>
+            </font>
+            <graphic>
+                <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true"
+                           preserveRatio="true">
+                    <image>
+                        <Image url="@resources/icons/delete.png"/>
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Button fx:id="addTagFromAvailBtn" layoutX="633.0" layoutY="654.0"
+                mnemonicParsing="false" onAction="#addAvailableTag"
+                prefHeight="28.0" prefWidth="116.0"
+                AnchorPane.bottomAnchor="210.0" AnchorPane.rightAnchor="363.0">
+            <font>
+                <Font name="Monaco" size="13.0"/>
+            </font>
+            <graphic>
+                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true"
+                           preserveRatio="true">
+                    <image>
+                        <Image url="@resources/icons/right%20arrow.png"/>
+                    </image>
+                </ImageView>
+            </graphic>
+            <tooltip>
+                <Tooltip text="Add a tag from the pool">
+                    <font>
+                        <Font size="15.0"/>
+                    </font>
+                </Tooltip>
+            </tooltip>
+        </Button>
+        <Button fx:id="revertNameBtn" alignment="CENTER" layoutX="70.0"
+                layoutY="826.0" mnemonicParsing="false" prefHeight="42.0"
+                prefWidth="50.0" AnchorPane.bottomAnchor="23.0">
+            <font>
+                <Font name="Monaco" size="13.0"/>
+            </font>
+            <graphic>
+                <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true"
+                           preserveRatio="true">
+                    <image>
+                        <Image url="@resources/icons/revert.png"/>
+                    </image>
+                </ImageView>
+            </graphic>
+            <tooltip>
+                <Tooltip text="Revert back to an earlier name">
+                    <font>
+                        <Font size="15.0"/>
+                    </font>
+                </Tooltip>
+            </tooltip>
+        </Button>
+        <BorderPane layoutX="336.0" layoutY="90.0" prefHeight="455.0"
+                    prefWidth="751.0">
+            <center>
+                <ImageView fx:id="imageView" fitHeight="418.0" fitWidth="658.0"
+                           pickOnBounds="true" preserveRatio="true"
+                           BorderPane.alignment="CENTER"/>
+            </center>
+        </BorderPane>
+        <Button fx:id="filterByTagBtn" alignment="CENTER" layoutX="395.0"
+                layoutY="810.0" mnemonicParsing="false"
+                onMouseClicked="#filterImagesByTags" prefHeight="28.0"
+                prefWidth="97.0" text="Filter" AnchorPane.bottomAnchor="53.0">
+            <font>
+                <Font name="Monaco" size="13.0"/>
+            </font>
+            <graphic>
+                <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true"
+                           preserveRatio="true">
+                    <image>
+                        <Image url="@resources/icons/filter.png"/>
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Button layoutX="513.0" layoutY="810.0" mnemonicParsing="false"
+                onMouseClicked="#showAllImages" prefHeight="28.0"
+                prefWidth="97.0" text="Show All" AnchorPane.bottomAnchor="53.0">
+            <font>
+                <Font name="Monaco" size="13.0"/>
+            </font>
+        </Button>
+        <Button fx:id="deleteAllBtn" layoutX="394.0" layoutY="840.0"
+                mnemonicParsing="false" prefHeight="28.0" prefWidth="215.0"
+                text="Delete From All" AnchorPane.bottomAnchor="23.0">
+            <font>
+                <Font name="Monaco" size="13.0"/>
+            </font>
+            <graphic>
+                <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true"
+                           preserveRatio="true">
+                    <image>
+                        <Image url="@resources/icons/delete.png"/>
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Button fx:id="viewLogBtn" layoutX="218.0" layoutY="826.0"
+                mnemonicParsing="false" onAction="#viewRenameLog"
+                prefHeight="42.0" prefWidth="50.0"
+                AnchorPane.bottomAnchor="23.0">
+            <font>
+                <Font name="Monaco" size="13.0"/>
+            </font>
+            <graphic>
+                <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true"
+                           preserveRatio="true">
+                    <image>
+                        <Image url="@resources/icons/log.png"/>
+                    </image>
+                </ImageView>
+            </graphic>
+            <tooltip>
+                <Tooltip text="View the log of the renaming history">
+                    <font>
+                        <Font size="15.0"/>
+                    </font>
+                </Tooltip>
+            </tooltip>
+        </Button>
+        <Button fx:id="uploadBtn" layoutX="1025.0" layoutY="801.0"
+                mnemonicParsing="false" prefHeight="28.0" prefWidth="35.0"
+                AnchorPane.bottomAnchor="53.0">
+            <graphic>
+                <ImageView fitHeight="29.0" fitWidth="28.0" pickOnBounds="true"
+                           preserveRatio="true">
+                    <image>
+                        <Image url="@resources/icons/imgur.png"/>
+                    </image>
+                </ImageView>
+            </graphic>
+            <tooltip>
+                <Tooltip text="Upload this image to Imgur">
+                    <font>
+                        <Font name="Monaco" size="15.0"/>
+                    </font>
+                </Tooltip>
+            </tooltip>
+        </Button>
+        <Label fx:id="uploadLabel" alignment="CENTER" layoutX="997.0"
+               layoutY="840.0" prefHeight="28.0" prefWidth="106.0"
+               text="Uploading..." AnchorPane.bottomAnchor="23.0">
+            <font>
+                <Font name="DejaVu Sans Bold" size="13.0"/>
             </font>
         </Label>
 

@@ -1,8 +1,5 @@
-package test;
+package main;
 
-import main.DirectoryManager;
-import main.Image;
-import main.PathExtractor;
 import main.wrapper.DirectoryWrapper;
 import main.wrapper.ImageWrapper;
 import main.wrapper.ItemWrapper;

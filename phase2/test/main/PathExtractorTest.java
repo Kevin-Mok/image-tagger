@@ -1,6 +1,6 @@
-package test;
+package main;
 
-import main.PathExtractor;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +16,8 @@ class PathExtractorTest {
 
     @Test
     void getImageName() {
-        assertEquals("l6", PathExtractor.getImageName(testPathString));
+        Assertions.assertEquals("l6", PathExtractor.getImageName
+                (testPathString));
     }
 
     @Test

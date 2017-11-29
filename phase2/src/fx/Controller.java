@@ -68,7 +68,8 @@ public class Controller {
     @FXML
     private Label uploadLabel;
 
-    private DirectoryManager rootDirectoryManager = DirectoryManager.getInstance();
+    private DirectoryManager rootDirectoryManager = DirectoryManager
+            .getInstance();
     private Stage stage;
     private Image lastSelectedImage;
     private List<Image> curSelectedImages;
@@ -88,13 +89,27 @@ public class Controller {
     public Controller() {
     }
 
-    void setStage(Stage stage) {
-        this.stage = stage;
+    /**
+     * Adapted from Johnny850807's GitHub repository
+     * https://github.com/Johnny850807/Imgur-Picture-Uploading-Example-Using
+     * -Retrofit-On-Native-Java
+     * on Nov 24th, 2017
+     */
+    private static ImgurAPI createImgurAPI() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl(ImgurAPI.SERVER)
+                .build();
+        return retrofit.create(ImgurAPI.class);
     }
 
 /*    private <T extends SelectionModel> void setMultipleSelection(T view) {
         view.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }*/
+
+    void setStage(Stage stage) {
+        this.stage = stage;
+    }
 
     /**
      * This method is automatically called after the FXML file is loaded
@@ -152,7 +167,8 @@ public class Controller {
              * retrieved Nov 25, 2017
              */
             /* Only allow the user to upload one picture at a time */
-            if (imagesTreeView.getSelectionModel().getSelectedItems().size() == 1) {
+            if (imagesTreeView.getSelectionModel().getSelectedItems().size()
+                    == 1) {
                 if (Popup.confirmUpload()) {
                     uploadLabel.setVisible(true);
                     if (!service.isRunning()) {
@@ -184,11 +200,16 @@ public class Controller {
                     if (!sameDir) {
                         lastSelectedImage.move(newDirectoryFile.toString(),
                                 lastSelectedImage.getImageName(), false);
-                        /* If the moved image is still under the root directory, find it */
-                        if (rootDirectoryManager.isUnderRootDirectory(newDirectoryFile)) {
-                            TreeItem<ItemWrapper> movedImage = selectMovedImage(lastSelectedImage.getImageFile()
+                        /* If the moved image is still under the root
+                        directory, find it */
+                        if (rootDirectoryManager.isUnderRootDirectory
+                                (newDirectoryFile)) {
+                            TreeItem<ItemWrapper> movedImage =
+                                    selectMovedImage(lastSelectedImage
+                                                    .getImageFile()
                                     , imagesTreeView.getRoot());
-                            imagesTreeView.getSelectionModel().select(movedImage);
+                            imagesTreeView.getSelectionModel().select
+                                    (movedImage);
                         }
                         refreshGUIElements();
                     }
@@ -214,11 +235,14 @@ public class Controller {
 
     /**
      * Returns the TreeItem representing an image in a directory
+     *
      * @param imagePath the path of the image file
      * @param directory the directory in which to look for this image
      * @return the TreeItem representing the image, if found. Null if otherwise.
      */
-    private TreeItem<ItemWrapper> selectMovedImage(File imagePath, TreeItem<ItemWrapper> directory) {
+    private TreeItem<ItemWrapper> selectMovedImage(File imagePath,
+                                                   TreeItem<ItemWrapper>
+                                                           directory) {
         for (TreeItem<ItemWrapper> child : directory.getChildren()) {
             ItemWrapper wrappedVal = child.getValue();
             if (wrappedVal instanceof DirectoryWrapper) {
@@ -244,7 +268,8 @@ public class Controller {
     }
 
     /**
-     * Updates the last selected image based on what's selected in the imagesTreeView
+     * Updates the last selected image based on what's selected in the
+     * imagesTreeView
      */
     private void updateLastSelectedImage() {
         TreeItem<ItemWrapper> lastSelectedTreeItem = imagesTreeView
@@ -262,7 +287,8 @@ public class Controller {
     }
 
     /**
-     * Updates the list of currently selected images based on what's selected in the imagesTreeView
+     * Updates the list of currently selected images based on what's selected
+     * in the imagesTreeView
      */
     private void updateCurSelectedImages() {
         ObservableList<TreeItem<ItemWrapper>> selectedTreeItems =
@@ -531,20 +557,6 @@ public class Controller {
     private void updateAvailableTags() {
         availableTagsList.setAll(ImageTagManager.getInstance()
                 .getAvailableTagsWithCount());
-    }
-
-    /**
-     * Adapted from Johnny850807's GitHub repository
-     * https://github.com/Johnny850807/Imgur-Picture-Uploading-Example-Using
-     * -Retrofit-On-Native-Java
-     * on Nov 24th, 2017
-     */
-    private static ImgurAPI createImgurAPI() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(ImgurAPI.SERVER)
-                .build();
-        return retrofit.create(ImgurAPI.class);
     }
 
     /**

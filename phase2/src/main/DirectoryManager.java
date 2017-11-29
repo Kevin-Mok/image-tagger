@@ -42,7 +42,8 @@ public class DirectoryManager {
     /**
      * Private constructor for singleton use
      */
-    private DirectoryManager() {}
+    private DirectoryManager() {
+    }
 
     public static DirectoryManager getInstance() {
         if (instance == null) {
@@ -133,7 +134,8 @@ public class DirectoryManager {
                         Image img = new Image(file.toFile(), PathExtractor
                                 .getImageName(file.toString()));
                         this.allImagesUnderRoot.add(img);
-                        img.getTagManager().addAllTags(img.getImageName()
+                        img.getTagManager().addAllExistingTags(img
+                                .getImageName()
                                 .split("@"));
                         directoryWrapper.addToDirectory(new ImageWrapper(img));
                     }
@@ -187,10 +189,12 @@ public class DirectoryManager {
 
     /**
      * Checks if a file/directory is under the root directory
+     *
      * @param path path of the file/directory
      * @return true if the file/directory is under the root directory
      */
     public boolean isUnderRootDirectory(File path) {
-        return this.getRootFolder().getPath().toString().contains(path.getPath());
+        return this.getRootFolder().getPath().toString().contains(path
+                .getPath());
     }
 }
