@@ -7,6 +7,7 @@ package fx.imgur;
  * -Retrofit-On-Native-Java
  * on Nov 24th, 2017
  */
+@SuppressWarnings("ALL")
 public class ImageResponse {
 
     public boolean success;

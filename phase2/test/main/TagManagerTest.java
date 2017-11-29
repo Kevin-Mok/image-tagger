@@ -1,5 +1,6 @@
 package main;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -24,17 +25,18 @@ class TagManagerTest {
                 originalImageName);
     }
 
-    private void setTagManager() {
-        tagManager = new TagManager(originalImageName, image);
-    }
-
     @BeforeEach
     void setUp() {
         originalImageName = "test";
         setImage();
-        setTagManager();
+        tagManager = image.getTagManager();
         addedTagName = "addedTag";
         multipleTagNames = Arrays.asList("foo bar", "a", "b");
+    }
+
+    @AfterEach
+    void tearDown() {
+        image = null;
     }
 
     @Test
@@ -65,15 +67,14 @@ class TagManagerTest {
 
     private void addMultipleTags() {
         for (String tagName : multipleTagNames) {
-            tagManager.addTag(tagName);
+            image.getTagManager().addTag(tagName);
         }
     }
 
     @Test
     void getNameHistory() {
-        setTagManager();
         addMultipleTags();
-        ArrayList<String> nameHistory = tagManager.getNameHistory();
+        ArrayList<String> nameHistory = image.getTagManager().getNameHistory();
         // Collections.reverse(nameHistory);
         /* Build imageName by adding on tags after checking if the current
         name matches the name history log. */
