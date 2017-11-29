@@ -76,8 +76,8 @@ public class DirectoryManager {
      * @param rootFolder The DirectoryWrapper to set this object's root
      *                   folder to.
      */
-    public void setRootFolder(DirectoryWrapper rootFolder) {
-        this.rootFolder = rootFolder;
+    public void setRootFolder(File rootFolder) {
+        this.rootFolder = getImages(rootFolder.toPath());
     }
 
     /**
@@ -108,7 +108,7 @@ public class DirectoryManager {
      * @return ItemWrapper representing the subdirectories and pictures in a
      * directory
      */
-    private ItemWrapper getImages(Path directory) {
+    private DirectoryWrapper getImages(Path directory) {
         DirectoryWrapper directoryWrapper = new DirectoryWrapper(directory
                 .toFile());
         Pattern imgFilePattern = Pattern.compile(generateImageMatchingPattern
@@ -187,7 +187,7 @@ public class DirectoryManager {
             if (lastDirScanner.hasNext()) {
                 File lastDirFile = new File(lastDirScanner.next());
                 if (lastDirFile.isDirectory()) {
-                    rootFolder = new DirectoryWrapper(lastDirFile);
+                    this.setRootFolder(lastDirFile);
                     return true;
                 }
                 System.out.println("Last stored directory was not valid.");
