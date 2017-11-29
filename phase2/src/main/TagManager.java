@@ -155,7 +155,7 @@ public class TagManager implements Serializable {
             String s = new SimpleDateFormat("MM/dd HH:mm:ss").format(timestamp);
             result.add(s + "  →  " + nameHistory.get(timestamp));
         }
-        result.sort(Collections.reverseOrder());
+        // result.sort(Collections.reverseOrder());
         return result;
     }
 

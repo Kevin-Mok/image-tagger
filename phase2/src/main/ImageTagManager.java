@@ -1,10 +1,7 @@
 package main;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.*;
 
 /**
  * Singleton manager class to keep track of all the existing Images and Tags

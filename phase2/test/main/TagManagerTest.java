@@ -74,7 +74,7 @@ class TagManagerTest {
         setTagManager();
         addMultipleTags();
         ArrayList<String> nameHistory = tagManager.getNameHistory();
-        Collections.reverse(nameHistory);
+        // Collections.reverse(nameHistory);
         /* Build imageName by adding on tags after checking if the current
         name matches the name history log. */
         StringBuilder imageName = new StringBuilder(originalImageName);
