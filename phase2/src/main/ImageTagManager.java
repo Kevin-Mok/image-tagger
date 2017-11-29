@@ -8,6 +8,8 @@ import java.util.*;
  * contained within them.
  */
 public class ImageTagManager {
+    public static final String SER_FILE_NAME = "path_to_images.ser";
+
     // Singleton instance of this class.
     private static ImageTagManager instance = null;
     // HashMap of String of tag names to list of Images containing that tag.
@@ -122,25 +124,6 @@ public class ImageTagManager {
         this.tagToImageList = nameToTags;
     }
 
-    /**
-     * Serializes the HashMaps (tagToImageList, pathToImages) of this class.
-     */
-    public void saveToFile() {
-        try {
-            deleteUselessImageObjects();
-            OutputStream imagesFileOutput = new FileOutputStream("images.ser");
-            OutputStream imagesBuffer = new BufferedOutputStream
-                    (imagesFileOutput);
-            ObjectOutput imagesObjectOutput = new ObjectOutputStream
-                    (imagesBuffer);
-
-            imagesObjectOutput.writeObject(pathToImages);
-            imagesObjectOutput.close();
-        } catch (IOException e) {
-            System.out.println("Could not serialize images.ser.");
-        }
-    }
-
     /*
     ** Deletes entries from pathToImages that only have a name history of
     ** size 1 (i.e. no tags were ever added to that Image). Decreases size of
@@ -176,7 +159,7 @@ public class ImageTagManager {
      */
     public void readFromFile() {
         try {
-            InputStream imagesFileInput = new FileInputStream("images.ser");
+            InputStream imagesFileInput = new FileInputStream(SER_FILE_NAME);
             InputStream imagesBuffer = new BufferedInputStream(imagesFileInput);
             ObjectInput imagesObjectInput = new ObjectInputStream(imagesBuffer);
 
@@ -191,10 +174,29 @@ public class ImageTagManager {
             imagesObjectInput.close();
             deleteNonExistentImages();
         } catch (IOException e) {
-            System.out.println("Ser file was not found and will be " +
+            System.out.println(SER_FILE_NAME + " was not found and will be " +
                     "created upon exiting the program.");
         } catch (ClassNotFoundException e) {
             System.out.println("Class not found.");
+        }
+    }
+
+    /**
+     * Serializes the pathToImages HashMap of this class.
+     */
+    public void saveToFile() {
+        try {
+            deleteUselessImageObjects();
+            OutputStream imagesFileOutput = new FileOutputStream(SER_FILE_NAME);
+            OutputStream imagesBuffer = new BufferedOutputStream
+                    (imagesFileOutput);
+            ObjectOutput imagesObjectOutput = new ObjectOutputStream
+                    (imagesBuffer);
+
+            imagesObjectOutput.writeObject(pathToImages);
+            imagesObjectOutput.close();
+        } catch (IOException e) {
+            System.out.printf("Could not serialize %s.%n", SER_FILE_NAME);
         }
     }
 

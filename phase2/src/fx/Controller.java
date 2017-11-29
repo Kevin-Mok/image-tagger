@@ -7,11 +7,14 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import main.*;
+import main.Image;
 import main.wrapper.DirectoryWrapper;
 import main.wrapper.ImageWrapper;
 import main.wrapper.ItemWrapper;
@@ -22,6 +25,7 @@ import retrofit2.GsonConverterFactory;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -41,8 +45,6 @@ public class Controller {
     private Button chooseDirBtn;
     @FXML
     private Button moveFileBtn;
-    @FXML
-    private Button openCurDirBtn;
     @FXML
     private Label currentFolderLabel;
     @FXML
@@ -68,7 +70,8 @@ public class Controller {
     @FXML
     private Label uploadLabel;
 
-    private DirectoryManager rootDirectoryManager = DirectoryManager.getInstance();
+    private DirectoryManager rootDirectoryManager = DirectoryManager
+            .getInstance();
     private Stage stage;
     private Image lastSelectedImage;
     private List<Image> curSelectedImages;
@@ -114,7 +117,12 @@ public class Controller {
         Imgur. */
         uploadLabel.setVisible(false);
 
-        updateAvailableTags();
+        if (DirectoryManager.getInstance().readLastDir()) {
+            refreshGUIElements();
+        } else {
+            updateAvailableTags();
+        }
+
         availableTagsView.setItems(availableTagsList);
         currentTagsView.setItems(currentTagsList);
         /* Don't know how to fix this yellow error. The suggested fix
@@ -152,7 +160,8 @@ public class Controller {
              * retrieved Nov 25, 2017
              */
             /* Only allow the user to upload one picture at a time */
-            if (imagesTreeView.getSelectionModel().getSelectedItems().size() == 1) {
+            if (imagesTreeView.getSelectionModel().getSelectedItems().size()
+                    == 1) {
                 if (Popup.confirmUpload()) {
                     uploadLabel.setVisible(true);
                     if (!service.isRunning()) {
@@ -168,14 +177,8 @@ public class Controller {
             }
         });
 
-        openCurDirBtn.setOnAction(event -> {
-            if (rootDirectoryManager.getRootFolder() != null) {
-                rootDirectoryManager.openRootFolder();
-            }
-        });
-
         moveFileBtn.setOnAction(event -> {
-            if (curSelectedImages != null) {
+            if (lastSelectedImage != null) {
                 try {
                     File newDirectoryFile = chooseDirectory("Move file to " +
                             "directory");
@@ -184,11 +187,16 @@ public class Controller {
                     if (!sameDir) {
                         lastSelectedImage.move(newDirectoryFile.toString(),
                                 lastSelectedImage.getImageName(), false);
-                        /* If the moved image is still under the root directory, find it */
-                        if (rootDirectoryManager.isUnderRootDirectory(newDirectoryFile)) {
-                            TreeItem<ItemWrapper> movedImage = selectMovedImage(lastSelectedImage.getImageFile()
-                                    , imagesTreeView.getRoot());
-                            imagesTreeView.getSelectionModel().select(movedImage);
+                        /* If the moved image is still under the root
+                        directory, find it */
+                        if (rootDirectoryManager.isUnderRootDirectory
+                                (newDirectoryFile)) {
+                            TreeItem<ItemWrapper> movedImage =
+                                    selectMovedImage(lastSelectedImage
+                                                    .getImageFile()
+                                            , imagesTreeView.getRoot());
+                            imagesTreeView.getSelectionModel().select
+                                    (movedImage);
                         }
                         refreshGUIElements();
                     }
@@ -214,11 +222,14 @@ public class Controller {
 
     /**
      * Returns the TreeItem representing an image in a directory
+     *
      * @param imagePath the path of the image file
      * @param directory the directory in which to look for this image
      * @return the TreeItem representing the image, if found. Null if otherwise.
      */
-    private TreeItem<ItemWrapper> selectMovedImage(File imagePath, TreeItem<ItemWrapper> directory) {
+    private TreeItem<ItemWrapper> selectMovedImage(File imagePath,
+                                                   TreeItem<ItemWrapper>
+                                                           directory) {
         for (TreeItem<ItemWrapper> child : directory.getChildren()) {
             ItemWrapper wrappedVal = child.getValue();
             if (wrappedVal instanceof DirectoryWrapper) {
@@ -244,7 +255,8 @@ public class Controller {
     }
 
     /**
-     * Updates the last selected image based on what's selected in the imagesTreeView
+     * Updates the last selected image based on what's selected in the
+     * imagesTreeView
      */
     private void updateLastSelectedImage() {
         TreeItem<ItemWrapper> lastSelectedTreeItem = imagesTreeView
@@ -262,7 +274,8 @@ public class Controller {
     }
 
     /**
-     * Updates the list of currently selected images based on what's selected in the imagesTreeView
+     * Updates the list of currently selected images based on what's selected
+     * in the imagesTreeView
      */
     private void updateCurSelectedImages() {
         ObservableList<TreeItem<ItemWrapper>> selectedTreeItems =
@@ -403,10 +416,33 @@ public class Controller {
     }
 
     @FXML
+    private void openImageDir() {
+        if (lastSelectedImage != null) {
+            if (Desktop.isDesktopSupported()) {
+                new Thread(() -> {
+                    try {
+                        File imageDir = new File(PathExtractor.getDirectory
+                                (lastSelectedImage.getPathString()));
+                        Desktop.getDesktop().open(imageDir);
+                    } catch (IOException e) {
+                        String popupText = "Unable to open directory.";
+                        Popup.errorPopup("Error", popupText);
+                        System.out.println("Unable to open directory.");
+                    }
+                }).start();
+            } else {
+                String popupText = "The Java awt Desktop API is not supported" +
+                        " on this machine.";
+                Popup.errorPopup("Error", popupText);
+            }
+        }
+    }
+
+    @FXML
     private void viewRenameLog() {
         File renameLogFile = new File(LogUtility.RENAME_LOGGER_NAME + ".txt");
         try {
-            Runtime.getRuntime().exec(String.format("gvim %s", renameLogFile
+            Runtime.getRuntime().exec(String.format("gedit %s", renameLogFile
                     .getAbsoluteFile().toString()));
         } catch (IOException e) {
             String popupText = String.format("Unable to open %s.",
@@ -547,19 +583,19 @@ public class Controller {
         return retrofit.create(ImgurAPI.class);
     }
 
-    /**
-     * Inner class that takes care of uploading an image to Imgur
-     * <p>
-     * Adapted from ItachiUchiha's post on StackOverflow
-     * https://stackoverflow.com/questions/31607656/how-to-show-and-then-hide
-     * -a-label-in-javafx-after-a-task-is-completed
-     * retrieved Nov 25, 2017
-     */
-    class ImgurService extends Service<Void> {
-        protected Task<Void> createTask() {
-            return new Task<Void>() {
-                @Override
-                protected Void call() throws Exception {
+/**
+ * Inner class that takes care of uploading an image to Imgur
+ * <p>
+ * Adapted from ItachiUchiha's post on StackOverflow
+ * https://stackoverflow.com/questions/31607656/how-to-show-and-then-hide
+ * -a-label-in-javafx-after-a-task-is-completed
+ * retrieved Nov 25, 2017
+ */
+class ImgurService extends Service<Void> {
+    protected Task<Void> createTask() {
+        return new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
                     /*
                      * Adapted from Johnny850807's GitHub repository
                      * https://github
@@ -567,30 +603,30 @@ public class Controller {
                      * -Using-Retrofit-On-Native-Java
                      * on Nov 24th, 2017
                      */
-                    final ImgurAPI imgurApi = createImgurAPI();
+                final ImgurAPI imgurApi = createImgurAPI();
+                try {
+                    File image = new File(lastSelectedImage.getPath()
+                            .toString());
+                    RequestBody request = RequestBody.create(MediaType.parse
+                            ("image/*"), image);
+                    Call<ImageResponse> call = imgurApi.postImage(request);
+                    Response<ImageResponse> res = call.execute();
+
+                    System.out.println("Successful? " + res.isSuccessful());
+                    String url = res.body().data.link;
+
+                    Runtime runtime = Runtime.getRuntime();
                     try {
-                        File image = new File(lastSelectedImage.getPath()
-                                .toString());
-                        RequestBody request = RequestBody.create(MediaType.parse
-                                ("image/*"), image);
-                        Call<ImageResponse> call = imgurApi.postImage(request);
-                        Response<ImageResponse> res = call.execute();
-
-                        System.out.println("Successful? " + res.isSuccessful());
-                        String url = res.body().data.link;
-
-                        Runtime runtime = Runtime.getRuntime();
-                        try {
-                            runtime.exec("firefox " + url);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    } catch (Exception err) {
-                        err.printStackTrace();
+                        runtime.exec("firefox " + url);
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                    return null;
+                } catch (Exception err) {
+                    err.printStackTrace();
                 }
-            };
-        }
+                return null;
+            }
+        };
     }
+}
 }

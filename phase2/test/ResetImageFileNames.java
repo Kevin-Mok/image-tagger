@@ -1,5 +1,6 @@
 package test;
 
+import main.ImageTagManager;
 import main.PathExtractor;
 
 import java.io.File;
@@ -58,18 +59,10 @@ public class ResetImageFileNames {
                 "/h/u3/c7/05/mokkar/207/group_0485/phase2/";
 //         String serPathString =
 //                 "/h/u5/c6/05/khans167/group_0485";
-        String[] serFileNames = {"images.ser", "tags.ser"};
 
-        boolean sersDeleted = true;
-        for (String fileName : serFileNames) {
-            File serFile = new File(serPathString + fileName);
-            if (!serFile.delete()) {
-                sersDeleted = false;
-            }
-        }
-
-        System.out.println(sersDeleted ? "Ser's deleted." : "Could not delete" +
-                " ser's.");
+        File serFile = new File(serPathString + ImageTagManager.SER_FILE_NAME);
+        System.out.println(serFile.delete() ? "Ser deleted." : "Could not delete" +
+                " ser.");
     }
 
 }

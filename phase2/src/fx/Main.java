@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import main.DirectoryManager;
 import main.ImageTagManager;
 
 import java.io.IOException;
@@ -60,6 +61,8 @@ public class Main extends Application {
     public void stop() throws IOException {
         System.out.println("Serializing files.");
         imgTagManager.saveToFile();
+        System.out.println("Saving last directory.");
+        DirectoryManager.getInstance().saveLastDir();
     }
 
 

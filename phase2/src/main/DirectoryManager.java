@@ -1,18 +1,14 @@
 package main;
 
-import fx.Popup;
 import main.wrapper.DirectoryWrapper;
 import main.wrapper.ImageWrapper;
 import main.wrapper.ItemWrapper;
 
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.DirectoryStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.*;
+import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,7 +18,7 @@ import java.util.regex.Pattern;
  * Also takes care of opening that given directory using the OS's file viewer
  */
 public class DirectoryManager {
-
+    static final String LAST_DIR_FILE = "last_dir.txt";
     /**
      * The singleton instance of DirectoryManager
      */
@@ -148,30 +144,6 @@ public class DirectoryManager {
     }
 
     /**
-     * Open the root folder using the OS's file viewer
-     */
-    public void openRootFolder() {
-        if (rootFolder.getPath() != null) {
-            if (Desktop.isDesktopSupported()) {
-                new Thread(() -> {
-                    try {
-                        Desktop.getDesktop().open(this.rootFolder.getPath()
-                                .toFile());
-                    } catch (IOException e) {
-                        String popupText = "Unable to open directory.";
-                        Popup.errorPopup("Error", popupText);
-                        System.out.println("Unable to open directory.");
-                    }
-                }).start();
-            } else {
-                String popupText = "The Java awt Desktop API is not supported" +
-                        " on this machine.";
-                Popup.errorPopup("Error", popupText);
-            }
-        }
-    }
-
-    /**
      * Generates a string matching pattern, using the formats in imageFormats
      *
      * @return a regular expression
@@ -196,5 +168,39 @@ public class DirectoryManager {
     public boolean isUnderRootDirectory(File path) {
         return this.getRootFolder().getPath().toString().contains(path
                 .getPath());
+    }
+
+    /**
+     * Reads the stored root directory in LAST_DIR_FILE.
+     *
+     * @return Whether it was able to read a valid directory or not.
+     */
+    public boolean readLastDir() {
+        try {
+            Scanner lastDirScanner = new Scanner(new FileReader(LAST_DIR_FILE));
+            if (lastDirScanner.hasNext()) {
+                File lastDirFile = new File(lastDirScanner.next());
+                if (lastDirFile.isDirectory()) {
+                    rootFolder = new DirectoryWrapper(lastDirFile);
+                    return true;
+                }
+                System.out.println("Last stored directory was not valid.");
+            }
+            lastDirScanner.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("Could not find last directory.");
+        }
+        return false;
+    }
+
+    /**
+     * Saves the last used root directory to LAST_DIR_FILE.
+     */
+    public void saveLastDir() {
+        try {
+            Files.write(Paths.get(LAST_DIR_FILE), rootFolder.toString().getBytes());
+        } catch (IOException e) {
+            System.out.println("Couldn't save last directory.");
+        }
     }
 }
