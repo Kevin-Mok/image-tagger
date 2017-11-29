@@ -346,6 +346,9 @@ public class Controller {
             String invalidCharRegex = ".*[/\\\\-].*";
             Pattern invalidCharPattern = Pattern.compile(invalidCharRegex);
             Matcher invalidCharMatcher = invalidCharPattern.matcher(newTagName);
+            if (rootDirectorySelected()) {
+                curSelectedImages = rootDirectoryManager.getAllImagesUnderRoot();
+            }
             if (!invalidCharMatcher.matches()) {
                 for (Image img : curSelectedImages) {
                     img.addTag(newTagName);
@@ -388,6 +391,9 @@ public class Controller {
     @FXML
     private void deleteTag(ObservableList<String> tagNamesToDelete) {
         if (curSelectedImages != null && tagNamesToDelete.size() != 0) {
+            if (rootDirectorySelected()) {
+                curSelectedImages = rootDirectoryManager.getAllImagesUnderRoot();
+            }
             for (String tagName : tagNamesToDelete) {
                 int indexOfDash = tagName.indexOf('-');
                 if (indexOfDash != -1) {
@@ -413,6 +419,23 @@ public class Controller {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setTitle(title);
         return directoryChooser.showDialog(stage);
+    }
+
+    /**
+     * Checks if the root directory is selected in imagesTreeView
+     * @return true if the root directory is selected in imagesTreeView, false if otherwise
+     */
+    private boolean rootDirectorySelected() {
+        ObservableList<TreeItem<ItemWrapper>> selectedTreeItems
+                = imagesTreeView.getSelectionModel().getSelectedItems();
+        for (TreeItem<ItemWrapper> treeItem : selectedTreeItems) {
+            ItemWrapper wrappedItem = treeItem.getValue();
+            if (wrappedItem instanceof DirectoryWrapper &&
+                    wrappedItem.equals(rootDirectoryManager.getRootFolder())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @FXML
