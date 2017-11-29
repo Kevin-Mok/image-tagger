@@ -64,7 +64,7 @@ public class Controller {
     @FXML
     private Button deleteTagBtn;
     @FXML
-    private Button deleteAllBtn;
+    private Button deleteFromAvailableBtn;
     @FXML
     private Button uploadBtn;
     @FXML
@@ -135,8 +135,7 @@ public class Controller {
         chooseDirBtn.setOnAction(event -> {
             File rootDirectory = chooseDirectory("Choose a directory to open");
             if (rootDirectory != null) {
-                rootDirectoryManager.setRootFolder(new DirectoryWrapper
-                        (rootDirectory));
+                rootDirectoryManager.setRootFolder(rootDirectory);
                 refreshGUIElements();
             }
         });
@@ -144,10 +143,11 @@ public class Controller {
         deleteTagBtn.setOnAction(event -> deleteTag(currentTagsView
                 .getSelectionModel().getSelectedItems()));
 
-        deleteAllBtn.setOnMouseClicked(event -> {
+        deleteFromAvailableBtn.setOnMouseClicked(event -> {
             curSelectedImages = rootDirectoryManager.getAllImagesUnderRoot();
             if (Popup.confirmDeleteAll(selectedAvailableTags)) {
                 deleteTag(selectedAvailableTags);
+                refreshGUIElements();
             }
         });
 
@@ -281,7 +281,7 @@ public class Controller {
         ObservableList<TreeItem<ItemWrapper>> selectedTreeItems =
                 imagesTreeView.getSelectionModel().getSelectedItems();
         if (selectedTreeItems.size() != 0) {
-            ArrayList<Image> curSelectedImages = new ArrayList<>();
+            List<Image> curSelectedImages = new ArrayList<>();
             if (selectedTreeItems.size() == 1) {
                 ItemWrapper firstSelectedItem;
                         /* Following try-catch block to address strange JavaFX
@@ -291,11 +291,13 @@ public class Controller {
                 } catch (NullPointerException e) {
                     firstSelectedItem = selectedTreeItems.get(0).getValue();
                 }
-                if (firstSelectedItem instanceof ImageWrapper) {
-                    Image firstSelectedImage = ((ImageWrapper)
+                if (firstSelectedItem instanceof DirectoryWrapper) {
+                    curSelectedImages = getAllImagesUnderDirectory(((DirectoryWrapper) firstSelectedItem));
+                } else {
+                    Image selectedImage = ((ImageWrapper)
                             firstSelectedItem).getImage();
-                    curSelectedImages.add(firstSelectedImage);
-                    lastSelectedImage = firstSelectedImage;
+                    curSelectedImages.add(selectedImage);
+                    lastSelectedImage = selectedImage;
                 }
             } else {
                 for (TreeItem<ItemWrapper> items : selectedTreeItems) {
@@ -307,6 +309,23 @@ public class Controller {
             }
             this.curSelectedImages = curSelectedImages;
         }
+    }
+
+    /**
+     * Recursively collects all the images under a directory, including those in subdirectories
+     * @param directory the directory to search in
+     * @return a list of images under the aforementioned directory
+     */
+    private List<Image> getAllImagesUnderDirectory(DirectoryWrapper directory) {
+        List<Image> images = new ArrayList<>();
+        for (ItemWrapper item : directory.getChildObjects()) {
+            if (item instanceof DirectoryWrapper) {
+                images.addAll(getAllImagesUnderDirectory((DirectoryWrapper) item));
+            } else {
+                images.add(((ImageWrapper) item).getImage());
+            }
+        }
+        return images;
     }
 
     /**
@@ -346,15 +365,13 @@ public class Controller {
             String invalidCharRegex = ".*[/\\\\-].*";
             Pattern invalidCharPattern = Pattern.compile(invalidCharRegex);
             Matcher invalidCharMatcher = invalidCharPattern.matcher(newTagName);
-            if (rootDirectorySelected()) {
-                curSelectedImages = rootDirectoryManager.getAllImagesUnderRoot();
-            }
             if (!invalidCharMatcher.matches()) {
                 for (Image img : curSelectedImages) {
                     img.addTag(newTagName);
                 }
                 updateSelectedImageGUI();
                 updateLastSelectedImage();
+                refreshGUIElements();
             } else {
                 String invalidChars = "/ \\ -";
                 String popupTitle = "Invalid Tag Name";
@@ -385,15 +402,13 @@ public class Controller {
             }
             updateSelectedImageGUI();
             updateLastSelectedImage();
+            refreshGUIElements();
         }
     }
 
     @FXML
     private void deleteTag(ObservableList<String> tagNamesToDelete) {
         if (curSelectedImages != null && tagNamesToDelete.size() != 0) {
-            if (rootDirectorySelected()) {
-                curSelectedImages = rootDirectoryManager.getAllImagesUnderRoot();
-            }
             for (String tagName : tagNamesToDelete) {
                 int indexOfDash = tagName.indexOf('-');
                 if (indexOfDash != -1) {
@@ -419,23 +434,6 @@ public class Controller {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setTitle(title);
         return directoryChooser.showDialog(stage);
-    }
-
-    /**
-     * Checks if the root directory is selected in imagesTreeView
-     * @return true if the root directory is selected in imagesTreeView, false if otherwise
-     */
-    private boolean rootDirectorySelected() {
-        ObservableList<TreeItem<ItemWrapper>> selectedTreeItems
-                = imagesTreeView.getSelectionModel().getSelectedItems();
-        for (TreeItem<ItemWrapper> treeItem : selectedTreeItems) {
-            ItemWrapper wrappedItem = treeItem.getValue();
-            if (wrappedItem instanceof DirectoryWrapper &&
-                    wrappedItem.equals(rootDirectoryManager.getRootFolder())) {
-                return true;
-            }
-        }
-        return false;
     }
 
     @FXML
@@ -481,7 +479,7 @@ public class Controller {
         currentFolderLabel.setText(rootDirectoryManager.getRootFolder()
                 .toString());
         /* Pass in an empty list when just refreshing (no filtering) */
-        populateImageList(new ArrayList<>(), false);
+        populateImageList(new ArrayList<>(), true);
         updateAvailableTags();
         updateSelectedImageGUI();
     }
@@ -562,10 +560,7 @@ public class Controller {
                     parentNodeList).getChildObjects()) {
                 /* If the wrappedItem is a directory, recurse */
                 if (wrappedItem instanceof DirectoryWrapper) {
-                    String parentPath = wrappedItem.getPath().toString();
-                    TreeItem<ItemWrapper> childNode = new TreeItem<>
-                            (new DirectoryWrapper(new File(PathExtractor
-                                    .getImageFileName(parentPath))));
+                    TreeItem<ItemWrapper> childNode = new TreeItem<>(wrappedItem);
                     populateParentNode(childNode, wrappedItem, tags,
                             expandDirectories);
                     if (!childNode.isLeaf()) {
