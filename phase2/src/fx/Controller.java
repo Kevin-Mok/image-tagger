@@ -381,9 +381,7 @@ public class Controller {
         if (tagName != null) {
             addTagToAvailable(tagName);
             updateAvailableTags();
-            populateImageList(new ArrayList<>(), false);
-            updateAvailableTags();
-            populateImageList(new ArrayList<>(), false);
+            populateImageList(new ArrayList<>(), true);
         }
     }
 
