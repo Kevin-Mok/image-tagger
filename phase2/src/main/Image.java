@@ -148,7 +148,7 @@ public class Image implements Serializable {
 
             /* Update the changes in the singleton ImageTagManager.*/
             imageTagManager.addImage(this);
-            imageTagManager.refreshNameToTags();
+            imageTagManager.refreshTagToImageList();
         } catch (IOException e) {
             String popupTitle = "Error";
             String popupText = "File could not be moved or renamed.";

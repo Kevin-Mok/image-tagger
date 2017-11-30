@@ -23,7 +23,7 @@ public class ImageTagManager {
     private HashMap<String, ArrayList<Image>> tagToImageList;
     // HashMap of String of paths to Image with that path.
     private HashMap<String, Image> pathToImages;
-    private ArrayList<String> hideTags;
+    private ArrayList<String> hiddenTagNames;
 
     /**
      * Private constructor so that only one instance may be created through a
@@ -42,7 +42,7 @@ public class ImageTagManager {
             instance = new ImageTagManager();
             instance.tagToImageList = new HashMap<>();
             instance.pathToImages = new HashMap<>();
-            instance.hideTags = new ArrayList<>();
+            instance.hiddenTagNames = new ArrayList<>();
             instance.pathToImages.put(PLACEHOLDER_IMAGE_NAME, new Image
                     ());
         }
@@ -57,7 +57,9 @@ public class ImageTagManager {
      * currently being used.
      */
     public String[] getAvailableTagsWithCount() {
-        refreshNameToTags();
+        /* After updating the tagToImageList, iterate through all the tag
+        names and add their count to before the name. */
+        refreshTagToImageList();
         String[] availableTagsWithCount = tagToImageList.keySet().toArray(new
                 String[0]);
         for (int i = 0; i < availableTagsWithCount.length; i++) {
@@ -77,7 +79,19 @@ public class ImageTagManager {
      * @param tagName Name of tag to be hidden.
      */
     public void hideThisTag(String tagName) {
-        hideTags.add(tagName);
+        hiddenTagNames.add(tagName);
+    }
+
+    /**
+     * When adding a tag, if the tag is currently hidden, this will make it
+     * show again.
+     *
+     * @param tagName Tag name to be shown again.
+     */
+    public void removeFromHidden(String tagName) {
+        if (hiddenTagNames.contains(tagName)) {
+            hiddenTagNames.remove(tagName);
+        }
     }
 
     /**
@@ -100,7 +114,7 @@ public class ImageTagManager {
     }
 
     /**
-     * onAction="#hideTags"
+     * onAction="#hiddenTagNames"
      * Returns whether pathToImages contains a key of path parameter.
      *
      * @param path the path to check
@@ -122,42 +136,48 @@ public class ImageTagManager {
     /**
      * Recreates tagToImageList HashMap based on Images in pathToImages.
      */
-    void refreshNameToTags() {
-        HashMap<String, ArrayList<Image>> nameToTags = new HashMap<>();
-        // Iterates through all existing Images and adds all their tag names
-        // and associated images to new tagToImageList map.
+    void refreshTagToImageList() {
+        HashMap<String, ArrayList<Image>> tagToImageList = new HashMap<>();
+        /* Iterates through all existing Images and adds all their tag names
+        and associated images to new tagToImageList map. */
         for (Image image : pathToImages.values()) {
+            /* If it's the placeholder image, don't do anything with it. */
             if (!image.getImageName().equals(PLACEHOLDER_IMAGE_NAME)) {
                 ArrayList<String> imageTagNames = image.getTagManager()
                         .getTagNames();
                 for (String tagName : imageTagNames) {
-                    // If tag name is not a key, create a new mapping from it to
-                    // a new ArrayList. Then, add image to new ArrayList or the
-                    // already existing one.
-                    if (!hideTags.contains(tagName)) {
-                        if (!nameToTags.containsKey(tagName)) {
-                            nameToTags.put(tagName, new ArrayList<>());
-                        }
-                        nameToTags.get(tagName).add(image);
+                    /* If tag name is not a key, create a new mapping from it to
+                    a new ArrayList. Then, add image to new ArrayList or the
+                    already existing one. */
+                    if (!tagToImageList.containsKey(tagName)) {
+                        tagToImageList.put(tagName, new ArrayList<>());
                     }
+                    tagToImageList.get(tagName).add(image);
                 }
             }
         }
+        /* Add unused tags to the map with an empty ArrayList. */
         for (Image image : pathToImages.values()) {
-            for (String unUsed : image.getTagManager().getUnusedTags()) {
-                if (!nameToTags.containsKey(unUsed))
-                    nameToTags.put(unUsed, new ArrayList<>());
+            for (String unusedTagName : image.getTagManager().getUnusedTags()) {
+                if (!tagToImageList.containsKey(unusedTagName))
+                    tagToImageList.put(unusedTagName, new ArrayList<>());
             }
         }
-        // mapBuilder(image, tagToImageList);
-
-        ArrayList<String> leftOver = pathToImages.get(PLACEHOLDER_IMAGE_NAME)
+        /* Add any tags in the placeholder image to the map if they aren't
+        there already. */
+        ArrayList<String> placeHolderTagNames = pathToImages.get
+                (PLACEHOLDER_IMAGE_NAME)
                 .getTagManager().getTagNames();
-        for (String tagNames : leftOver) {
-            if (!nameToTags.containsKey(tagNames))
-                nameToTags.put(tagNames, new ArrayList<>());
+        for (String tagName : placeHolderTagNames) {
+            if (!tagToImageList.containsKey(tagName))
+                tagToImageList.put(tagName, new ArrayList<>());
         }
-        this.tagToImageList = nameToTags;
+
+        for (String hiddenTagName : hiddenTagNames) {
+            tagToImageList.remove(hiddenTagName);
+        }
+
+        this.tagToImageList = tagToImageList;
     }
 
     /**
@@ -168,6 +188,7 @@ public class ImageTagManager {
     public void addTagToPlaceholder(String tagName) {
         Image img = pathToImages.get(PLACEHOLDER_IMAGE_NAME);
         img.getTagManager().addTag(tagName);
+        removeFromHidden(tagName);
     }
 
     /*
@@ -197,7 +218,7 @@ public class ImageTagManager {
         for (String deleteItem : toDelete) {
             pathToImages.remove(deleteItem);
         }
-        refreshNameToTags();
+        refreshTagToImageList();
     }
 
     /**

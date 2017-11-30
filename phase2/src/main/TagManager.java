@@ -54,6 +54,7 @@ public class TagManager implements Serializable {
         if (!currentTags.contains(tag)) {
             currentTags.add(tag);
             tagList.add(tag);
+            ImageTagManager.getInstance().removeFromHidden(tagName);
             String currentName = nameHistory.lastEntry().getValue();
             nameHistory.put(new Timestamp(System.currentTimeMillis()),
                     currentName + " @" + tag.getName());
@@ -76,7 +77,7 @@ public class TagManager implements Serializable {
             currentTags.add(toAdd);
             tagList.add(toAdd);
         }
-        ImageTagManager.getInstance().refreshNameToTags();
+        ImageTagManager.getInstance().refreshTagToImageList();
     }
 
     /**

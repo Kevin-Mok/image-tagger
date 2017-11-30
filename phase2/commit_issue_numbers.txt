@@ -239,6 +239,27 @@ Title: Keep track of issues on GitHub in commit_issue_numbers.txt
 Description: Since we can't make our GitHub repository public, we can instead create a text file with relevant issue numbers mentioned in our commits.
 
 ########
+# Issue 52
+
+Title: Add information to help.txt
+
+Description: "You should include any notes that you think are important for a reader of your program."
+
+########
+# Issue 53
+
+Title: Deleting from available tag set doesn't work
+
+Description: When regenerating the tagToImageList map, it doesn't properly remove the hidden tag from the keys and thus is still being displayed after performing the action.
+
+########
+# Issue 54
+
+Title: Hidden available tag is not being shown upon adding it again
+
+Description: Adding back the tag isn't removing it from the list of hidden tags.
+
+########
 # Issue 
 
 Title: 

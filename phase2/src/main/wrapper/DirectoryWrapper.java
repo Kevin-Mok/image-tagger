@@ -57,7 +57,6 @@ public class DirectoryWrapper implements ItemWrapper {
      *
      * @return the path of this directory as a Path object
      */
-    @Override
     public Path getPath() {
         if (path == null) {
             return null;

@@ -275,8 +275,10 @@ public class Controller {
 
     private void hideTags() {
         if (selectedAvailableTags.size() != 0) {
-            for (String tagName : selectedAvailableTags) {
-                ImageTagManager.getInstance().hideThisTag(tagName);
+            for (String availableTagName : selectedAvailableTags) {
+                String extractedTagName = extractAvailableTagName
+                        (availableTagName);
+                ImageTagManager.getInstance().hideThisTag(extractedTagName);
             }
         }
     }
@@ -372,12 +374,10 @@ public class Controller {
                 for (Image img : curSelectedImages) {
                     img.addTag(tagName);
                 }
-                updateSelectedImageGUI();
-                updateLastSelectedImage();
-                refreshGUIElements();
             } else {
                 addTagToAvailable(tagName);
             }
+            updateAvailableTags();
         }
     }
 
@@ -390,12 +390,18 @@ public class Controller {
      */
     @FXML
     public void deleteFromAvailableTags() {
-        String userChoice = PopUp.deleteFromAvailableTags();
-        if (userChoice.equals("delete from all images under root")) {
-            curSelectedImages = rootDirectoryManager.getAllImagesUnderRoot();
-            deleteTag(availableTagsView.getSelectionModel().getSelectedItems());
-        } else {
-            hideTags();
+        if (selectedAvailableTags.size() > 0) {
+            String userChoice = PopUp.deleteFromAvailableTags();
+            if (userChoice.equals("delete from all images under root")) {
+                curSelectedImages = rootDirectoryManager
+                        .getAllImagesUnderRoot();
+
+                deleteTag(availableTagsView.getSelectionModel()
+                        .getSelectedItems());
+            } else {
+                hideTags();
+            }
+            updateAvailableTags();
         }
     }
 
@@ -500,7 +506,7 @@ public class Controller {
      */
     @FXML
     public void updateSelectedAvailableTags() {
-        selectedAvailableTags = availableTagsView.getSelectionModel()
+        this.selectedAvailableTags = availableTagsView.getSelectionModel()
                 .getSelectedItems();
     }
 
@@ -517,8 +523,7 @@ public class Controller {
                 }
             }
             updateSelectedImageGUI();
-            updateLastSelectedImage();
-            refreshGUIElements();
+            // refreshGUIElements();
         }
     }
 
@@ -601,7 +606,9 @@ public class Controller {
     }
 
     /**
-     * Refreshes all GUI elements when something is changed by the user
+     * Refreshes all GUI elements. Should ideally be used once when starting
+     * program. updateSelectedImageGUI() should be used for more constant
+     * updating.
      */
     private void refreshGUIElements() {
         currentFolderLabel.setText(rootDirectoryManager.getRootFolder()

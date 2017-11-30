@@ -37,7 +37,6 @@ public class ImageWrapper implements ItemWrapper {
      *
      * @return the path of the image in this wrapper, as a Path object
      */
-    @Override
     public Path getPath() {
         return this.image.getPath();
     }
