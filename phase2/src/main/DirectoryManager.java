@@ -47,6 +47,10 @@ public class DirectoryManager {
     private DirectoryManager() {
     }
 
+    /**
+     * Returns the singleton instance of DirectoryManager
+     * @return the singleton instance of DirectoryManager
+     */
     public static DirectoryManager getInstance() {
         if (instance == null) {
             instance = new DirectoryManager();

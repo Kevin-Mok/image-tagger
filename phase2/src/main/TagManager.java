@@ -146,7 +146,10 @@ public class TagManager implements Serializable {
         }
     }
 
-    // Returns current name of Image with its original name and current tags.
+    /**
+     * Returns the current name of the image (tags included)
+     * @return the current name of the image
+     */
     private String getCurrentName() {
         StringBuilder result = new StringBuilder();
         result.append(PathExtractor.getOriginalName((image.getPathString())));
@@ -233,7 +236,9 @@ public class TagManager implements Serializable {
         currentTags = new LinkedHashSet<>(returnTagsNeeded(tags));
     }
 
-    // Return tags needed from tagList when reverting name.
+    /**
+     * Return tags needed from tagList when reverting name.
+     */
     private ArrayList<Tag> returnTagsNeeded(ArrayList<String> names) {
         ArrayList<Tag> tags = new ArrayList<>();
         for (String name : names) {

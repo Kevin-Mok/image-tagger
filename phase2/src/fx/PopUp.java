@@ -5,7 +5,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.TextInputDialog;
-import javafx.scene.text.Text;
 
 import java.util.Arrays;
 import java.util.List;
@@ -18,7 +17,7 @@ import java.util.regex.Pattern;
  * Class responsible for the display of error information via pop-ups. Unused
  * now in Phase 1 since could not get to compile through command line.
  */
-public class Popup {
+public class PopUp {
     /**
      * Displays error information in a pop-up window
      *
@@ -70,6 +69,7 @@ public class Popup {
                                 "the characters: %s", "/, \\, -"));
                         invalidInput = true;
                     } else {
+                        invalidInput = false;
                         break;
                     }
                 } catch (NoSuchElementException e) {
@@ -78,7 +78,6 @@ public class Popup {
                 }
             }
         } while (invalidInput);
-
         return tagName;
     }
 
@@ -158,6 +157,7 @@ public class Popup {
      */
     private static String createChoiceDialog(String defaultChoice, List<String> choices) {
         ChoiceDialog<String> choiceDialog = new ChoiceDialog<>(defaultChoice, choices);
+        choiceDialog.setHeaderText("Select Action");
         choiceDialog.getDialogPane().setPrefHeight(300);
         choiceDialog.getDialogPane().setPrefWidth(480);
         choiceDialog.setResizable(true);

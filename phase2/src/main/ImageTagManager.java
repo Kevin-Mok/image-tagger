@@ -8,6 +8,9 @@ import java.util.*;
  * contained within them.
  */
 public class ImageTagManager {
+    /**
+     * Serialized file name
+     */
     public static final String SER_FILE_NAME = "path_to_images.ser";
 
     // Singleton instance of this class.
@@ -78,7 +81,7 @@ public class ImageTagManager {
 
     /**
      * Returns image with path parameter in pathToImages.
-     *
+     * @param path the path to use to look up an image
      * @return Image with path parameter in pathToImages.
      */
     Image getImage(String path) {
@@ -87,7 +90,7 @@ public class ImageTagManager {
 
     /**onAction="#hideTags"
      * Returns whether pathToImages contains a key of path parameter.
-     *
+     * @param path the path to check
      * @return Boolean of whether pathToImages contains a key of path parameter.
      */
     boolean containsImagePath(String path) {
@@ -111,7 +114,7 @@ public class ImageTagManager {
         // Iterates through all existing Images and adds all their tag names
         // and associated images to new tagToImageList map.
         for (Image image : pathToImages.values()) {
-            if (image.getImageName() != "Tags Without Images") {
+            if (!image.getImageName().equals("Tags Without Images")) {
                 ArrayList<String> imageTagNames = image.getTagManager()
                         .getTagNames();
                 for (String tagName : imageTagNames) {
@@ -167,7 +170,7 @@ public class ImageTagManager {
     private void deleteNonExistentImages() {
         ArrayList<String> toDelete = new ArrayList<>();
         for (String path : pathToImages.keySet()) {
-            if (path != "Tags Without Images") {
+            if (!path.equals("Tags Without Images")) {
                 if (!new File(path).exists()) {
                     toDelete.add(path);
                 }

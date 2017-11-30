@@ -1,6 +1,6 @@
 package main;
 
-import fx.Popup;
+import fx.PopUp;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,7 +8,6 @@ import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -41,6 +40,10 @@ public class Image implements Serializable {
         tagManager = new TagManager(imageName, this);
     }
 
+    /**
+     * Returns the image file this object represents
+     * @return the image file this object represents
+     */
     public File getImageFile() {
         return imageFile;
     }
@@ -142,7 +145,7 @@ public class Image implements Serializable {
         } catch (IOException e) {
             String popupTitle = "Error";
             String popupText = "File could not be moved or renamed.";
-            Popup.errorPopup(popupTitle, popupText);
+            PopUp.errorPopup(popupTitle, popupText);
         }
     }
 

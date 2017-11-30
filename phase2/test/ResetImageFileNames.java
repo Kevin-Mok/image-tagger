@@ -1,5 +1,3 @@
-package test;
-
 import main.ImageTagManager;
 import main.PathExtractor;
 

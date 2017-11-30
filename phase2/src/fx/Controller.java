@@ -95,6 +95,10 @@ public class Controller {
     public Controller() {
     }
 
+    /**
+     * Sets the JavaFX stage for this controller
+     * @param stage the stage
+     */
     void setStage(Stage stage) {
         this.stage = stage;
     }
@@ -149,7 +153,7 @@ public class Controller {
 
         deleteFromAvailableBtn.setOnMouseClicked(event -> {
             curSelectedImages = rootDirectoryManager.getAllImagesUnderRoot();
-            if (Popup.confirmDeleteAll(selectedAvailableTags)) {
+            if (PopUp.confirmDeleteAll(selectedAvailableTags)) {
                 deleteTag(selectedAvailableTags);
                 refreshGUIElements();
             }
@@ -166,7 +170,7 @@ public class Controller {
             /* Only allow the user to upload one picture at a time */
             if (imagesTreeView.getSelectionModel().getSelectedItems().size()
                     == 1) {
-                if (Popup.confirmUpload()) {
+                if (PopUp.confirmUpload()) {
                     uploadLabel.setVisible(true);
                     if (!service.isRunning()) {
                     /* Service will take care of uploading the image */
@@ -205,7 +209,7 @@ public class Controller {
                         refreshGUIElements();
                     }
                 } catch (NullPointerException e) {
-                    Popup.noDirSelectedPopup();
+                    PopUp.noDirSelectedPopup();
                     System.out.println("No valid directory was selected.");
                 }
             }
@@ -249,8 +253,9 @@ public class Controller {
         return null;
     }
 
-    /* Want image to change on mouse click or key press so refactored the
-    actions required into a separate function. */
+    /**
+     * Changes the image displayed on mouse click or key press
+     */
     @FXML
     public void changeImageDisplayed() {
         updateLastSelectedImage();
@@ -258,7 +263,7 @@ public class Controller {
         updateCurSelectedImages();
     }
 
-    public void hideTags(){
+    private void hideTags(){
         if (selectedAvailableTags.size() != 0){
             for (String tagName : selectedAvailableTags){
                 ImageTagManager.getInstance().hideThisTag(tagName);
@@ -340,6 +345,44 @@ public class Controller {
     }
 
     /**
+     * Bound to the addToAvailableTagsBtn, displays a popup allowing the user
+     * to choose between adding a tag to just the available tags pool (and not to any images),
+     * or adding a tag to all the images under the current root directory
+     */
+    @FXML
+    public void addToAvailableTags() {
+        String tagName = PopUp.addTagPopup();
+        String userChoice = PopUp.addToAvailableTags();
+        if (userChoice.equals("add to all images under root")) {
+            curSelectedImages = rootDirectoryManager.getAllImagesUnderRoot();
+            for (Image img : curSelectedImages) {
+                img.addTag(tagName);
+            }
+            updateSelectedImageGUI();
+            updateLastSelectedImage();
+            refreshGUIElements();
+        } else {
+            addTagToAvailable(tagName);
+        }
+    }
+
+    /**
+     * Bound to deleteFromAvailableBtn, displays a popup allowing the user to choose between
+     * deleting a tag from all images under the current root directory, or removing the tag from the
+     * available tags pool (but not deleting it from any image)
+     */
+    @FXML
+    public void deleteFromAvailableTags() {
+        String userChoice = PopUp.deleteFromAvailableTags();
+        if (userChoice.equals("delete from all images under root")) {
+            curSelectedImages = rootDirectoryManager.getAllImagesUnderRoot();
+            deleteTag(availableTagsView.getSelectionModel().getSelectedItems());
+        } else {
+            hideTags();
+        }
+    }
+
+    /**
      * Recursively collects the tags of all images in a directory and its
      * subdirectories and puts them
      * in a list
@@ -400,6 +443,11 @@ public class Controller {
         }
     }
 
+    /**
+     * Extracts the name of a tag by stripping away dashes and spaces
+     * @param tagName the tag name to be cleaned up
+     * @return the extracted tag name without any dashes or spaces
+     */
     private String extractAvailableTagName(String tagName) {
         return tagName.substring(tagName.indexOf("-") + 1).trim();
     }
@@ -411,9 +459,8 @@ public class Controller {
      */
     @FXML
     public void addNewTag() {
-        String newTagName = Popup.addTagPopup();
+        String newTagName = PopUp.addTagPopup();
         if (curSelectedImages != null && newTagName.trim().length() > 0) {
-
                 for (Image img : curSelectedImages) {
                     img.addTag(newTagName);
                 }
@@ -423,15 +470,16 @@ public class Controller {
             }
         }
 
-    public void addTagToAvailable(){
-        String newTagName = Popup.addTagPopup();
+    private void addTagToAvailable(String newTagName){
         if(newTagName.trim().length() > 0){
             ImageTagManager.getInstance().addTagToToken(newTagName);
         }
         refreshGUIElements();
-
     }
 
+    /**
+     * Updates the selected tags in the "Available Tags" ListView
+     */
     @FXML
     public void updateSelectedAvailableTags() {
         selectedAvailableTags = availableTagsView.getSelectionModel()
@@ -456,6 +504,10 @@ public class Controller {
         }
     }
 
+    /**
+     * Deletes a list of tags from the currently selected images
+     * @param tagNamesToDelete the list of tags to be deleted
+     */
     @FXML
     private void deleteTag(ObservableList<String> tagNamesToDelete) {
         if (curSelectedImages != null && tagNamesToDelete.size() != 0) {
@@ -487,6 +539,9 @@ public class Controller {
         return directoryChooser.showDialog(stage);
     }
 
+    /**
+     * Opens the directory the last selected image is in
+     */
     @FXML
     private void openImageDir() {
         if (lastSelectedImage != null) {
@@ -498,18 +553,21 @@ public class Controller {
                         Desktop.getDesktop().open(imageDir);
                     } catch (IOException e) {
                         String popupText = "Unable to open directory.";
-                        Popup.errorPopup("Error", popupText);
+                        PopUp.errorPopup("Error", popupText);
                         System.out.println("Unable to open directory.");
                     }
                 }).start();
             } else {
                 String popupText = "The Java awt Desktop API is not supported" +
                         " on this machine.";
-                Popup.errorPopup("Error", popupText);
+                PopUp.errorPopup("Error", popupText);
             }
         }
     }
 
+    /**
+     * Opens the rename log for the user to review
+     */
     @FXML
     private void viewRenameLog() {
         File renameLogFile = new File(LogUtility.RENAME_LOGGER_NAME + ".txt");
@@ -519,7 +577,7 @@ public class Controller {
         } catch (IOException e) {
             String popupText = String.format("Unable to open %s.",
                     renameLogFile.toString());
-            Popup.errorPopup("Unable to Open File", popupText);
+            PopUp.errorPopup("Unable to Open File", popupText);
         }
     }
 

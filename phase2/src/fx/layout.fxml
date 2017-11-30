@@ -75,7 +75,7 @@
                 </ImageView>
             </graphic>
             <tooltip>
-                <Tooltip text="Open Current Directory">
+                <Tooltip text="Open the directory the selected image is in">
                <font>
                   <Font size="15.0" />
                </font></Tooltip>
@@ -171,7 +171,7 @@
                 <Font name="Monaco" size="13.0" />
             </font>
         </Button>
-        <Button fx:id="deleteFromAvailableBtn" layoutX="513.0" layoutY="840.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="97.0" text="Tag" AnchorPane.bottomAnchor="23.0">
+        <Button fx:id="deleteFromAvailableBtn" layoutX="513.0" layoutY="840.0" mnemonicParsing="false" onAction="#deleteFromAvailableTags" prefHeight="28.0" prefWidth="97.0" text="Tag" AnchorPane.bottomAnchor="23.0">
             <font>
                 <Font name="Monaco" size="13.0" />
             </font>
@@ -223,7 +223,7 @@
                 <Font name="DejaVu Sans Bold" size="13.0" />
             </font>
         </Label>
-      <Button fx:id="addToAvailableTagsBtn" layoutX="395.0" layoutY="839.0" mnemonicParsing="false" onAction="#addTagToAvailable" prefHeight="28.0" prefWidth="97.0" text="Tag" AnchorPane.bottomAnchor="23.0">
+      <Button fx:id="addToAvailableTagsBtn" layoutX="395.0" layoutY="839.0" mnemonicParsing="false" onAction="#addToAvailableTags" prefHeight="28.0" prefWidth="97.0" text="Tag" AnchorPane.bottomAnchor="23.0">
          <font>
             <Font name="Monaco" size="13.0" />
          </font>

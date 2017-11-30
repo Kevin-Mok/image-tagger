@@ -51,6 +51,12 @@ public class LogUtility {
         return logUtility;
     }
 
+    /**
+     * Initializes a Logger object based on the loggerName passed in
+     * @param loggerName name of the Logger to be initialized
+     * @return the initialized Logger
+     * @throws IOException thrown if file I/O causes any errors
+     */
     private Logger initializeLogger(String loggerName) throws IOException {
         String loggerFileName = loggerName + ".txt";
         Logger logger = Logger.getLogger(loggerName);
