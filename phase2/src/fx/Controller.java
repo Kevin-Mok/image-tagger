@@ -66,8 +66,6 @@ public class Controller {
     @FXML
     private Button deleteTagBtn;
     @FXML
-    private Button deleteFromAvailableBtn;
-    @FXML
     private Button uploadBtn;
     @FXML
     private Label uploadLabel;
@@ -235,6 +233,8 @@ public class Controller {
                         1).trim();
                 lastSelectedImage.revertName(chosenName);
                 updateSelectedImageGUI();
+                updateLastSelectedImage();
+                updateAvailableTags();
             }
         });
     }
@@ -347,14 +347,20 @@ public class Controller {
 
     /**
      * Change the label and contents of currentTagsView when a directory is
-     * selected,
-     * , so that it displays all the tags in that directory
+     * selected, so that it displays all the tags in that directory
      *
      * @param directory the directory that's selected
      */
     private void changeCurrentTagsDisplay(DirectoryWrapper directory) {
         currentTagsLabel.setText("Tags in Selected Directory");
         currentTagsView.getItems().setAll(getAllTagsInDirectory(directory));
+    }
+
+    /**
+     * Updates the current tags display if any changes were made to the currently selected image
+     */
+    private void updateCurrentTagsDisplay() {
+
     }
 
     /**
@@ -378,9 +384,10 @@ public class Controller {
             } else {
                 addTagToAvailable(tagName);
                 updateAvailableTags();
-                refreshGUIElements();
+                populateImageList(new ArrayList<>(), false);
             }
             updateAvailableTags();
+            populateImageList(new ArrayList<>(), false);
         }
     }
 
@@ -526,7 +533,7 @@ public class Controller {
                 }
             }
             updateSelectedImageGUI();
-            // refreshGUIElements();
+            updateLastSelectedImage();
         }
     }
 
@@ -549,7 +556,7 @@ public class Controller {
             }
             updateSelectedImageGUI();
             updateLastSelectedImage();
-            refreshGUIElements();
+            updateAvailableTags();
         }
     }
 
@@ -657,7 +664,7 @@ public class Controller {
         TreeItem<ItemWrapper> rootFolderNode = new TreeItem<>(
                 rootDirectoryManager.getRootFolder());
         ItemWrapper rootImagesList = rootDirectoryManager
-                .getRootDirectory();
+                .getRootFolder();
         populateParentNode(rootFolderNode, rootImagesList, tagNames,
                 expandDirectories);
         rootFolderNode.setExpanded(true);

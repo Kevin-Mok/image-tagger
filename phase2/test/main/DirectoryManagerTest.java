@@ -44,7 +44,7 @@ class DirectoryManagerTest {
                 new Image(testImageTwo, PathExtractor.getImageFileName(
                         (testImageTwo).toString())));
 
-        ItemWrapper rootDirectory = manager.getRootDirectory();
+        ItemWrapper rootDirectory = manager.getRootFolder();
         assertTrue(rootDirectory instanceof DirectoryWrapper);
         DirectoryWrapper testwrapper = new DirectoryWrapper(testDirPath
                 .toFile());
