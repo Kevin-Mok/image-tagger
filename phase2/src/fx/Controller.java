@@ -352,17 +352,20 @@ public class Controller {
     @FXML
     public void addToAvailableTags() {
         String tagName = PopUp.addTagPopup();
-        String userChoice = PopUp.addToAvailableTags();
-        if (userChoice.equals("add to all images under root")) {
-            curSelectedImages = rootDirectoryManager.getAllImagesUnderRoot();
-            for (Image img : curSelectedImages) {
-                img.addTag(tagName);
+        if (tagName != null) {
+            String userChoice = PopUp.addToAvailableTags();
+            if (userChoice.equals("add to all images under root")) {
+                curSelectedImages = rootDirectoryManager.getAllImagesUnderRoot();
+
+                for (Image img : curSelectedImages) {
+                    img.addTag(tagName);
+                }
+                updateSelectedImageGUI();
+                updateLastSelectedImage();
+                refreshGUIElements();
+            } else {
+                addTagToAvailable(tagName);
             }
-            updateSelectedImageGUI();
-            updateLastSelectedImage();
-            refreshGUIElements();
-        } else {
-            addTagToAvailable(tagName);
         }
     }
 
@@ -473,8 +476,8 @@ public class Controller {
     private void addTagToAvailable(String newTagName){
         if(newTagName.trim().length() > 0){
             ImageTagManager.getInstance().addTagToToken(newTagName);
+            refreshGUIElements();
         }
-        refreshGUIElements();
     }
 
     /**

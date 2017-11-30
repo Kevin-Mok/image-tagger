@@ -12,6 +12,7 @@ public class ImageTagManager {
      * Serialized file name
      */
     public static final String SER_FILE_NAME = "path_to_images.ser";
+    static final String PLACEHOLDER_IMAGE_NAME = "Placeholder Image";
 
     // Singleton instance of this class.
     private static ImageTagManager instance = null;
@@ -39,7 +40,8 @@ public class ImageTagManager {
             instance.tagToImageList = new HashMap<>();
             instance.pathToImages = new HashMap<>();
             instance.hideTags = new ArrayList<>();
-            instance.pathToImages.put("Tags Without Images", new Image("Tags Without Images"));
+            instance.pathToImages.put(PLACEHOLDER_IMAGE_NAME, new Image
+                    (PLACEHOLDER_IMAGE_NAME));
         }
         return instance;
     }
@@ -66,7 +68,7 @@ public class ImageTagManager {
         return availableTagsWithCount;
     }
 
-    public void hideThisTag(String tagName){
+    public void hideThisTag(String tagName) {
         hideTags.add(tagName);
     }
 
@@ -88,7 +90,8 @@ public class ImageTagManager {
         return pathToImages.get(path);
     }
 
-    /**onAction="#hideTags"
+    /**
+     * onAction="#hideTags"
      * Returns whether pathToImages contains a key of path parameter.
      * @param path the path to check
      * @return Boolean of whether pathToImages contains a key of path parameter.
@@ -114,7 +117,7 @@ public class ImageTagManager {
         // Iterates through all existing Images and adds all their tag names
         // and associated images to new tagToImageList map.
         for (Image image : pathToImages.values()) {
-            if (!image.getImageName().equals("Tags Without Images")) {
+            if (!image.getImageName().equals(PLACEHOLDER_IMAGE_NAME)) {
                 ArrayList<String> imageTagNames = image.getTagManager()
                         .getTagNames();
                 for (String tagName : imageTagNames) {
@@ -132,22 +135,23 @@ public class ImageTagManager {
         }
         for (Image image : pathToImages.values()) {
             for (String unUsed : image.getTagManager().getUnusedTags()) {
-                if(!nameToTags.containsKey(unUsed))
-                nameToTags.put(unUsed, new ArrayList<>());
+                if (!nameToTags.containsKey(unUsed))
+                    nameToTags.put(unUsed, new ArrayList<>());
             }
         }
-            // mapBuilder(image, tagToImageList);
+        // mapBuilder(image, tagToImageList);
 
-        ArrayList<String> leftOver = pathToImages.get("Tags Without Images").getTagManager().getTagNames();
-        for (String tagNames : leftOver){
+        ArrayList<String> leftOver = pathToImages.get(PLACEHOLDER_IMAGE_NAME)
+                .getTagManager().getTagNames();
+        for (String tagNames : leftOver) {
             if (!nameToTags.containsKey(tagNames))
-            nameToTags.put(tagNames, new ArrayList<>());
+                nameToTags.put(tagNames, new ArrayList<>());
         }
         this.tagToImageList = nameToTags;
     }
 
-    public void addTagToToken(String tagName){
-        Image img = pathToImages.get("Tags Without Images");
+    public void addTagToToken(String tagName) {
+        Image img = pathToImages.get(PLACEHOLDER_IMAGE_NAME);
         img.getTagManager().addTag(tagName);
     }
 
@@ -170,12 +174,10 @@ public class ImageTagManager {
     private void deleteNonExistentImages() {
         ArrayList<String> toDelete = new ArrayList<>();
         for (String path : pathToImages.keySet()) {
-            if (!path.equals("Tags Without Images")) {
-                if (!new File(path).exists()) {
+            if (!path.equals(PLACEHOLDER_IMAGE_NAME) && !new File(path).exists()) {
                     toDelete.add(path);
                 }
             }
-        }
         for (String deleteItem : toDelete) {
             pathToImages.remove(deleteItem);
         }
@@ -201,8 +203,9 @@ public class ImageTagManager {
              */
             pathToImages = (HashMap<String, Image>) pathToImagesObject;
             imagesObjectInput.close();
-            if(!pathToImages.containsKey("Tags Without Images")){
-                pathToImages.put("Tags Without Images", new Image("Tags Without Images"));
+            if (!pathToImages.containsKey(PLACEHOLDER_IMAGE_NAME)) {
+                pathToImages.put(PLACEHOLDER_IMAGE_NAME, new Image
+                        (PLACEHOLDER_IMAGE_NAME));
             }
             deleteNonExistentImages();
         } catch (IOException e) {

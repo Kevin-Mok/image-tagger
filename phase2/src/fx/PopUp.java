@@ -8,7 +8,6 @@ import javafx.scene.control.TextInputDialog;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -54,28 +53,25 @@ public class PopUp {
         dialog.setTitle("Add Tag");
         String invalidCharRegex = ".*[/\\\\-].*";
         Pattern invalidCharPattern = Pattern.compile(invalidCharRegex);
-//        dialog.setContentText(String.format("The tag name must not include " +
-//                "the characters: %s", "/, \\, -"));
         String tagName = "";
-        boolean invalidInput = false;
+        boolean invalidInput;
         do {
             Optional<String> result = dialog.showAndWait();
             if (result.isPresent()) {
-                try {
-                    tagName = result.get();
-                    Matcher invalidCharMatcher = invalidCharPattern.matcher(tagName);
-                    if (invalidCharMatcher.matches()) {
-                        dialog.setContentText(String.format("The tag name must not include " +
-                                "the characters: %s", "/, \\, -"));
-                        invalidInput = true;
-                    } else {
-                        invalidInput = false;
-                        break;
-                    }
-                } catch (NoSuchElementException e) {
-                    e.printStackTrace();
+                tagName = result.get();
+                Matcher invalidCharMatcher = invalidCharPattern.matcher
+                        (tagName);
+                if (invalidCharMatcher.matches()) {
+                    dialog.setContentText(String.format("The tag name must " +
+                            "not include " +
+                            "the characters: %s", "/, \\, -"));
                     invalidInput = true;
+                    tagName = null;
+                } else {
+                    invalidInput = false;
                 }
+            } else {
+                invalidInput = false;
             }
         } while (invalidInput);
         return tagName;
@@ -126,8 +122,11 @@ public class PopUp {
     }
 
     /**
-     * Shows a pop-up asking the user to choose between adding a tag just to the global pool
-     * or adding the tag to the global tool and adding it to every image in the current root directory
+     * Shows a pop-up asking the user to choose between adding a tag just to
+     * the global pool
+     * or adding the tag to the global tool and adding it to every image in
+     * the current root directory
+     *
      * @return the action to be done
      */
     static String addToAvailableTags() {
@@ -138,33 +137,38 @@ public class PopUp {
     }
 
     /**
-     * Shows a pop-up asking the user to choose between deleting a tag just from the global pool,
-     * or deleting that tag from the global pool and from all images in the current root directory
+     * Shows a pop-up asking the user to choose between deleting a tag just
+     * from the global pool,
+     * or deleting that tag from the global pool and from all images in the
+     * current root directory
+     *
      * @return the action to be done
      */
     static String deleteFromAvailableTags() {
-        String defaultChoice = "delete from available tags, but not from any images";
+        String defaultChoice = "delete from available tags, but not from any " +
+                "images";
         List<String> choices
-                = Arrays.asList(defaultChoice, "delete from all images under root");
+                = Arrays.asList(defaultChoice, "delete from all images under " +
+                "root");
         return createChoiceDialog(defaultChoice, choices);
     }
 
     /**
      * Helper method for creating a choice dialog
+     *
      * @param defaultChoice the default choice for the dialog
-     * @param choices the list of choices for the dialog
+     * @param choices       the list of choices for the dialog
      * @return the user's choice
      */
-    private static String createChoiceDialog(String defaultChoice, List<String> choices) {
-        ChoiceDialog<String> choiceDialog = new ChoiceDialog<>(defaultChoice, choices);
+    private static String createChoiceDialog(String defaultChoice,
+                                             List<String> choices) {
+        ChoiceDialog<String> choiceDialog = new ChoiceDialog<>(defaultChoice,
+                choices);
         choiceDialog.setHeaderText("Select Action");
-        choiceDialog.getDialogPane().setPrefHeight(300);
+        choiceDialog.getDialogPane().setPrefHeight(150);
         choiceDialog.getDialogPane().setPrefWidth(480);
         choiceDialog.setResizable(true);
         Optional<String> result = choiceDialog.showAndWait();
-        if (result.isPresent()) {
-            return result.get();
-        }
-        return choiceDialog.getDefaultChoice();
+        return result.orElseGet(choiceDialog::getDefaultChoice);
     }
 }
