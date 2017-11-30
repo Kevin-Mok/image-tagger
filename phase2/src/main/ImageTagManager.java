@@ -16,6 +16,7 @@ public class ImageTagManager {
     private HashMap<String, ArrayList<Image>> tagToImageList;
     // HashMap of String of paths to Image with that path.
     private HashMap<String, Image> pathToImages;
+    private ArrayList<String> hideTags;
 
     /**
      * Private constructor so that only one instance may be created through a
@@ -34,6 +35,8 @@ public class ImageTagManager {
             instance = new ImageTagManager();
             instance.tagToImageList = new HashMap<>();
             instance.pathToImages = new HashMap<>();
+            instance.hideTags = new ArrayList<>();
+            instance.pathToImages.put("Tags Without Images", new Image("Tags Without Images"));
         }
         return instance;
     }
@@ -46,6 +49,7 @@ public class ImageTagManager {
      * currently being used.
      */
     public String[] getAvailableTagsWithCount() {
+        refreshNameToTags();
         String[] availableTagsWithCount = tagToImageList.keySet().toArray(new
                 String[0]);
         for (int i = 0; i < availableTagsWithCount.length; i++) {
@@ -57,6 +61,10 @@ public class ImageTagManager {
         }
         Arrays.sort(availableTagsWithCount, Collections.reverseOrder());
         return availableTagsWithCount;
+    }
+
+    public void hideThisTag(String tagName){
+        hideTags.add(tagName);
     }
 
     /**
@@ -77,7 +85,7 @@ public class ImageTagManager {
         return pathToImages.get(path);
     }
 
-    /**
+    /**onAction="#hideTags"
      * Returns whether pathToImages contains a key of path parameter.
      *
      * @return Boolean of whether pathToImages contains a key of path parameter.
@@ -103,25 +111,41 @@ public class ImageTagManager {
         // Iterates through all existing Images and adds all their tag names
         // and associated images to new tagToImageList map.
         for (Image image : pathToImages.values()) {
-            ArrayList<String> imageTagNames = image.getTagManager()
-                    .getTagNames();
-            for (String tagName : imageTagNames) {
-                // If tag name is not a key, create a new mapping from it to
-                // a new ArrayList. Then, add image to new ArrayList or the
-                // already existing one.
-                if (!nameToTags.containsKey(tagName)) {
-                    nameToTags.put(tagName, new ArrayList<>());
+            if (image.getImageName() != "Tags Without Images") {
+                ArrayList<String> imageTagNames = image.getTagManager()
+                        .getTagNames();
+                for (String tagName : imageTagNames) {
+                    // If tag name is not a key, create a new mapping from it to
+                    // a new ArrayList. Then, add image to new ArrayList or the
+                    // already existing one.
+                    if (!hideTags.contains(tagName)) {
+                        if (!nameToTags.containsKey(tagName)) {
+                            nameToTags.put(tagName, new ArrayList<>());
+                        }
+                        nameToTags.get(tagName).add(image);
+                    }
                 }
-                nameToTags.get(tagName).add(image);
             }
-
+        }
+        for (Image image : pathToImages.values()) {
             for (String unUsed : image.getTagManager().getUnusedTags()) {
+                if(!nameToTags.containsKey(unUsed))
                 nameToTags.put(unUsed, new ArrayList<>());
             }
-            // mapBuilder(image, tagToImageList);
         }
+            // mapBuilder(image, tagToImageList);
 
+        ArrayList<String> leftOver = pathToImages.get("Tags Without Images").getTagManager().getTagNames();
+        for (String tagNames : leftOver){
+            if (!nameToTags.containsKey(tagNames))
+            nameToTags.put(tagNames, new ArrayList<>());
+        }
         this.tagToImageList = nameToTags;
+    }
+
+    public void addTagToToken(String tagName){
+        Image img = pathToImages.get("Tags Without Images");
+        img.getTagManager().addTag(tagName);
     }
 
     /*
@@ -143,8 +167,10 @@ public class ImageTagManager {
     private void deleteNonExistentImages() {
         ArrayList<String> toDelete = new ArrayList<>();
         for (String path : pathToImages.keySet()) {
-            if (!new File(path).exists()) {
-                toDelete.add(path);
+            if (path != "Tags Without Images") {
+                if (!new File(path).exists()) {
+                    toDelete.add(path);
+                }
             }
         }
         for (String deleteItem : toDelete) {
@@ -172,6 +198,9 @@ public class ImageTagManager {
              */
             pathToImages = (HashMap<String, Image>) pathToImagesObject;
             imagesObjectInput.close();
+            if(!pathToImages.containsKey("Tags Without Images")){
+                pathToImages.put("Tags Without Images", new Image("Tags Without Images"));
+            }
             deleteNonExistentImages();
         } catch (IOException e) {
             System.out.println(SER_FILE_NAME + " was not found and will be " +
@@ -179,6 +208,8 @@ public class ImageTagManager {
         } catch (ClassNotFoundException e) {
             System.out.println("Class not found.");
         }
+
+
     }
 
     /**

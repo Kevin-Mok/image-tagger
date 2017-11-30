@@ -35,6 +35,12 @@ public class Image implements Serializable {
         ImageTagManager.getInstance().addImage(this);
     }
 
+    public Image(String imageName){
+        this.imageFile = new File("Tags Without Images");
+        this.imageName = imageName;
+        tagManager = new TagManager(imageName, this);
+    }
+
     public File getImageFile() {
         return imageFile;
     }

@@ -258,6 +258,14 @@ public class Controller {
         updateCurSelectedImages();
     }
 
+    public void hideTags(){
+        if (selectedAvailableTags.size() != 0){
+            for (String tagName : selectedAvailableTags){
+                ImageTagManager.getInstance().hideThisTag(tagName);
+            }
+        }
+    }
+
     /**
      * Updates the last selected image based on what's selected in the
      * imagesTreeView
@@ -404,25 +412,24 @@ public class Controller {
     @FXML
     public void addNewTag() {
         String newTagName = Popup.addTagPopup();
-        if (curSelectedImages != null && newTagName.length() > 0) {
-            String invalidCharRegex = ".*[/\\\\-].*";
-            Pattern invalidCharPattern = Pattern.compile(invalidCharRegex);
-            Matcher invalidCharMatcher = invalidCharPattern.matcher(newTagName);
-            if (!invalidCharMatcher.matches()) {
+        if (curSelectedImages != null && newTagName.trim().length() > 0) {
+
                 for (Image img : curSelectedImages) {
                     img.addTag(newTagName);
                 }
                 updateSelectedImageGUI();
                 updateLastSelectedImage();
                 refreshGUIElements();
-            } else {
-                String invalidChars = "/ \\ -";
-                String popupTitle = "Invalid Tag Name";
-                String popupText = String.format("The tag name must not " +
-                        "include the characters: %s", invalidChars);
-                Popup.errorPopup(popupTitle, popupText);
             }
         }
+
+    public void addTagToAvailable(){
+        String newTagName = Popup.addTagPopup();
+        if(newTagName.trim().length() > 0){
+            ImageTagManager.getInstance().addTagToToken(newTagName);
+        }
+        refreshGUIElements();
+
     }
 
     @FXML
