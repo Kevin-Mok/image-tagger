@@ -20,5 +20,8 @@ test-images/
 */*.lck
 */*/*/uml.*
 */*/UML.*
+phase2/UML2.*
+!phase2/UML2.pdf
+
 out/*
 */*.txt.*
