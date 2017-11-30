@@ -491,14 +491,15 @@ public class Controller {
             }
             updateSelectedImageGUI();
             updateLastSelectedImage();
-            refreshGUIElements();
+            // refreshGUIElements();
         }
     }
 
     private void addTagToAvailable(String newTagName) {
         if (newTagName.trim().length() > 0) {
             ImageTagManager.getInstance().addTagToPlaceholder(newTagName);
-            refreshGUIElements();
+            // refreshGUIElements();
+            updateAvailableTags();
         }
     }
 
@@ -547,7 +548,7 @@ public class Controller {
             }
             updateSelectedImageGUI();
             updateLastSelectedImage();
-            refreshGUIElements();
+            // refreshGUIElements();
         }
     }
 

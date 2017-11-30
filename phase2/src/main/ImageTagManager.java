@@ -43,8 +43,6 @@ public class ImageTagManager {
             instance.tagToImageListMap = new HashMap<>();
             instance.pathToImagesMap = new HashMap<>();
             instance.hiddenTagNames = new ArrayList<>();
-            instance.pathToImagesMap.put(PLACEHOLDER_IMAGE_NAME, new Image
-                    ());
         }
         return instance;
     }
@@ -180,12 +178,13 @@ public class ImageTagManager {
     /* Add any tags in the placeholder image to the tagToImageListMap if they aren't
     there already. */
     private void addPlaceholderTagsToMap() {
-        ArrayList<String> placeHolderTagNames = pathToImagesMap.get
-                (PLACEHOLDER_IMAGE_NAME)
-                .getTagManager().getTagNames();
-        for (String tagName : placeHolderTagNames) {
-            if (!tagToImageListMap.containsKey(tagName))
-                tagToImageListMap.put(tagName, new ArrayList<>());
+        if (pathToImagesMap.containsKey(PLACEHOLDER_IMAGE_NAME)) {
+            ArrayList<String> placeHolderTagNames = pathToImagesMap.get
+                    (PLACEHOLDER_IMAGE_NAME).getTagManager().getTagNames();
+            for (String tagName : placeHolderTagNames) {
+                if (!tagToImageListMap.containsKey(tagName))
+                    tagToImageListMap.put(tagName, new ArrayList<>());
+            }
         }
     }
 
@@ -203,8 +202,12 @@ public class ImageTagManager {
      * @param tagName Name of tag to be added to placeholder.
      */
     public void addTagToPlaceholder(String tagName) {
-        Image img = pathToImagesMap.get(PLACEHOLDER_IMAGE_NAME);
-        img.getTagManager().addTag(tagName);
+        if (!pathToImagesMap.containsKey(PLACEHOLDER_IMAGE_NAME)) {
+            pathToImagesMap.put(PLACEHOLDER_IMAGE_NAME, new Image
+                    ());
+        }
+        Image placeHolderImage = pathToImagesMap.get(PLACEHOLDER_IMAGE_NAME);
+        placeHolderImage.getTagManager().addTag(tagName);
         removeFromHidden(tagName);
     }
 
@@ -215,10 +218,13 @@ public class ImageTagManager {
     */
     private void deleteUselessImageObjects() {
         HashMap<String, Image> rebuild = new HashMap<>();
-        for (String keys : pathToImagesMap.keySet()) {
-            if (pathToImagesMap.get(keys).getTagManager().getNameHistory().size()
-                    != 1) {
-                rebuild.put(keys, pathToImagesMap.get(keys));
+        for (String path : pathToImagesMap.keySet()) {
+            boolean noNewName = pathToImagesMap.get(path).getTagManager()
+                    .getNameHistory().size() != 1;
+            String pathOfPlaceHolderImage = DirectoryManager.PROJECT_DIR +
+                    File.separator + PLACEHOLDER_IMAGE_NAME;
+            if (noNewName || path.equals(pathOfPlaceHolderImage)) {
+                rebuild.put(path, pathToImagesMap.get(path));
             }
         }
         pathToImagesMap = rebuild;
@@ -257,10 +263,6 @@ public class ImageTagManager {
              */
             pathToImagesMap = (HashMap<String, Image>) pathToImagesObject;
             imagesObjectInput.close();
-            if (!pathToImagesMap.containsKey(PLACEHOLDER_IMAGE_NAME)) {
-                pathToImagesMap.put(PLACEHOLDER_IMAGE_NAME, new Image
-                        ());
-            }
             deleteNonExistentImages();
         } catch (IOException e) {
             System.out.println(SER_FILE_NAME + " was not found and will be " +
@@ -268,8 +270,6 @@ public class ImageTagManager {
         } catch (ClassNotFoundException e) {
             System.out.println("Class not found.");
         }
-
-
     }
 
     /**

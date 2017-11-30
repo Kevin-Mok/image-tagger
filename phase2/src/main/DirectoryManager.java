@@ -25,6 +25,7 @@ import java.util.regex.Pattern;
  */
 public class DirectoryManager {
     private static final String LAST_DIR_FILE = "last_dir.txt";
+    public static final String PROJECT_DIR = System.getProperty("user.dir");
     /**
      * The singleton instance of DirectoryManager
      */

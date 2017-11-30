@@ -162,6 +162,15 @@ Title: Imgur button relocation and confirmation
 Description: Relocate the Imgur upload button and display a confirmation popup when the user clicks it
 
 ########
+# Issue 29
+
+Title: Write unit tests
+
+Description:
+- [X] `ImageTagManager`
+- [X] `TagManager`
+
+########
 # Issue 30
 
 Title: Get rid of yellow errors

@@ -53,12 +53,14 @@ class ResetTestFiles {
         // String dirString = "/h/u5/c6/05/khans167/Desktop/Images";
         // String dirString = "/h/u3/c7/05/mokkar/Downloads";
         String dirString = "/h/u3/c7/05/mokkar/207/group_0485/test-images";
+        // String dirString = "/h/u3/c7/05/mokkar/207/group_0485/phase2" +
+        //         "/test_icons";
         renameImagesInDir(dirString);
 
         String filesPathString =
                 "/h/u3/c7/05/mokkar/207/group_0485/phase2/";
-//         String filesPathString =
-//                 "/h/u5/c6/05/khans167/group_0485";
+        // String filesPathString =
+        //         "/h/u5/c6/05/khans167/group_0485";
 
         ArrayList<String> fileNames = new ArrayList<>(Arrays.asList(ImageTagManager
                 .SER_FILE_NAME, LogUtility.RENAME_LOGGER_NAME + ".txt",

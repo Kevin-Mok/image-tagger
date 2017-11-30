@@ -21,5 +21,4 @@ test-images/
 */*/*/uml.*
 */*/UML.*
 out/*
-*/*/*/ImageTagManagerTest.java
 */*.txt.*
