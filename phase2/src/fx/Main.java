@@ -14,7 +14,8 @@ import java.io.IOException;
  * Main class from which our program runs.
  */
 public class Main extends Application {
-    private ImageTagManager imgTagManager = ImageTagManager.getInstance();
+    private final ImageTagManager imageTagManager = ImageTagManager
+            .getInstance();
 
     /**
      * Launches the application
@@ -35,7 +36,7 @@ public class Main extends Application {
      */
     @Override
     public void start(Stage primaryStage) throws IOException {
-        imgTagManager.readFromFile();
+        imageTagManager.readFromFile();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("layout" +
                 ".fxml"));
         Parent root = loader.load();
@@ -59,9 +60,7 @@ public class Main extends Application {
      */
     @Override
     public void stop() throws IOException {
-        System.out.println("Serializing files.");
-        imgTagManager.saveToFile();
-        System.out.println("Saving last directory.");
+        imageTagManager.saveToFile();
         DirectoryManager.getInstance().saveLastDir();
     }
 

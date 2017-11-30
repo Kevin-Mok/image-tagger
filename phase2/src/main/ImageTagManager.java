@@ -1,7 +1,10 @@
 package main;
 
 import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 
 /**
  * Singleton manager class to keep track of all the existing Images and Tags
@@ -41,7 +44,7 @@ public class ImageTagManager {
             instance.pathToImages = new HashMap<>();
             instance.hideTags = new ArrayList<>();
             instance.pathToImages.put(PLACEHOLDER_IMAGE_NAME, new Image
-                    (PLACEHOLDER_IMAGE_NAME));
+                    ());
         }
         return instance;
     }
@@ -68,6 +71,11 @@ public class ImageTagManager {
         return availableTagsWithCount;
     }
 
+    /**
+     * Hides the tag in the available tags view.
+     *
+     * @param tagName Name of tag to be hidden.
+     */
     public void hideThisTag(String tagName) {
         hideTags.add(tagName);
     }
@@ -83,6 +91,7 @@ public class ImageTagManager {
 
     /**
      * Returns image with path parameter in pathToImages.
+     *
      * @param path the path to use to look up an image
      * @return Image with path parameter in pathToImages.
      */
@@ -93,6 +102,7 @@ public class ImageTagManager {
     /**
      * onAction="#hideTags"
      * Returns whether pathToImages contains a key of path parameter.
+     *
      * @param path the path to check
      * @return Boolean of whether pathToImages contains a key of path parameter.
      */
@@ -150,7 +160,12 @@ public class ImageTagManager {
         this.tagToImageList = nameToTags;
     }
 
-    public void addTagToToken(String tagName) {
+    /**
+     * Add tag to the placeholder image to display in available tags.
+     *
+     * @param tagName Name of tag to be added to placeholder.
+     */
+    public void addTagToPlaceholder(String tagName) {
         Image img = pathToImages.get(PLACEHOLDER_IMAGE_NAME);
         img.getTagManager().addTag(tagName);
     }
@@ -174,10 +189,11 @@ public class ImageTagManager {
     private void deleteNonExistentImages() {
         ArrayList<String> toDelete = new ArrayList<>();
         for (String path : pathToImages.keySet()) {
-            if (!path.equals(PLACEHOLDER_IMAGE_NAME) && !new File(path).exists()) {
-                    toDelete.add(path);
-                }
+            if (!path.equals(PLACEHOLDER_IMAGE_NAME) && !new File(path)
+                    .exists()) {
+                toDelete.add(path);
             }
+        }
         for (String deleteItem : toDelete) {
             pathToImages.remove(deleteItem);
         }
@@ -205,7 +221,7 @@ public class ImageTagManager {
             imagesObjectInput.close();
             if (!pathToImages.containsKey(PLACEHOLDER_IMAGE_NAME)) {
                 pathToImages.put(PLACEHOLDER_IMAGE_NAME, new Image
-                        (PLACEHOLDER_IMAGE_NAME));
+                        ());
             }
             deleteNonExistentImages();
         } catch (IOException e) {
@@ -231,6 +247,7 @@ public class ImageTagManager {
                     (imagesBuffer);
 
             imagesObjectOutput.writeObject(pathToImages);
+            System.out.printf("Serialized %s.%n", SER_FILE_NAME);
             imagesObjectOutput.close();
         } catch (IOException e) {
             System.out.printf("Could not serialize %s.%n", SER_FILE_NAME);

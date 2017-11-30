@@ -13,8 +13,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Class responsible for the display of error information via pop-ups. Unused
- * now in Phase 1 since could not get to compile through command line.
+ * Class responsible for the display of error information via pop-ups.
  */
 public class PopUp {
     /**

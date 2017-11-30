@@ -5,15 +5,15 @@ import java.io.Serializable;
 /**
  * Represents a tag on an image
  */
-public class Tag implements Serializable {
+class Tag implements Serializable {
     /**
      * The image this tag is on
      */
-    private Image image;
+    private final Image image;
     /**
      * The name of this tag
      */
-    private String name;
+    private final String name;
 
     /**
      * Constructs a new Tag
@@ -33,15 +33,6 @@ public class Tag implements Serializable {
      */
     public String getName() {
         return name;
-    }
-
-    /**
-     * Returns the Image associated with this Tag.
-     *
-     * @return The Image associated with this Tag.
-     */
-    public Image getImage() {
-        return image;
     }
 
     /**

@@ -15,7 +15,7 @@ import java.util.Arrays;
  * remade if we get rid of the original file name and have it serialized in the
  * nameStore map in ImageTagManager.
  */
-public class ResetTestFiles {
+class ResetTestFiles {
     // Recursively rename images in passed in directory.
     private static void renameImagesInDir(String dirString) {
         File dir = new File(dirString);

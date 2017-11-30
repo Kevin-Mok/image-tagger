@@ -49,6 +49,7 @@ public class DirectoryManager {
 
     /**
      * Returns the singleton instance of DirectoryManager
+     *
      * @return the singleton instance of DirectoryManager
      */
     public static DirectoryManager getInstance() {
@@ -189,9 +190,12 @@ public class DirectoryManager {
         try {
             Scanner lastDirScanner = new Scanner(new FileReader(LAST_DIR_FILE));
             if (lastDirScanner.hasNext()) {
-                File lastDirFile = new File(lastDirScanner.next());
+                String lastDir = lastDirScanner.next();
+                File lastDirFile = new File(lastDir);
                 if (lastDirFile.isDirectory()) {
                     this.setRootFolder(lastDirFile);
+                    System.out.printf("Restored %s as last directory.%n",
+                            lastDir);
                     return true;
                 }
                 System.out.println("Last stored directory was not valid.");
@@ -208,8 +212,9 @@ public class DirectoryManager {
      */
     public void saveLastDir() {
         try {
-            Files.write(Paths.get(LAST_DIR_FILE), rootFolder.getPath().toString()
-                    .getBytes());
+            String lastDirectory = rootFolder.getPath().toString();
+            Files.write(Paths.get(LAST_DIR_FILE), lastDirectory.getBytes());
+            System.out.printf("Saved %s as last directory.%n", lastDirectory);
         } catch (IOException e) {
             System.out.println("Couldn't save last directory.");
         }

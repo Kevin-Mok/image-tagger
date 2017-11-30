@@ -32,15 +32,15 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 
 /**
  * Controller for JavaFX GUI.
  */
 public class Controller {
 
+    private final DirectoryManager rootDirectoryManager = DirectoryManager
+            .getInstance();
+    private final Service service = new ImgurService();
     // Use the UI element id specified in the FXML file as the variable name
     // to get a hook on those elements
     @FXML
@@ -73,14 +73,9 @@ public class Controller {
     private Label uploadLabel;
     @FXML
     private Label currentTagsLabel;
-
-    private DirectoryManager rootDirectoryManager = DirectoryManager
-            .getInstance();
     private Stage stage;
     private Image lastSelectedImage;
     private List<Image> curSelectedImages;
-    private Service service = new ImgurService();
-
     private ObservableList<String> availableTagsList = FXCollections
             .observableArrayList();
     private ObservableList<String> currentTagsList = FXCollections
@@ -96,16 +91,31 @@ public class Controller {
     }
 
     /**
-     * Sets the JavaFX stage for this controller
-     * @param stage the stage
+     * Adapted from Johnny850807's GitHub repository
+     * https://github.com/Johnny850807/Imgur-Picture-Uploading-Example-Using
+     * -Retrofit-On-Native-Java
+     * on Nov 24th, 2017
      */
-    void setStage(Stage stage) {
-        this.stage = stage;
+    private static ImgurAPI createImgurAPI() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl(ImgurAPI.SERVER)
+                .build();
+        return retrofit.create(ImgurAPI.class);
     }
 
 /*    private <T extends SelectionModel> void setMultipleSelection(T view) {
         view.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }*/
+
+    /**
+     * Sets the JavaFX stage for this controller
+     *
+     * @param stage the stage
+     */
+    void setStage(Stage stage) {
+        this.stage = stage;
+    }
 
     /**
      * This method is automatically called after the FXML file is loaded
@@ -263,9 +273,9 @@ public class Controller {
         updateCurSelectedImages();
     }
 
-    private void hideTags(){
-        if (selectedAvailableTags.size() != 0){
-            for (String tagName : selectedAvailableTags){
+    private void hideTags() {
+        if (selectedAvailableTags.size() != 0) {
+            for (String tagName : selectedAvailableTags) {
                 ImageTagManager.getInstance().hideThisTag(tagName);
             }
         }
@@ -346,7 +356,8 @@ public class Controller {
 
     /**
      * Bound to the addToAvailableTagsBtn, displays a popup allowing the user
-     * to choose between adding a tag to just the available tags pool (and not to any images),
+     * to choose between adding a tag to just the available tags pool (and
+     * not to any images),
      * or adding a tag to all the images under the current root directory
      */
     @FXML
@@ -355,7 +366,8 @@ public class Controller {
         if (tagName != null) {
             String userChoice = PopUp.addToAvailableTags();
             if (userChoice.equals("add to all images under root")) {
-                curSelectedImages = rootDirectoryManager.getAllImagesUnderRoot();
+                curSelectedImages = rootDirectoryManager
+                        .getAllImagesUnderRoot();
 
                 for (Image img : curSelectedImages) {
                     img.addTag(tagName);
@@ -370,8 +382,10 @@ public class Controller {
     }
 
     /**
-     * Bound to deleteFromAvailableBtn, displays a popup allowing the user to choose between
-     * deleting a tag from all images under the current root directory, or removing the tag from the
+     * Bound to deleteFromAvailableBtn, displays a popup allowing the user to
+     * choose between
+     * deleting a tag from all images under the current root directory, or
+     * removing the tag from the
      * available tags pool (but not deleting it from any image)
      */
     @FXML
@@ -448,6 +462,7 @@ public class Controller {
 
     /**
      * Extracts the name of a tag by stripping away dashes and spaces
+     *
      * @param tagName the tag name to be cleaned up
      * @return the extracted tag name without any dashes or spaces
      */
@@ -464,18 +479,18 @@ public class Controller {
     public void addNewTag() {
         String newTagName = PopUp.addTagPopup();
         if (curSelectedImages != null && newTagName.trim().length() > 0) {
-                for (Image img : curSelectedImages) {
-                    img.addTag(newTagName);
-                }
-                updateSelectedImageGUI();
-                updateLastSelectedImage();
-                refreshGUIElements();
+            for (Image img : curSelectedImages) {
+                img.addTag(newTagName);
             }
+            updateSelectedImageGUI();
+            updateLastSelectedImage();
+            refreshGUIElements();
         }
+    }
 
-    private void addTagToAvailable(String newTagName){
-        if(newTagName.trim().length() > 0){
-            ImageTagManager.getInstance().addTagToToken(newTagName);
+    private void addTagToAvailable(String newTagName) {
+        if (newTagName.trim().length() > 0) {
+            ImageTagManager.getInstance().addTagToPlaceholder(newTagName);
             refreshGUIElements();
         }
     }
@@ -509,6 +524,7 @@ public class Controller {
 
     /**
      * Deletes a list of tags from the currently selected images
+     *
      * @param tagNamesToDelete the list of tags to be deleted
      */
     @FXML
@@ -698,20 +714,6 @@ public class Controller {
     private void updateAvailableTags() {
         availableTagsList.setAll(ImageTagManager.getInstance()
                 .getAvailableTagsWithCount());
-    }
-
-    /**
-     * Adapted from Johnny850807's GitHub repository
-     * https://github.com/Johnny850807/Imgur-Picture-Uploading-Example-Using
-     * -Retrofit-On-Native-Java
-     * on Nov 24th, 2017
-     */
-    private static ImgurAPI createImgurAPI() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(ImgurAPI.SERVER)
-                .build();
-        return retrofit.create(ImgurAPI.class);
     }
 
     /**

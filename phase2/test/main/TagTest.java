@@ -9,9 +9,9 @@ import java.io.File;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class TagTest {
-    Tag tag;
-    Image image;
-    File imageFile;
+    private Tag tag;
+    private Image image;
+    private File imageFile;
 
     @BeforeEach
     void setUp() {

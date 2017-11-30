@@ -13,9 +13,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class DirectoryManagerTest {
-    DirectoryManager manager;
-    String testDirectory;
-    Path testDirPath;
+    private DirectoryManager manager;
+    private String testDirectory;
+    private Path testDirPath;
 
     @org.junit.jupiter.api.BeforeEach
     void setUp() throws IOException {

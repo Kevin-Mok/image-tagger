@@ -17,8 +17,8 @@ import java.util.Set;
  * its tags.
  */
 public class Image implements Serializable {
+    private final TagManager tagManager;
     private File imageFile;
-    private TagManager tagManager;
     private String imageName;
 
     /**
@@ -34,14 +34,21 @@ public class Image implements Serializable {
         ImageTagManager.getInstance().addImage(this);
     }
 
-    public Image(String imageName){
-        this.imageFile = new File(ImageTagManager.PLACEHOLDER_IMAGE_NAME);
+    /**
+     * Constructor for placeholder image. Used to store tags that have no
+     * images associated with them (i.e. when adding tag to available tags
+     * but not to any image).
+     */
+    public Image() {
+        String imageName = ImageTagManager.PLACEHOLDER_IMAGE_NAME;
+        imageFile = new File(imageName);
         this.imageName = imageName;
         tagManager = new TagManager(imageName, this);
     }
 
     /**
      * Returns the image file this object represents
+     *
      * @return the image file this object represents
      */
     public File getImageFile() {
@@ -171,6 +178,7 @@ public class Image implements Serializable {
 
     /**
      * Gets the set of all the tags on this image
+     *
      * @return set of all the tags on this image
      */
     public Set<String> getAllTags() {

@@ -4,90 +4,141 @@
 Title: Delete tag from all images
 
 Description: Allow the user to delete a tag from all images under the root directory
+
 ########
 # Issue 2
 
 Title: Add tags found in new Image object
 
 Description: Add tags in new Image objects to the pool
+
 ########
 # Issue 4
 
 Title: Add icons to buttons
 
 Description: 
+
+########
+# Issue 5
+
+Title: Apply design patterns
+
+Description: 
+- [x] Singleton
+  - [x] `DirectoryManager`
+  - [X] `ImageTagManager`
+  - [X] `LogUtility`
+- [X] MVC
+  - Model: `Image`, `ImageTagManager`, `TagManager`
+  - View: `layout.fxml`
+  - Controller: `Controller`
+- [X] [Adapter](https://sourcemaking.com/design_patterns/adapter)
+  - `ItemWrapper`, `ImageWrapper` and `DirectoryWrapper`
+- [x] Observer
+  - `ObservableList's`
+
 ########
 # Issue 6
 
 Title: Check if external files are accessible when compiling from command line
 
 Description: 
+
 ########
 # Issue 7
 
 Title: Filter images by tag
 
 Description: Allow the user to filter images using tags
+
 ########
 # Issue 8
 
 Title: Imgur Integration
 
 Description: Allow the user to upload images to Imgur
+
 ########
 # Issue 9 
 
 Title: Log all user actions 
 
 Description: Log all user actions
+
 ########
 # Issue 12 
 
 Title: Open renaming log in app
 
 Description: Allow the user to open the renaming log from the application 
+
 ########
 # Issue 13
 
 Title: Refactor LogUtility
 
 Description: Duplicate code in LogUtility needs to be refactored. 
+
 ########
 # Issue 14 
 
 Title: Select new Image in TreeView after moving it
  
 Description: The same image should be selected after moving it around in the same root directory 
+
 ########
 # Issue 15 
 
 Title: Typing in and adding existing Tag into Image causes a logging event 
 
 Description: Adding an existing tag causes a needless rename logging event. 
+
 ########
 # Issue 17 
 
 Title: Expand directories when filtering
  
 Description: Directories should be expanded when filtering images. 
+
 ########
 # Issue 19 
 
 Title: Remove serialization of tagToImageList
   
 Description: tagToImageList did not need to be serialized as it was rebuilt everytime upon launch. 
+
+########
+# Issue 20
+
+Title: Refactor Controller
+
+Description: 
+- [X] `imagesTreeView.setOnMouseClicked`
+- [X] Only `setItems()` for `ListView's` once
+- [X] Show `nameHistory` from most recent to least
+
+########
+# Issue 21
+
+Title: Weird null exception with JavaFX
+
+Description: Saad and I added extra if branches to deal with this weird issue when you had 2 items selected and you deselected the one closer to the top, the selectedTreeItems would throw a null pointer exception when you iterated through it. But, it was weird because when we debugged and stepped through it, the selectedTreeItems would start off null before the for-each loop, but then it wouldn't null inside the loop.
+
 ########
 # Issue 23 
 
 Title: Add imgur JAR files to classpath in compile_project.sh
  
 Description: JAR files related to the imgur upload functionality needed to included in the CLASSPATH so that the program can be compiled and executed from the command line. 
+
 ########
 # Issue 24 
 
 Title: Give user feedback after upload button is pressed
  
 Description: A latency exists between the pressing of the button and the appearance of the browser window with the uploaded image. Let the user know that the program is responding to their keypress. 
+
 ########
 # Issue 25 
 
@@ -95,48 +146,77 @@ Title: Sort available tags from most used to least
  
 Description: Tags were originally displayed from least used to most used 
 
+
 ########
 # Issue 26
 
 Title: Selecting a directory should apply the desired change to all the Images under it
 
 Description: Should work for adding/deleting current tags and adding a tag from the available tags pool.
+
 ########
 # Issue 27
 
 Title: Imgur button relocation and confirmation
 
 Description: Relocate the Imgur upload button and display a confirmation popup when the user clicks it
+
+########
+# Issue 30
+
+Title: Get rid of yellow errors
+
+Description: Ongoing issue
+
+########
+# Issue 31
+
+Title: Go through generated Javadoc and check that documentation is up to par
+
+Description:
+
 ########
 # Issue 34
 
 Title: Make Labels' font more distinct from Buttons' font
 
 Description: 
+
+########
+# Issue 37
+
+Title: Write up duties.txt for Phase 2
+
+Description: 
+
 ########
 # Issue 42
 
 Title: Make window unresizeable
 
 Description: The application shouldn't be resizable so the layout wouldn't be messed up.
+
 ########
 # Issue 44
 
 Title: Store last used root directory
 
 Description: Store the last used root directory so the user can easily return to previous work
+
 ########
 # Issue 45
 
 Title: Open the directory for the current Image
 
 Description: Allow the user to open the directory the current image is in
+
 ########
 # Issue 46 
 
 Title: Some tests in TagManagerTest work individually but not collectively
 
 Description: 
+
 ########
 # Issue 48
 
@@ -154,7 +234,7 @@ Description: Broken when implementing #26 or #48.
 ########
 # Issue 50
 
-Title: Create notes.txt with details of resolved GitHub issues
+Title: Keep track of issues on GitHub in commit_issue_numbers.txt
 
 Description: Since we can't make our GitHub repository public, we can instead create a text file with relevant issue numbers mentioned in our commits.
 

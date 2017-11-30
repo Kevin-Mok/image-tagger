@@ -7,8 +7,19 @@ Chris(shyichin)
 - Added the functionality to filter images by a list of tags
 - Added functionality to delete tags from all the images in the root directory
 
-
 Kevin
+- Implemented:
+	- ability to add/delete multiple tags from a single Image at a time
+	- storing last used directory
+	- opening rename log within application
+	- opening current directory of image
+- Refactored:
+	- LogUtility 
+	- Controller
+- Wrote tests for TagManager.
+- Managed issues and tasks to focus on via GitHub issues (can't be made public even after due date according to Lindsey).
+- Actively took part in discussions regarding implementation of certain features or design decisions and provided input.
+- Did or helped with tracing through, debugging and fixing various issues.
 
 Saad
 

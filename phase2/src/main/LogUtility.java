@@ -11,7 +11,13 @@ import java.util.logging.SimpleFormatter;
  * Singleton utility class used for logging user interactions with the program.
  */
 public class LogUtility {
+    /**
+     * Name of the rename logger.
+     */
     public static final String RENAME_LOGGER_NAME = "renameLogger";
+    /**
+     * Name of the action logger.
+     */
     public static final String ACTION_LOGGER_NAME = "actionLogger";
     private static LogUtility logUtility;
     /**
@@ -53,6 +59,7 @@ public class LogUtility {
 
     /**
      * Initializes a Logger object based on the loggerName passed in
+     *
      * @param loggerName name of the Logger to be initialized
      * @return the initialized Logger
      * @throws IOException thrown if file I/O causes any errors

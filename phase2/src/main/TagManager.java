@@ -81,6 +81,7 @@ public class TagManager implements Serializable {
 
     /**
      * Gets the tags currently on the image this TagManager is associated with
+     *
      * @return Set of tags currently on the image
      */
     Set<Tag> getCurrentTags() {
@@ -148,6 +149,7 @@ public class TagManager implements Serializable {
 
     /**
      * Returns the current name of the image (tags included)
+     *
      * @return the current name of the image
      */
     private String getCurrentName() {
