@@ -17,7 +17,7 @@ public class TagManager implements Serializable {
     /**
      * List of Tags the image has ever had
      */
-    private ArrayList<Tag> tagList;
+    private List<Tag> tagList;
     /**
      * Current tags on the image
      */
@@ -33,7 +33,7 @@ public class TagManager implements Serializable {
      * @param originalImageName Original name of image without extension.
      * @param image             Image this TagManager will be associated with.
      */
-    public TagManager(String originalImageName, Image image) {
+    TagManager(String originalImageName, Image image) {
         nameHistory = new TreeMap<>();
         nameHistory.put(new Timestamp(System.currentTimeMillis()),
                 originalImageName);
@@ -82,6 +82,14 @@ public class TagManager implements Serializable {
             tagList.add(toAdd);
         }
         ImageTagManager.getInstance().refreshNameToTags();
+    }
+
+    /**
+     * Gets the tags currently on the image this TagManager is associated with
+     * @return Set of tags currently on the image
+     */
+    Set<Tag> getCurrentTags() {
+        return currentTags;
     }
 
     /**

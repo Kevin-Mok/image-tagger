@@ -5,11 +5,14 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.text.Text;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Class responsible for the display of error information via pop-ups. Unused
@@ -50,17 +53,32 @@ public class Popup {
         final TextInputDialog dialog = new TextInputDialog();
         dialog.setHeaderText("Enter a new tag");
         dialog.setTitle("Add Tag");
-        dialog.setContentText(String.format("The tag name must not include " +
-                "the characters: %s", "/, \\, -"));
+        String invalidCharRegex = ".*[/\\\\-].*";
+        Pattern invalidCharPattern = Pattern.compile(invalidCharRegex);
+//        dialog.setContentText(String.format("The tag name must not include " +
+//                "the characters: %s", "/, \\, -"));
         String tagName = "";
-        Optional<String> result = dialog.showAndWait();
-        if (result.isPresent()) {
-            try {
-                tagName = result.get();
-            } catch (NoSuchElementException e) {
-                e.printStackTrace();
+        boolean invalidInput = false;
+        do {
+            Optional<String> result = dialog.showAndWait();
+            if (result.isPresent()) {
+                try {
+                    tagName = result.get();
+                    Matcher invalidCharMatcher = invalidCharPattern.matcher(tagName);
+                    if (invalidCharMatcher.matches()) {
+                        dialog.setContentText(String.format("The tag name must not include " +
+                                "the characters: %s", "/, \\, -"));
+                        invalidInput = true;
+                    } else {
+                        break;
+                    }
+                } catch (NoSuchElementException e) {
+                    e.printStackTrace();
+                    invalidInput = true;
+                }
             }
-        }
+        } while (invalidInput);
+
         return tagName;
     }
 

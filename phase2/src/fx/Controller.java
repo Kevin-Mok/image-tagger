@@ -29,7 +29,9 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -69,6 +71,8 @@ public class Controller {
     private Button uploadBtn;
     @FXML
     private Label uploadLabel;
+    @FXML
+    private Label currentTagsLabel;
 
     private DirectoryManager rootDirectoryManager = DirectoryManager
             .getInstance();
@@ -293,11 +297,13 @@ public class Controller {
                 }
                 if (firstSelectedItem instanceof DirectoryWrapper) {
                     curSelectedImages = getAllImagesUnderDirectory(((DirectoryWrapper) firstSelectedItem));
+                    changeCurrentTagsDisplay((DirectoryWrapper) firstSelectedItem);
                 } else {
                     Image selectedImage = ((ImageWrapper)
                             firstSelectedItem).getImage();
                     curSelectedImages.add(selectedImage);
                     lastSelectedImage = selectedImage;
+                    currentTagsLabel.setText("Current Tags");
                 }
             } else {
                 for (TreeItem<ItemWrapper> items : selectedTreeItems) {
@@ -309,6 +315,34 @@ public class Controller {
             }
             this.curSelectedImages = curSelectedImages;
         }
+    }
+
+    /**
+     * Change the label and contents of currentTagsView when a directory is selected,
+     * , so that it displays all the tags in that directory
+     * @param directory the directory that's selected
+     */
+    private void changeCurrentTagsDisplay(DirectoryWrapper directory) {
+        currentTagsLabel.setText("Tags in Selected Directory");
+        currentTagsView.getItems().setAll(getAllTagsInDirectory(directory));
+    }
+
+    /**
+     * Recursively collects the tags of all images in a directory and its subdirectories and puts them
+     * in a list
+     * @param directory the directory to search in
+     * @return a list of all the tags in the directory
+     */
+    private Set<String> getAllTagsInDirectory(DirectoryWrapper directory) {
+        Set<String> tagsList = new HashSet<>();
+        for (ItemWrapper item : directory.getChildObjects()) {
+            if (item instanceof DirectoryWrapper) {
+                tagsList.addAll(getAllTagsInDirectory((DirectoryWrapper) item));
+            } else {
+                tagsList.addAll(((ImageWrapper) item).getImage().getAllTags());
+            }
+        }
+        return tagsList;
     }
 
     /**
@@ -601,50 +635,50 @@ public class Controller {
         return retrofit.create(ImgurAPI.class);
     }
 
-/**
- * Inner class that takes care of uploading an image to Imgur
- * <p>
- * Adapted from ItachiUchiha's post on StackOverflow
- * https://stackoverflow.com/questions/31607656/how-to-show-and-then-hide
- * -a-label-in-javafx-after-a-task-is-completed
- * retrieved Nov 25, 2017
- */
-class ImgurService extends Service<Void> {
-    protected Task<Void> createTask() {
-        return new Task<Void>() {
-            @Override
-            protected Void call() throws Exception {
-                    /*
-                     * Adapted from Johnny850807's GitHub repository
-                     * https://github
-                     * .com/Johnny850807/Imgur-Picture-Uploading-Example
-                     * -Using-Retrofit-On-Native-Java
-                     * on Nov 24th, 2017
-                     */
-                final ImgurAPI imgurApi = createImgurAPI();
-                try {
-                    File image = new File(lastSelectedImage.getPath()
-                            .toString());
-                    RequestBody request = RequestBody.create(MediaType.parse
-                            ("image/*"), image);
-                    Call<ImageResponse> call = imgurApi.postImage(request);
-                    Response<ImageResponse> res = call.execute();
-
-                    System.out.println("Successful? " + res.isSuccessful());
-                    String url = res.body().data.link;
-
-                    Runtime runtime = Runtime.getRuntime();
+    /**
+     * Inner class that takes care of uploading an image to Imgur
+     * <p>
+     * Adapted from ItachiUchiha's post on StackOverflow
+     * https://stackoverflow.com/questions/31607656/how-to-show-and-then-hide
+     * -a-label-in-javafx-after-a-task-is-completed
+     * retrieved Nov 25, 2017
+     */
+    class ImgurService extends Service<Void> {
+        protected Task<Void> createTask() {
+            return new Task<Void>() {
+                @Override
+                protected Void call() throws Exception {
+                        /*
+                         * Adapted from Johnny850807's GitHub repository
+                         * https://github
+                         * .com/Johnny850807/Imgur-Picture-Uploading-Example
+                         * -Using-Retrofit-On-Native-Java
+                         * on Nov 24th, 2017
+                         */
+                    final ImgurAPI imgurApi = createImgurAPI();
                     try {
-                        runtime.exec("firefox " + url);
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                        File image = new File(lastSelectedImage.getPath()
+                                .toString());
+                        RequestBody request = RequestBody.create(MediaType.parse
+                                ("image/*"), image);
+                        Call<ImageResponse> call = imgurApi.postImage(request);
+                        Response<ImageResponse> res = call.execute();
+
+                        System.out.println("Successful? " + res.isSuccessful());
+                        String url = res.body().data.link;
+
+                        Runtime runtime = Runtime.getRuntime();
+                        try {
+                            runtime.exec("firefox " + url);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    } catch (Exception err) {
+                        err.printStackTrace();
                     }
-                } catch (Exception err) {
-                    err.printStackTrace();
+                    return null;
                 }
-                return null;
-            }
-        };
+            };
+        }
     }
-}
 }

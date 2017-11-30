@@ -25,7 +25,7 @@ class DirectoryManagerTest {
         testDirPath = Paths.get(testDirectory);
 
         manager = DirectoryManager.getInstance();
-        manager.setRootFolder(new DirectoryWrapper(testDirPath.toFile()));
+        manager.setRootFolder(testDirPath.toFile());
     }
 
     @org.junit.jupiter.api.Test

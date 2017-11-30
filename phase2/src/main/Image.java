@@ -8,7 +8,10 @@ import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Image class that stores its path and a ImageTagManager object to work with
@@ -155,6 +158,18 @@ public class Image implements Serializable {
         if (!this.hasTag(tagName)) {
             rename(tagManager.addTag(tagName));
         }
+    }
+
+    /**
+     * Gets the set of all the tags on this image
+     * @return set of all the tags on this image
+     */
+    public Set<String> getAllTags() {
+        Set<String> tagList = new HashSet<>();
+        for (Tag tag : this.tagManager.getCurrentTags()) {
+            tagList.add(tag.getName());
+        }
+        return tagList;
     }
 
     /**
