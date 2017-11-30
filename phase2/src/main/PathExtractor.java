@@ -13,7 +13,7 @@ public class PathExtractor {
      * @param imagePath absolute path of an image file
      * @return the image name without the extension
      */
-    public static String getImageName(String imagePath) {
+    static String getImageName(String imagePath) {
 
         return imagePath.substring(imagePath.lastIndexOf(File.separatorChar)
                 + 1, imagePath
@@ -44,7 +44,7 @@ public class PathExtractor {
      * @param imagePath absolute path of an image file
      * @return the image file extension
      */
-    public static String getExtension(String imagePath) {
+    static String getExtension(String imagePath) {
         int indexOfLastPeriod = imagePath.lastIndexOf('.');
         return imagePath.substring(indexOfLastPeriod);
     }

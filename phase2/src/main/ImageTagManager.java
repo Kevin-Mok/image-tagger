@@ -8,7 +8,7 @@ import java.util.*;
  * contained within them.
  */
 public class ImageTagManager {
-    private static final String SER_FILE_NAME = "path_to_images.ser";
+    public static final String SER_FILE_NAME = "path_to_images.ser";
 
     // Singleton instance of this class.
     private static ImageTagManager instance = null;

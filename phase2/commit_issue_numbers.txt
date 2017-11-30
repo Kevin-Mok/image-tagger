@@ -1,0 +1,35 @@
+########
+# Issue 26
+
+Title: Selecting a directory should apply the desired change to all the Images under it
+
+Description: Should work for adding/deleting current tags and adding a tag from the available tags pool.
+
+########
+# Issue 48
+
+Title: Change the current tags display if a directory is selected?
+
+Description: Related to #26, if we want to allow the user to delete a tag from all images inside a subdirectory, maybe we should display all the tags in that directory when it's selected?
+
+########
+# Issue 49
+
+Title: Nested directories now display full path instead of just the last directory
+
+Description: Broken when implementing #26 or #48.
+
+########
+# Issue 50
+
+Title: Create notes.txt with details of resolved GitHub issues
+
+Description: Since we can't make our GitHub repository public, we can instead create a text file with relevant issue numbers mentioned in our commits.
+
+########
+# Issue 
+
+Title: 
+
+Description: 
+

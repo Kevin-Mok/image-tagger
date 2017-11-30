@@ -204,7 +204,7 @@ public class DirectoryManager {
      */
     public void saveLastDir() {
         try {
-            Files.write(Paths.get(LAST_DIR_FILE), rootFolder.toString()
+            Files.write(Paths.get(LAST_DIR_FILE), rootFolder.getPath().toString()
                     .getBytes());
         } catch (IOException e) {
             System.out.println("Couldn't save last directory.");

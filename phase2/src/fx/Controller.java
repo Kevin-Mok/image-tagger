@@ -296,8 +296,10 @@ public class Controller {
                     firstSelectedItem = selectedTreeItems.get(0).getValue();
                 }
                 if (firstSelectedItem instanceof DirectoryWrapper) {
-                    curSelectedImages = getAllImagesUnderDirectory(((DirectoryWrapper) firstSelectedItem));
-                    changeCurrentTagsDisplay((DirectoryWrapper) firstSelectedItem);
+                    curSelectedImages = getAllImagesUnderDirectory((
+                            (DirectoryWrapper) firstSelectedItem));
+                    changeCurrentTagsDisplay((DirectoryWrapper)
+                            firstSelectedItem);
                 } else {
                     Image selectedImage = ((ImageWrapper)
                             firstSelectedItem).getImage();
@@ -318,8 +320,10 @@ public class Controller {
     }
 
     /**
-     * Change the label and contents of currentTagsView when a directory is selected,
+     * Change the label and contents of currentTagsView when a directory is
+     * selected,
      * , so that it displays all the tags in that directory
+     *
      * @param directory the directory that's selected
      */
     private void changeCurrentTagsDisplay(DirectoryWrapper directory) {
@@ -328,8 +332,10 @@ public class Controller {
     }
 
     /**
-     * Recursively collects the tags of all images in a directory and its subdirectories and puts them
+     * Recursively collects the tags of all images in a directory and its
+     * subdirectories and puts them
      * in a list
+     *
      * @param directory the directory to search in
      * @return a list of all the tags in the directory
      */
@@ -346,7 +352,9 @@ public class Controller {
     }
 
     /**
-     * Recursively collects all the images under a directory, including those in subdirectories
+     * Recursively collects all the images under a directory, including those
+     * in subdirectories
+     *
      * @param directory the directory to search in
      * @return a list of images under the aforementioned directory
      */
@@ -354,7 +362,8 @@ public class Controller {
         List<Image> images = new ArrayList<>();
         for (ItemWrapper item : directory.getChildObjects()) {
             if (item instanceof DirectoryWrapper) {
-                images.addAll(getAllImagesUnderDirectory((DirectoryWrapper) item));
+                images.addAll(getAllImagesUnderDirectory((DirectoryWrapper)
+                        item));
             } else {
                 images.add(((ImageWrapper) item).getImage());
             }
@@ -511,7 +520,7 @@ public class Controller {
      */
     private void refreshGUIElements() {
         currentFolderLabel.setText(rootDirectoryManager.getRootFolder()
-                .toString());
+                .getPath().toString());
         /* Pass in an empty list when just refreshing (no filtering) */
         populateImageList(new ArrayList<>(), true);
         updateAvailableTags();
@@ -594,7 +603,8 @@ public class Controller {
                     parentNodeList).getChildObjects()) {
                 /* If the wrappedItem is a directory, recurse */
                 if (wrappedItem instanceof DirectoryWrapper) {
-                    TreeItem<ItemWrapper> childNode = new TreeItem<>(wrappedItem);
+                    TreeItem<ItemWrapper> childNode = new TreeItem<>
+                            (wrappedItem);
                     populateParentNode(childNode, wrappedItem, tags,
                             expandDirectories);
                     if (!childNode.isLeaf()) {

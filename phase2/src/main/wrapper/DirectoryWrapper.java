@@ -1,5 +1,7 @@
 package main.wrapper;
 
+import main.PathExtractor;
+
 import java.io.File;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -70,7 +72,7 @@ public class DirectoryWrapper implements ItemWrapper {
      */
     @Override
     public String toString() {
-        return this.path.getPath();
+        return PathExtractor.getImageFileName(path.getPath());
     }
 
     /**

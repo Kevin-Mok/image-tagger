@@ -15,7 +15,7 @@ test-images/
 *.txt
 !*/help.txt
 !*/duties.txt
-!*/TODO.txt
+!*/commit_issue_numbers.txt
 *.lck
 */*.lck
 */*/*/uml.*
