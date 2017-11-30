@@ -1,5 +1,6 @@
 package fx;
 
+import com.sun.org.apache.bcel.internal.generic.POP;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -16,6 +17,24 @@ import java.util.regex.Pattern;
  * Class responsible for the display of error information via pop-ups.
  */
 public class PopUp {
+
+    /**
+     * The message to display for adding tags only to the available tags pool, but not to any images
+     */
+    private static final String ADD_AVAIL_ONLY_MSG = "add to available tags, but not to any images";
+    /**
+     * The message to display for adding tags to all images under the root directory
+     */
+    public static final String ADD_TO_ALL_IMG_MSG = "add to all images under root";
+    /**
+     * The message to display for deleting a tag only from the available tags pool, but not from any images
+     */
+    private static final String DEL_AVAIL_ONLY_MSG = "delete from available tags, but not from any images";
+    /**
+     * The message to display for deleting tags from all images under the root directory
+     */
+    public static final String DEL_FROM_ALL_IMG_MSG = "delete from all images under root";
+
     /**
      * Displays error information in a pop-up window
      *
@@ -122,33 +141,29 @@ public class PopUp {
 
     /**
      * Shows a pop-up asking the user to choose between adding a tag just to
-     * the global pool
-     * or adding the tag to the global tool and adding it to every image in
+     * the global pool, or adding the tag to the global tool and adding it to every image in
      * the current root directory
      *
      * @return the action to be done
      */
     static String addToAvailableTags() {
-        String defaultChoice = "add to available tags, but not to any images";
+        String defaultChoice = PopUp.ADD_AVAIL_ONLY_MSG;
         List<String> choices
-                = Arrays.asList(defaultChoice, "add to all images under root");
+                = Arrays.asList(defaultChoice, PopUp.ADD_TO_ALL_IMG_MSG);
         return createChoiceDialog(defaultChoice, choices);
     }
 
     /**
      * Shows a pop-up asking the user to choose between deleting a tag just
-     * from the global pool,
-     * or deleting that tag from the global pool and from all images in the
+     * from the global pool, or deleting that tag from the global pool and from all images in the
      * current root directory
      *
      * @return the action to be done
      */
     static String deleteFromAvailableTags() {
-        String defaultChoice = "delete from available tags, but not from any " +
-                "images";
+        String defaultChoice = PopUp.DEL_AVAIL_ONLY_MSG;
         List<String> choices
-                = Arrays.asList(defaultChoice, "delete from all images under " +
-                "root");
+                = Arrays.asList(defaultChoice, PopUp.DEL_FROM_ALL_IMG_MSG);
         return createChoiceDialog(defaultChoice, choices);
     }
 

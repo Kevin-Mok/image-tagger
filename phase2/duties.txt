@@ -18,7 +18,7 @@ Kevin
 	- Controller
 	- ImageTagManager
 - Wrote tests for TagManager and ImageTagManager.
-- Managed issues and tasks to focus on via GitHub issues (can't be made public even after due date according to Lindsey).
+- Managed issues and tasks to focus on via GitHub issues 
 - Actively took part in discussions regarding implementation of certain features or design decisions and provided input.
 - Did or helped with tracing through, debugging and fixing various issues.
 

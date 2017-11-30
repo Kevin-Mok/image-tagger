@@ -366,15 +366,14 @@ public class Controller {
     /**
      * Bound to the addToAvailableTagsBtn, displays a popup allowing the user
      * to choose between adding a tag to just the available tags pool (and
-     * not to any images),
-     * or adding a tag to all the images under the current root directory
+     * not to any images), or adding a tag to all the images under the current root directory
      */
     @FXML
     public void addToAvailableTags() {
         String tagName = PopUp.addTagPopup();
         if (tagName != null) {
             String userChoice = PopUp.addToAvailableTags();
-            if (userChoice.equals("add to all images under root")) {
+            if (userChoice.equals(PopUp.ADD_TO_ALL_IMG_MSG)) {
                 curSelectedImages = rootDirectoryManager
                         .getAllImagesUnderRoot();
 
@@ -402,12 +401,14 @@ public class Controller {
     public void deleteFromAvailableTags() {
         if (selectedAvailableTags.size() > 0) {
             String userChoice = PopUp.deleteFromAvailableTags();
-            if (userChoice.equals("delete from all images under root")) {
-                curSelectedImages = rootDirectoryManager
-                        .getAllImagesUnderRoot();
+            if (userChoice.equals(PopUp.DEL_FROM_ALL_IMG_MSG)) {
+                if (PopUp.confirmDeleteAll(selectedAvailableTags)) {
+                    curSelectedImages = rootDirectoryManager
+                            .getAllImagesUnderRoot();
 
-                deleteTag(availableTagsView.getSelectionModel()
-                        .getSelectedItems());
+                    deleteTag(availableTagsView.getSelectionModel()
+                            .getSelectedItems());
+                }
             } else {
                 hideTags();
             }
