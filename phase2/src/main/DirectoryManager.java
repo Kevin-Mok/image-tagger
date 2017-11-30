@@ -4,8 +4,14 @@ import main.wrapper.DirectoryWrapper;
 import main.wrapper.ImageWrapper;
 import main.wrapper.ItemWrapper;
 
-import java.io.*;
-import java.nio.file.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -198,7 +204,8 @@ public class DirectoryManager {
      */
     public void saveLastDir() {
         try {
-            Files.write(Paths.get(LAST_DIR_FILE), rootFolder.toString().getBytes());
+            Files.write(Paths.get(LAST_DIR_FILE), rootFolder.toString()
+                    .getBytes());
         } catch (IOException e) {
             System.out.println("Couldn't save last directory.");
         }

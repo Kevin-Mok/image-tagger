@@ -49,6 +49,7 @@ public class TagManager implements Serializable {
      * @return What the new name of the file should be.
      */
     String addTag(String tagName) {
+        delay();
         Tag tag = new Tag(image, tagName);
         if (!currentTags.contains(tag)) {
             currentTags.add(tag);
@@ -59,12 +60,6 @@ public class TagManager implements Serializable {
             LogUtility.getInstance().logAddTag(tag.getName(), image
                     .getImageName());
         }
-        /* Was getting weird name history errors without this delay. */
-/*        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            System.out.println("Delay between adding tags failed.");
-        }*/
         return nameHistory.lastEntry().getValue();
     }
 
@@ -131,6 +126,7 @@ public class TagManager implements Serializable {
      * @return What the new name of the file should be.
      */
     String deleteTag(String tagName) {
+        delay();
         Tag tag = new Tag(image, tagName);
         if (currentTags.contains(tag)) {
             currentTags.remove(tag);
@@ -140,6 +136,14 @@ public class TagManager implements Serializable {
                     ());
         }
         return nameHistory.lastEntry().getValue();
+    }
+
+    private void delay() {
+        try {
+            Thread.sleep(1);
+        } catch (InterruptedException e) {
+            System.out.println("Delay between adding tags failed.");
+        }
     }
 
     // Returns current name of Image with its original name and current tags.
@@ -160,7 +164,8 @@ public class TagManager implements Serializable {
     public ArrayList<String> getNameHistory() {
         ArrayList<String> result = new ArrayList<>();
         for (Timestamp timestamp : nameHistory.keySet()) {
-            String s = new SimpleDateFormat("MM/dd HH:mm:ss").format(timestamp);
+            String s = new SimpleDateFormat("MM/dd HH:mm:ss").format
+                    (timestamp);
             result.add(s + "  →  " + nameHistory.get(timestamp));
         }
         // result.sort(Collections.reverseOrder());

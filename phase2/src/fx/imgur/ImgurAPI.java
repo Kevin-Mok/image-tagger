@@ -12,6 +12,7 @@ import retrofit2.http.POST;
  * -Retrofit-On-Native-Java
  * on Nov 24th, 2017
  */
+@SuppressWarnings("JavaDoc")
 public interface ImgurAPI {
     String SERVER = "https://api.imgur.com";
     String AUTH = "997046bdff74b8b";
