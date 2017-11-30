@@ -182,11 +182,25 @@
                     </image>
                 </ImageView>
             </graphic>
+         <tooltip>
+            <Tooltip text="Filter the images in the current folder by the tags selected" wrapText="true">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Tooltip>
+         </tooltip>
         </Button>
         <Button layoutX="513.0" layoutY="810.0" mnemonicParsing="false" onMouseClicked="#showAllImages" prefHeight="28.0" prefWidth="97.0" text="Show All" AnchorPane.bottomAnchor="53.0">
             <font>
                 <Font name="Monaco" size="13.0" />
             </font>
+         <tooltip>
+            <Tooltip text="Show all the images in the current folder with no filtering" wrapText="true">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Tooltip>
+         </tooltip>
         </Button>
         <Button fx:id="deleteFromAvailableBtn" layoutX="513.0" layoutY="840.0" mnemonicParsing="false" onAction="#deleteFromAvailableTags" prefHeight="28.0" prefWidth="97.0" text="Tag" AnchorPane.bottomAnchor="23.0">
             <font>

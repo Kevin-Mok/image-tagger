@@ -49,6 +49,18 @@ public class ImageTagManager {
     }
 
     /**
+     * Return the number of images that have a certain tag
+     * @param tagName the tag to check
+     * @return the number of images with the tag to be checked
+     */
+    public int getTaggedImageCount(String tagName) {
+        if (!this.tagToImageListMap.containsKey(tagName)) {
+            return 0;
+        }
+        return this.tagToImageListMap.get(tagName).size();
+    }
+
+    /**
      * Return all existing tags with how many times they are currently being
      * used.
      *

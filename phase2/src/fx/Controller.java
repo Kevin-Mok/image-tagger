@@ -632,9 +632,11 @@ public class Controller {
     public void filterImagesByTags() {
         if (selectedAvailableTags.size() != 0) {
             List<String> tagNames = new ArrayList<>();
-            tagNames.addAll(selectedAvailableTags);
-            for (int i = 0; i < tagNames.size(); i++) {
-                tagNames.set(i, extractAvailableTagName(tagNames.get(i)));
+            for (String tag : selectedAvailableTags) {
+                tag = extractAvailableTagName(tag);
+                if (ImageTagManager.getInstance().getTaggedImageCount(tag) != 0) {
+                    tagNames.add(tag);
+                }
             }
             populateImageList(tagNames, true);
         }
