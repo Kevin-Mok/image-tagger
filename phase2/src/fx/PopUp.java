@@ -109,14 +109,11 @@ public class PopUp {
         alert.setTitle("Delete All?");
         StringBuilder sb = new StringBuilder("Are you sure you want to delete" +
                 " ");
-        String firstTag = tagNames.get(0);
-        sb.append(firstTag.substring(firstTag.indexOf('-') + 2));
+        sb.append(tagNames.get(0));
         for (int index = 1; index < tagNames.size(); index++) {
-            String tag = tagNames.get(index);
-            tag = tag.substring(tag.indexOf('-') + 2);
-            sb.append(", ").append(tag);
+            sb.append(", ").append(tagNames.get(index));
         }
-        sb.append(" from all images?");
+        sb.append(" from all images under the selected directory?");
         alert.setContentText(sb.toString());
         Optional<ButtonType> result = alert.showAndWait();
         return result.isPresent() && result.get() == ButtonType.OK;
@@ -137,52 +134,5 @@ public class PopUp {
         alert.setContentText("Upload the selected image to Imgur?");
         Optional<ButtonType> result = alert.showAndWait();
         return result.isPresent() && result.get() == ButtonType.OK;
-    }
-
-    /**
-     * Shows a pop-up asking the user to choose between adding a tag just to
-     * the global pool, or adding the tag to the global tool and adding it to every image in
-     * the current root directory
-     *
-     * @return the action to be done
-     */
-    static String addToAvailableTags() {
-        String defaultChoice = PopUp.ADD_AVAIL_ONLY_MSG;
-        List<String> choices
-                = Arrays.asList(defaultChoice, PopUp.ADD_TO_ALL_IMG_MSG);
-        return createChoiceDialog(defaultChoice, choices);
-    }
-
-    /**
-     * Shows a pop-up asking the user to choose between deleting a tag just
-     * from the global pool, or deleting that tag from the global pool and from all images in the
-     * current root directory
-     *
-     * @return the action to be done
-     */
-    static String deleteFromAvailableTags() {
-        String defaultChoice = PopUp.DEL_AVAIL_ONLY_MSG;
-        List<String> choices
-                = Arrays.asList(defaultChoice, PopUp.DEL_FROM_ALL_IMG_MSG);
-        return createChoiceDialog(defaultChoice, choices);
-    }
-
-    /**
-     * Helper method for creating a choice dialog
-     *
-     * @param defaultChoice the default choice for the dialog
-     * @param choices       the list of choices for the dialog
-     * @return the user's choice
-     */
-    private static String createChoiceDialog(String defaultChoice,
-                                             List<String> choices) {
-        ChoiceDialog<String> choiceDialog = new ChoiceDialog<>(defaultChoice,
-                choices);
-        choiceDialog.setHeaderText("Select Action");
-        choiceDialog.getDialogPane().setPrefHeight(150);
-        choiceDialog.getDialogPane().setPrefWidth(480);
-        choiceDialog.setResizable(true);
-        Optional<String> result = choiceDialog.showAndWait();
-        return result.orElseGet(choiceDialog::getDefaultChoice);
     }
 }

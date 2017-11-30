@@ -157,16 +157,21 @@ public class Controller {
             }
         });
 
-        deleteTagBtn.setOnAction(event -> deleteTag(currentTagsView
-                .getSelectionModel().getSelectedItems()));
-
-/*        deleteFromAvailableBtn.setOnMouseClicked(event -> {
-            curSelectedImages = rootDirectoryManager.getAllImagesUnderRoot();
-            if (PopUp.confirmDeleteAll(selectedAvailableTags)) {
-                deleteTag(selectedAvailableTags);
-                refreshGUIElements();
+        deleteTagBtn.setOnAction(event -> {
+            ObservableList<String> selectedTags = currentTagsView.getSelectionModel().getSelectedItems();
+            if (selectedTags.size() != 0) {
+                boolean confirmDeleteAll = true;
+                if (singleDirectorySelected()) {
+                    confirmDeleteAll = PopUp.confirmDeleteAll(selectedTags);
+                }
+                if (confirmDeleteAll) {
+                    deleteTag(selectedTags);
+                }
             }
-        });*/
+            updateSelectedImageGUI();
+            updateLastSelectedImage();
+            updateCurSelectedImages();
+        });
 
         uploadBtn.setOnAction(event -> {
             /*
@@ -356,55 +361,40 @@ public class Controller {
         currentTagsView.getItems().setAll(getAllTagsInDirectory(directory));
     }
 
+    private boolean singleDirectorySelected() {
+        ObservableList<TreeItem<ItemWrapper>> selectedTreeItems =
+                imagesTreeView.getSelectionModel().getSelectedItems();
+        if (selectedTreeItems.size() == 1) {
+            ItemWrapper selectedItem = selectedTreeItems.get(0).getValue();
+            return selectedItem instanceof DirectoryWrapper;
+        }
+        return false;
+    }
+
     /**
-     * Bound to the addToAvailableTagsBtn, displays a popup allowing the user
-     * to choose between adding a tag to just the available tags pool (and
-     * not to any images), or adding a tag to all the images under the current root directory
+     * Bound to the addToAvailableTagsBtn, lets the user add a tag to the available tags pool,
+     * without adding it to any image
      */
     @FXML
     public void addToAvailableTags() {
         String tagName = PopUp.addTagPopup();
         if (tagName != null) {
-            String userChoice = PopUp.addToAvailableTags();
-            if (userChoice.equals(PopUp.ADD_TO_ALL_IMG_MSG)) {
-                curSelectedImages = rootDirectoryManager
-                        .getAllImagesUnderRoot();
-
-                for (Image img : curSelectedImages) {
-                    img.addTag(tagName);
-                }
-            } else {
-                addTagToAvailable(tagName);
-                updateAvailableTags();
-                populateImageList(new ArrayList<>(), false);
-            }
+            addTagToAvailable(tagName);
+            updateAvailableTags();
+            populateImageList(new ArrayList<>(), false);
             updateAvailableTags();
             populateImageList(new ArrayList<>(), false);
         }
     }
 
     /**
-     * Bound to deleteFromAvailableBtn, displays a popup allowing the user to
-     * choose between
-     * deleting a tag from all images under the current root directory, or
-     * removing the tag from the
-     * available tags pool (but not deleting it from any image)
+     * Bound to deleteFromAvailableBtn, allows the user to delete(hide) a tag from the pool
+     * of available tags without deleting it from any image.
      */
     @FXML
     public void deleteFromAvailableTags() {
         if (selectedAvailableTags.size() > 0) {
-            String userChoice = PopUp.deleteFromAvailableTags();
-            if (userChoice.equals(PopUp.DEL_FROM_ALL_IMG_MSG)) {
-                if (PopUp.confirmDeleteAll(selectedAvailableTags)) {
-                    curSelectedImages = rootDirectoryManager
-                            .getAllImagesUnderRoot();
-
-                    deleteTag(availableTagsView.getSelectionModel()
-                            .getSelectedItems());
-                }
-            } else {
-                hideTags();
-            }
+            hideTags();
             updateAvailableTags();
         }
     }
@@ -494,7 +484,7 @@ public class Controller {
             }
             updateSelectedImageGUI();
             updateLastSelectedImage();
-            // refreshGUIElements();
+            updateCurSelectedImages();
         }
     }
 
