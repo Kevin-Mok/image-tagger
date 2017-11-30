@@ -19,8 +19,8 @@ class DirectoryManagerTest {
 
     @org.junit.jupiter.api.BeforeEach
     void setUp() throws IOException {
-        testDirectory = DirectoryManager.PROJECT_DIR + File.separator + "src" + File
-                .separator + "test";
+        testDirectory = DirectoryManager.PROJECT_DIR + File.separator + "src"
+                + File.separator + "test";
         testDirPath = Paths.get(testDirectory);
 
         manager = DirectoryManager.getInstance();
@@ -43,7 +43,7 @@ class DirectoryManagerTest {
                 new Image(testImageTwo, PathExtractor.getImageFileName(
                         (testImageTwo).toString())));
 
-        ItemWrapper rootDirectory = manager.getRootDirectory();
+        ItemWrapper rootDirectory = manager.getRootFolder();
         assertTrue(rootDirectory instanceof DirectoryWrapper);
         DirectoryWrapper testwrapper = new DirectoryWrapper(testDirPath
                 .toFile());

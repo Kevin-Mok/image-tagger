@@ -86,16 +86,16 @@ public class DirectoryManager {
         this.rootFolder = getImages(rootFolder.toPath());
     }
 
-    /**
-     * Returns ItemWrapper representing the root directory, encapsulating all
-     * its
-     * subdirectories and images
-     *
-     * @return ItemWrapper representing the root directory
-     */
-    public ItemWrapper getRootDirectory() {
-        return getImages(rootFolder.getPath());
-    }
+//    /**
+//     * Returns ItemWrapper representing the root directory, encapsulating all
+//     * its
+//     * subdirectories and images
+//     *
+//     * @return ItemWrapper representing the root directory
+//     */
+//    public ItemWrapper getRootDirectory() {
+//        return getImages(rootFolder.getPath());
+//    }
 
     /**
      * Returns the list of all images under the root folder
