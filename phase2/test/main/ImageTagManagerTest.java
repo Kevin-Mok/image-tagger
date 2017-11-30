@@ -123,7 +123,7 @@ class ImageTagManagerTest {
         addTagToPlaceholder();
         Image placeHolderImage = imageTagManager.getImage(ImageTagManager
                 .PLACEHOLDER_IMAGE_NAME);
-        assertTrue(placeHolderImage.hasTags(Collections.singletonList
+        assertTrue(placeHolderImage.hasAnyTag(Collections.singletonList
                 (placeHolderTagNameToAdd)));
     }
 

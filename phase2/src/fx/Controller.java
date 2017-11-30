@@ -357,13 +357,6 @@ public class Controller {
     }
 
     /**
-     * Updates the current tags display if any changes were made to the currently selected image
-     */
-    private void updateCurrentTagsDisplay() {
-
-    }
-
-    /**
      * Bound to the addToAvailableTagsBtn, displays a popup allowing the user
      * to choose between adding a tag to just the available tags pool (and
      * not to any images), or adding a tag to all the images under the current root directory
@@ -718,7 +711,7 @@ public class Controller {
                     }
                 /* If the wrapped item is an image */
                 } else {
-                    if (((ImageWrapper) wrappedItem).getImage().hasTags(tags)) {
+                    if (((ImageWrapper) wrappedItem).getImage().hasAnyTag(tags)) {
                         parentNode.getChildren().add(new TreeItem<>
                                 (wrappedItem));
                     }

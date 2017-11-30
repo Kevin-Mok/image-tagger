@@ -211,15 +211,15 @@ public class Image implements Serializable {
     }
 
     /**
-     * Checks if this image has all the tags in a list of tag names
+     * Checks if this image has any of the tags in a list of tag names
      *
      * @param tagNames the tag names to check
      * @return true if the image contains at least a tag in the list, or if
      * the list is empty (no filtering),
      * false if otherwise
      */
-    public boolean hasTags(List<String> tagNames) {
-        return tagNames.size() == 0 || this.tagManager.hasTags(tagNames);
+    public boolean hasAnyTag(List<String> tagNames) {
+        return tagNames.size() == 0 || this.tagManager.hasAnyTag(tagNames);
     }
 
     /**

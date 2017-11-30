@@ -56,7 +56,7 @@ class TagManagerTest {
         originalImageName = imageName.toString();
         setImage();
         tagManager.addAllExistingTags(image.getImageName().split("@"));
-        assertTrue(tagManager.hasTags(multipleTagNames));
+        assertTrue(tagManager.hasAnyTag(multipleTagNames));
     }
 
     @Test
