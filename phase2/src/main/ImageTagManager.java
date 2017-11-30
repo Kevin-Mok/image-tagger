@@ -20,9 +20,9 @@ public class ImageTagManager {
     // Singleton instance of this class.
     private static ImageTagManager instance = null;
     // HashMap of String of tag names to list of Images containing that tag.
-    private HashMap<String, ArrayList<Image>> tagToImageList;
+    private HashMap<String, ArrayList<Image>> tagToImageListMap;
     // HashMap of String of paths to Image with that path.
-    private HashMap<String, Image> pathToImages;
+    private HashMap<String, Image> pathToImagesMap;
     private ArrayList<String> hiddenTagNames;
 
     /**
@@ -40,10 +40,10 @@ public class ImageTagManager {
     public static ImageTagManager getInstance() {
         if (instance == null) {
             instance = new ImageTagManager();
-            instance.tagToImageList = new HashMap<>();
-            instance.pathToImages = new HashMap<>();
+            instance.tagToImageListMap = new HashMap<>();
+            instance.pathToImagesMap = new HashMap<>();
             instance.hiddenTagNames = new ArrayList<>();
-            instance.pathToImages.put(PLACEHOLDER_IMAGE_NAME, new Image
+            instance.pathToImagesMap.put(PLACEHOLDER_IMAGE_NAME, new Image
                     ());
         }
         return instance;
@@ -57,15 +57,15 @@ public class ImageTagManager {
      * currently being used.
      */
     public String[] getAvailableTagsWithCount() {
-        /* After updating the tagToImageList, iterate through all the tag
+        /* After updating the tagToImageListMap, iterate through all the tag
         names and add their count to before the name. */
         refreshTagToImageList();
-        String[] availableTagsWithCount = tagToImageList.keySet().toArray(new
+        String[] availableTagsWithCount = tagToImageListMap.keySet().toArray(new
                 String[0]);
         for (int i = 0; i < availableTagsWithCount.length; i++) {
             String curTagName = availableTagsWithCount[i];
-            int imageCount = (tagToImageList.containsKey(curTagName)) ?
-                    tagToImageList.get(curTagName).size() : -1;
+            int imageCount = (tagToImageListMap.containsKey(curTagName)) ?
+                    tagToImageListMap.get(curTagName).size() : -1;
             availableTagsWithCount[i] = String.format("(%d) - %s", imageCount,
                     curTagName);
         }
@@ -88,59 +88,67 @@ public class ImageTagManager {
      *
      * @param tagName Tag name to be shown again.
      */
-    public void removeFromHidden(String tagName) {
+    void removeFromHidden(String tagName) {
         if (hiddenTagNames.contains(tagName)) {
             hiddenTagNames.remove(tagName);
         }
     }
 
     /**
-     * Remove Image with path of parameter from HashMap of pathToImages.
+     * Remove Image with path of parameter from HashMap of pathToImagesMap.
      *
      * @param pathString Path of Image to remove.
      */
     void removeImage(String pathString) {
-        pathToImages.remove(pathString);
+        pathToImagesMap.remove(pathString);
     }
 
     /**
-     * Returns image with path parameter in pathToImages.
+     * Returns image with path parameter in pathToImagesMap.
      *
      * @param path the path to use to look up an image
-     * @return Image with path parameter in pathToImages.
+     * @return Image with path parameter in pathToImagesMap.
      */
     Image getImage(String path) {
-        return pathToImages.get(path);
+        return pathToImagesMap.get(path);
     }
 
     /**
      * onAction="#hiddenTagNames"
-     * Returns whether pathToImages contains a key of path parameter.
+     * Returns whether pathToImagesMap contains a key of path parameter.
      *
      * @param path the path to check
-     * @return Boolean of whether pathToImages contains a key of path parameter.
+     * @return Boolean of whether pathToImagesMap contains a key of path parameter.
      */
     boolean containsImagePath(String path) {
-        return pathToImages.containsKey(path);
+        return pathToImagesMap.containsKey(path);
     }
 
     /**
-     * Add Image parameter to pathToImages.
+     * Add Image parameter to pathToImagesMap.
      *
      * @param image Image to add.
      */
     void addImage(Image image) {
-        pathToImages.put(image.getPathString(), image);
+        pathToImagesMap.put(image.getPathString(), image);
     }
 
     /**
-     * Recreates tagToImageList HashMap based on Images in pathToImages.
+     * Recreates tagToImageListMap based on Images in pathToImagesMap, unused
+     * tags, placeholder tags and hidden tags.
      */
     void refreshTagToImageList() {
-        HashMap<String, ArrayList<Image>> tagToImageList = new HashMap<>();
-        /* Iterates through all existing Images and adds all their tag names
-        and associated images to new tagToImageList map. */
-        for (Image image : pathToImages.values()) {
+        tagToImageListMap = new HashMap<>();
+        addImagesFromPathMap();
+        addUnusedTagsToMap();
+        addPlaceholderTagsToMap();
+        removeHiddenTagsFromMap();
+    }
+
+    /* Iterates through all existing Images and adds all their tag names
+    and associated images to tagToImageListMap map. */
+    private void addImagesFromPathMap() {
+        for (Image image : pathToImagesMap.values()) {
             /* If it's the placeholder image, don't do anything with it. */
             if (!image.getImageName().equals(PLACEHOLDER_IMAGE_NAME)) {
                 ArrayList<String> imageTagNames = image.getTagManager()
@@ -149,35 +157,44 @@ public class ImageTagManager {
                     /* If tag name is not a key, create a new mapping from it to
                     a new ArrayList. Then, add image to new ArrayList or the
                     already existing one. */
-                    if (!tagToImageList.containsKey(tagName)) {
-                        tagToImageList.put(tagName, new ArrayList<>());
+                    if (!tagToImageListMap.containsKey(tagName)) {
+                        tagToImageListMap.put(tagName, new ArrayList<>());
                     }
-                    tagToImageList.get(tagName).add(image);
+                    tagToImageListMap.get(tagName).add(image);
                 }
             }
         }
-        /* Add unused tags to the map with an empty ArrayList. */
-        for (Image image : pathToImages.values()) {
+    }
+
+    /* Add unused tags to tagToImageListMap with an empty ArrayList if it's not
+    already in there. */
+    private void addUnusedTagsToMap() {
+        for (Image image : pathToImagesMap.values()) {
             for (String unusedTagName : image.getTagManager().getUnusedTags()) {
-                if (!tagToImageList.containsKey(unusedTagName))
-                    tagToImageList.put(unusedTagName, new ArrayList<>());
+                if (!tagToImageListMap.containsKey(unusedTagName))
+                    tagToImageListMap.put(unusedTagName, new ArrayList<>());
             }
         }
-        /* Add any tags in the placeholder image to the map if they aren't
-        there already. */
-        ArrayList<String> placeHolderTagNames = pathToImages.get
+    }
+
+    /* Add any tags in the placeholder image to the tagToImageListMap if they aren't
+    there already. */
+    private void addPlaceholderTagsToMap() {
+        ArrayList<String> placeHolderTagNames = pathToImagesMap.get
                 (PLACEHOLDER_IMAGE_NAME)
                 .getTagManager().getTagNames();
         for (String tagName : placeHolderTagNames) {
-            if (!tagToImageList.containsKey(tagName))
-                tagToImageList.put(tagName, new ArrayList<>());
+            if (!tagToImageListMap.containsKey(tagName))
+                tagToImageListMap.put(tagName, new ArrayList<>());
         }
+    }
 
+    /* Hidden tags will be removed from tagToImageListMap since the user
+    doesn't want them to be displayed. */
+    private void removeHiddenTagsFromMap() {
         for (String hiddenTagName : hiddenTagNames) {
-            tagToImageList.remove(hiddenTagName);
+            tagToImageListMap.remove(hiddenTagName);
         }
-
-        this.tagToImageList = tagToImageList;
     }
 
     /**
@@ -186,43 +203,43 @@ public class ImageTagManager {
      * @param tagName Name of tag to be added to placeholder.
      */
     public void addTagToPlaceholder(String tagName) {
-        Image img = pathToImages.get(PLACEHOLDER_IMAGE_NAME);
+        Image img = pathToImagesMap.get(PLACEHOLDER_IMAGE_NAME);
         img.getTagManager().addTag(tagName);
         removeFromHidden(tagName);
     }
 
     /*
-    ** Deletes entries from pathToImages that only have a name history of
+    ** Deletes entries from pathToImagesMap that only have a name history of
     ** size 1 (i.e. no tags were ever added to that Image). Decreases size of
     ** serialized objects.
     */
     private void deleteUselessImageObjects() {
         HashMap<String, Image> rebuild = new HashMap<>();
-        for (String keys : pathToImages.keySet()) {
-            if (pathToImages.get(keys).getTagManager().getNameHistory().size()
+        for (String keys : pathToImagesMap.keySet()) {
+            if (pathToImagesMap.get(keys).getTagManager().getNameHistory().size()
                     != 1) {
-                rebuild.put(keys, pathToImages.get(keys));
+                rebuild.put(keys, pathToImagesMap.get(keys));
             }
         }
-        pathToImages = rebuild;
+        pathToImagesMap = rebuild;
     }
 
     private void deleteNonExistentImages() {
         ArrayList<String> toDelete = new ArrayList<>();
-        for (String path : pathToImages.keySet()) {
+        for (String path : pathToImagesMap.keySet()) {
             if (!path.equals(PLACEHOLDER_IMAGE_NAME) && !new File(path)
                     .exists()) {
                 toDelete.add(path);
             }
         }
         for (String deleteItem : toDelete) {
-            pathToImages.remove(deleteItem);
+            pathToImagesMap.remove(deleteItem);
         }
         refreshTagToImageList();
     }
 
     /**
-     * Reads the serialization of the HashMaps (tagToImageList, pathToImages) of
+     * Reads the serialization of the HashMaps (tagToImageListMap, pathToImagesMap) of
      * this class.
      */
     public void readFromFile() {
@@ -238,10 +255,10 @@ public class ImageTagManager {
             Stack Overflow (https://stackoverflow.com/a/1609963/8811872), it
             says that there isn't really a good way to handle this in Java.
              */
-            pathToImages = (HashMap<String, Image>) pathToImagesObject;
+            pathToImagesMap = (HashMap<String, Image>) pathToImagesObject;
             imagesObjectInput.close();
-            if (!pathToImages.containsKey(PLACEHOLDER_IMAGE_NAME)) {
-                pathToImages.put(PLACEHOLDER_IMAGE_NAME, new Image
+            if (!pathToImagesMap.containsKey(PLACEHOLDER_IMAGE_NAME)) {
+                pathToImagesMap.put(PLACEHOLDER_IMAGE_NAME, new Image
                         ());
             }
             deleteNonExistentImages();
@@ -256,7 +273,7 @@ public class ImageTagManager {
     }
 
     /**
-     * Serializes the pathToImages HashMap of this class.
+     * Serializes the pathToImagesMap HashMap of this class.
      */
     public void saveToFile() {
         try {
@@ -267,7 +284,7 @@ public class ImageTagManager {
             ObjectOutput imagesObjectOutput = new ObjectOutputStream
                     (imagesBuffer);
 
-            imagesObjectOutput.writeObject(pathToImages);
+            imagesObjectOutput.writeObject(pathToImagesMap);
             System.out.printf("Serialized %s.%n", SER_FILE_NAME);
             imagesObjectOutput.close();
         } catch (IOException e) {

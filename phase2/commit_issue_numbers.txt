@@ -260,6 +260,22 @@ Title: Hidden available tag is not being shown upon adding it again
 Description: Adding back the tag isn't removing it from the list of hidden tags.
 
 ########
+# Issue 55
+
+Title: Refactor ImageTagManager
+
+Description: 
+- refreshTagToImageList()
+  - It has 4 distinctive parts, is really long and hard to test. So, it makes sense for it to be split up.
+
+########
+# Issue 56
+
+Title: Delete from available tags throwing NullPointerException
+
+Description: The button is doing two things at the same time. I fixed the code with one of the things it's calling [Controller.deleteFromAvailableTags() from the FXML] already, so I just have to remove the other thing being called in Controller.initialize().
+
+########
 # Issue 
 
 Title: 

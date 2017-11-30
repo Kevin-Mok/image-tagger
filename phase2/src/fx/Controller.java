@@ -82,7 +82,8 @@ public class Controller {
             .observableArrayList();
     private ObservableList<String> nameHistoryList = FXCollections
             .observableArrayList();
-    private ObservableList<String> selectedAvailableTags;
+    private ObservableList<String> selectedAvailableTags = FXCollections
+            .observableArrayList();
 
     /**
      * Constructor.
@@ -161,13 +162,13 @@ public class Controller {
         deleteTagBtn.setOnAction(event -> deleteTag(currentTagsView
                 .getSelectionModel().getSelectedItems()));
 
-        deleteFromAvailableBtn.setOnMouseClicked(event -> {
+/*        deleteFromAvailableBtn.setOnMouseClicked(event -> {
             curSelectedImages = rootDirectoryManager.getAllImagesUnderRoot();
             if (PopUp.confirmDeleteAll(selectedAvailableTags)) {
                 deleteTag(selectedAvailableTags);
                 refreshGUIElements();
             }
-        });
+        });*/
 
         uploadBtn.setOnAction(event -> {
             /*
