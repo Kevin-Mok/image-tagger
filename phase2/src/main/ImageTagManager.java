@@ -14,7 +14,7 @@ public class ImageTagManager {
     /**
      * Serialized file name
      */
-    public static final String SER_FILE_NAME = "path_to_images.ser";
+    private static final String SER_FILE_NAME = "path_to_images.ser";
     static final String PLACEHOLDER_IMAGE_NAME = "Placeholder Image";
 
     // Singleton instance of this class.
@@ -23,6 +23,7 @@ public class ImageTagManager {
     private HashMap<String, ArrayList<Image>> tagToImageListMap;
     // HashMap of String of paths to Image with that path.
     private HashMap<String, Image> pathToImagesMap;
+    //ArrayList of Hidden Tags
     private ArrayList<String> hiddenTagNames;
 
     /**
@@ -229,7 +230,10 @@ public class ImageTagManager {
         }
         pathToImagesMap = rebuild;
     }
-
+    /*
+    ** Iterates though the image HashMap and
+    ** deletes image objects that correspond to non-existent images on your computer
+     */
     private void deleteNonExistentImages() {
         ArrayList<String> toDelete = new ArrayList<>();
         for (String path : pathToImagesMap.keySet()) {
@@ -248,6 +252,7 @@ public class ImageTagManager {
      * Reads the serialization of the HashMaps (tagToImageListMap, pathToImagesMap) of
      * this class.
      */
+    @SuppressWarnings("unchecked")
     public void readFromFile() {
         try {
             InputStream imagesFileInput = new FileInputStream(SER_FILE_NAME);

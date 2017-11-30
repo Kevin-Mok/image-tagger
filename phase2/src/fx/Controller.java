@@ -388,7 +388,7 @@ public class Controller {
      * choose between
      * deleting a tag from all images under the current root directory, or
      * removing the tag from the
-     * available tags pool (but not deleting it from any image)
+     * available tags pool (but not deleting it from anButtonTypey image)
      */
     @FXML
     public void deleteFromAvailableTags() {

@@ -140,6 +140,9 @@ public class TagManager implements Serializable {
         return nameHistory.lastEntry().getValue();
     }
 
+    /**
+     * Delay functionality by one millisecond
+     */
     private void delay() {
         try {
             Thread.sleep(1);
@@ -275,10 +278,7 @@ public class TagManager implements Serializable {
                 null)
             return false;
         // Ignoring this yellow error for readability.
-        if (currentTags != null ? !currentTags.equals(that.currentTags) :
-                that.currentTags != null)
-            return false;
-        return image != null ? image.equals(that.image) : that.image == null;
+        return (currentTags != null ? currentTags.equals(that.currentTags) : that.currentTags == null) && (image != null ? image.equals(that.image) : that.image == null);
     }
 
     /**
