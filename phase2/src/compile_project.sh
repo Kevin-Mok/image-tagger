@@ -1,5 +1,4 @@
 #!/bin/bash
-# Execute from the phase2 directory
 rm -rf out/class_files
 rm -f sources.txt
 find -name "*.java" >sources.txt
