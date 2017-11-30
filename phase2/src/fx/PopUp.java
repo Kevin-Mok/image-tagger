@@ -21,19 +21,19 @@ public class PopUp {
     /**
      * The message to display for adding tags only to the available tags pool, but not to any images
      */
-    private static final String ADD_AVAIL_ONLY_MSG = "add to available tags, but not to any images";
+    private static final String ADD_AVAIL_ONLY_MSG = "Add to available tags, but not to any images";
     /**
      * The message to display for adding tags to all images under the root directory
      */
-    public static final String ADD_TO_ALL_IMG_MSG = "add to all images under root";
+    public static final String ADD_TO_ALL_IMG_MSG = "Add to all images under root";
     /**
      * The message to display for deleting a tag only from the available tags pool, but not from any images
      */
-    private static final String DEL_AVAIL_ONLY_MSG = "delete from available tags, but not from any images";
+    private static final String DEL_AVAIL_ONLY_MSG = "Delete from available tags, but not from any images";
     /**
      * The message to display for deleting tags from all images under the root directory
      */
-    public static final String DEL_FROM_ALL_IMG_MSG = "delete from all images under root";
+    public static final String DEL_FROM_ALL_IMG_MSG = "Delete from all images under root";
 
     /**
      * Displays error information in a pop-up window

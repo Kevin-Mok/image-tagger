@@ -31,13 +31,6 @@ public class PathExtractor {
                 + 1);
     }
 
-    // Extracts the last directory from the path name.
-/*    public static String getSubdirectoryName(String imagePath) {
-        int indexOfLastSlash = imagePath.lastIndexOf('/');
-        return imagePath.substring(indexOfLastSlash + 1,
-                imagePath.length());
-    }*/
-
     /**
      * Gets the file extension of an image file given a path
      *
@@ -59,17 +52,6 @@ public class PathExtractor {
         int indexOfLastSlash = imagePath.lastIndexOf(File.separatorChar);
         return imagePath.substring(0, indexOfLastSlash);
     }
-
-    /*
-     * Extract the parent directory of the image plus its file name from
-     * imagePath.
-     *
-     * @param imagePath String of path to extract from.
-     * @return String of parent directory of the image plus its file name.
-     */
-/*    public static String getDirectoryAndFileName(String imagePath) {
-        return getDirectory(imagePath) + getImageFileName(imagePath);
-    }*/
 
     /**
      * Gets the path of an image file without any tags, given a path

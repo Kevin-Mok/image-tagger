@@ -23,4 +23,10 @@ Kevin
 - Did or helped with tracing through, debugging and fixing various issues.
 
 Saad
-
+- Found and added Imgur functionality
+- Added functionality to add tag and delete tag button underneath All Available Tags
+- Added tag count
+- Added ability to select multiple images at a time and add or delete tags
+- Implemented tag recognition for files tagged through the OS
+- Updated JavaDocs
+- Tested program to find bugs
