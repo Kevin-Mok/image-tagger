@@ -377,6 +377,8 @@ public class Controller {
                 }
             } else {
                 addTagToAvailable(tagName);
+                updateAvailableTags();
+                refreshGUIElements();
             }
             updateAvailableTags();
         }

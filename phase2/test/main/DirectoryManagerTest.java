@@ -20,7 +20,7 @@ class DirectoryManagerTest {
     @org.junit.jupiter.api.BeforeEach
     void setUp() throws IOException {
         String projectDirectory = System.getProperty("user.dir");
-        testDirectory = projectDirectory + File.separator + "src" + File
+        testDirectory = projectDirectory + File
                 .separator + "test";
         testDirPath = Paths.get(testDirectory);
 
