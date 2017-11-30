@@ -463,6 +463,7 @@ public class Controller {
             }
             updateSelectedImageGUI();
             updateLastSelectedImage();
+            refreshGUIElements();
         }
     }
 
