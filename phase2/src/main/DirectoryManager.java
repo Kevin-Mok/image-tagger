@@ -213,9 +213,12 @@ public class DirectoryManager {
      */
     public void saveLastDir() {
         try {
-            String lastDirectory = rootFolder.getPath().toString();
-            Files.write(Paths.get(LAST_DIR_FILE), lastDirectory.getBytes());
-            System.out.printf("Saved %s as last directory.%n", lastDirectory);
+//            Path rootFolderPath = rootFolder.getPath();
+            if (rootFolder != null) {
+                String lastDirectory = rootFolder.getPath().toString();
+                Files.write(Paths.get(LAST_DIR_FILE), lastDirectory.getBytes());
+                System.out.printf("Saved %s as last directory.%n", lastDirectory);
+            }
         } catch (IOException e) {
             System.out.println("Couldn't save last directory.");
         }
