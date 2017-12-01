@@ -67,20 +67,22 @@ public class DirectoryManager {
     }
 
     /**
-     * Returns the root folder of this DirectoryManager.
+     * Returns the root folder of this DirectoryManager. The DirectoryWrapper representing
+     * the root is reconstructed to reflect any changes.
      *
-     * @return The DirectoryWrapper of this object containing the root folder
-     * path.
+     * @return A DirectoryWrapper object representing the root folder
      */
     public DirectoryWrapper getRootFolder() {
-        return rootFolder;
+        this.rootFolder = getImages(this.rootFolder.getPath());
+        return this.rootFolder;
     }
 
     /**
-     * Sets the root folder of this DirectoryManager.
+     * Sets the root folder of this DirectoryManager by constructing a DirectoryWrapper using
+     * a File object representing the root folder. The constructed DirectoryWrapper would
+     * contain information about images under it as well as images under its subdirectories
      *
-     * @param rootFolder The DirectoryWrapper to set this object's root
-     *                   folder to.
+     * @param rootFolder the root folder used to construct the DirectoryWrapper
      */
     public void setRootFolder(File rootFolder) {
         this.rootFolder = getImages(rootFolder.toPath());

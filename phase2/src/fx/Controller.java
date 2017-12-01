@@ -220,12 +220,6 @@ public class Controller {
                             imagesTreeView.getSelectionModel().select
                                     (movedImage);
                         }
-                        /*
-                         * After moving, need to reset the rootDirectoryManager's root so the image
-                         * list can be repopulated
-                         */
-                        File rootDirectory = rootDirectoryManager.getRootFolder().getPath().toFile();
-                        rootDirectoryManager.setRootFolder(rootDirectory);
                         refreshGUIElements();
                     }
                 } catch (NullPointerException e) {
