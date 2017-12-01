@@ -131,7 +131,7 @@ public class Image implements Serializable {
             // String imageFileName = PathExtractor.getImageFileName
             //         (imageFile.toString());
             String extension = PathExtractor.getExtension(imageFile.getPath());
-            String newPathString = newDir + "/" + newImageName + extension;
+            String newPathString = newDir + File.separator + newImageName + extension;
 
             ImageTagManager imageTagManager = ImageTagManager.getInstance();
             imageTagManager.removeImage(imageFile.toString());
