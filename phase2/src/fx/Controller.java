@@ -386,16 +386,8 @@ public class Controller {
     }
 
     /**
-<<<<<<< HEAD
      * Bound to deleteFromAvailableBtn, allows the user to delete(hide) a tag from the pool
      * of available tags without deleting it from any image.
-=======
-     * Bound to deleteFromAvailableBtn, displays a popup allowing the user to
-     * choose between
-     * deleting a tag from all images under the current root directory, or
-     * removing the tag from the
-     * available tags pool (but not deleting it from anButtonTypey image)
->>>>>>> 712725b091ea0f093dbbfbb09fb046be84c51ad8
      */
     @FXML
     public void deleteFromAvailableTags() {
