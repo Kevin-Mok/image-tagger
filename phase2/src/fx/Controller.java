@@ -187,7 +187,7 @@ public class Controller {
                 if (PopUp.confirmUpload()) {
                     uploadLabel.setVisible(true);
                     if (!service.isRunning()) {
-                    /* Service will take care of uploading the image */
+                        /* Service will take care of uploading the image */
                         service.start();
                     }
 
@@ -257,7 +257,10 @@ public class Controller {
         for (TreeItem<ItemWrapper> child : directory.getChildren()) {
             ItemWrapper wrappedVal = child.getValue();
             if (wrappedVal instanceof DirectoryWrapper) {
-                selectMovedImage(imagePath, child);
+                TreeItem<ItemWrapper> returnedItem = selectMovedImage(imagePath, child);
+                if (returnedItem != null) {
+                    return returnedItem;
+                }
                 /* child wraps an Image object */
             } else {
                 ImageWrapper imageWrapper = (ImageWrapper) wrappedVal;
@@ -486,6 +489,11 @@ public class Controller {
         }
     }
 
+    /**
+     * Adds a new tag to the available tags pool, without adding it to an actual image
+     * 
+     * @param newTagName the tag to add
+     */
     private void addTagToAvailable(String newTagName) {
         if (newTagName.trim().length() > 0) {
             ImageTagManager.getInstance().addTagToPlaceholder(newTagName);
@@ -699,7 +707,7 @@ public class Controller {
                         parentNode.getChildren().add(childNode);
                         childNode.setExpanded(expandDirectories);
                     }
-                /* If the wrapped item is an image */
+                    /* If the wrapped item is an image */
                 } else {
                     if (((ImageWrapper) wrappedItem).getImage().hasAnyTag(tags)) {
                         parentNode.getChildren().add(new TreeItem<>
@@ -732,13 +740,13 @@ public class Controller {
             return new Task<Void>() {
                 @Override
                 protected Void call() throws Exception {
-                        /*
-                         * Adapted from Johnny850807's GitHub repository
-                         * https://github
-                         * .com/Johnny850807/Imgur-Picture-Uploading-Example
-                         * -Using-Retrofit-On-Native-Java
-                         * on Nov 24th, 2017
-                         */
+                    /*
+                     * Adapted from Johnny850807's GitHub repository
+                     * https://github
+                     * .com/Johnny850807/Imgur-Picture-Uploading-Example
+                     * -Using-Retrofit-On-Native-Java
+                     * on Nov 24th, 2017
+                     */
                     final ImgurAPI imgurApi = createImgurAPI();
                     try {
                         File image = new File(lastSelectedImage.getPath()
