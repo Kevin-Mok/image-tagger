@@ -74,6 +74,7 @@ public class Controller {
     private Stage stage;
     private Image lastSelectedImage;
     private List<Image> curSelectedImages;
+    private DirectoryWrapper lastSelectedDirectory;
     private ObservableList<String> availableTagsList = FXCollections
             .observableArrayList();
     private ObservableList<String> currentTagsList = FXCollections
@@ -169,7 +170,7 @@ public class Controller {
                 }
             }
             updateSelectedImageGUI();
-            updateLastSelectedImage();
+            updateLastSelectedTreeItem();
             updateCurSelectedImages();
         });
 
@@ -238,7 +239,7 @@ public class Controller {
                         1).trim();
                 lastSelectedImage.revertName(chosenName);
                 updateSelectedImageGUI();
-                updateLastSelectedImage();
+                updateLastSelectedTreeItem();
                 updateAvailableTags();
             }
         });
@@ -277,7 +278,7 @@ public class Controller {
      */
     @FXML
     public void changeImageDisplayed() {
-        updateLastSelectedImage();
+        updateLastSelectedTreeItem();
         updateSelectedImageGUI();
         updateCurSelectedImages();
     }
@@ -296,7 +297,7 @@ public class Controller {
      * Updates the last selected image based on what's selected in the
      * imagesTreeView
      */
-    private void updateLastSelectedImage() {
+    private void updateLastSelectedTreeItem() {
         TreeItem<ItemWrapper> lastSelectedTreeItem = imagesTreeView
                 .getSelectionModel().getSelectedItem();
         if (lastSelectedTreeItem != null) {
@@ -307,6 +308,9 @@ public class Controller {
                         .getImage();
                 currentTagsList.setAll(lastSelectedImage.getTagManager()
                         .getTagNames());
+            } else {
+                DirectoryWrapper lastSelectedDirectory = (DirectoryWrapper) lastSelectedTreeItem.getValue();
+                currentTagsList.setAll(getAllTagsInDirectory(lastSelectedDirectory));
             }
         }
     }
@@ -484,7 +488,7 @@ public class Controller {
                 img.addTag(newTagName);
             }
             updateSelectedImageGUI();
-            updateLastSelectedImage();
+            updateLastSelectedTreeItem();
             updateCurSelectedImages();
         }
     }
@@ -524,7 +528,7 @@ public class Controller {
                 }
             }
             updateSelectedImageGUI();
-            updateLastSelectedImage();
+            updateLastSelectedTreeItem();
         }
     }
 
@@ -546,7 +550,7 @@ public class Controller {
                 }
             }
             updateSelectedImageGUI();
-            updateLastSelectedImage();
+            updateLastSelectedTreeItem();
             // refreshGUIElements();
             updateAvailableTags();
         }
