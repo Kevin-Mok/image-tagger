@@ -309,7 +309,7 @@ public class Controller {
                 currentTagsList.setAll(lastSelectedImage.getTagManager()
                         .getTagNames());
             } else {
-                DirectoryWrapper lastSelectedDirectory = (DirectoryWrapper) lastSelectedTreeItem.getValue();
+                lastSelectedDirectory = (DirectoryWrapper) lastSelectedTreeItem.getValue();
                 currentTagsList.setAll(getAllTagsInDirectory(lastSelectedDirectory));
             }
         }
