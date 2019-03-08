@@ -1,0 +1,16 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="image-tagger:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/image_tagger_jar</output-path>
+    <root id="archive" name="image-tagger.jar">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="module-output" name="image-tagger" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/gson-2.2.3.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/retrofit-2.2.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/converter-gson-2.0.0-beta3.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/okhttp-3.0.0-RC1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/okio-1.6.0.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
